@@ -1,4 +1,4 @@
-import numpy, scipy, pylab
+import numpy
 import csv
 from time import time
 
@@ -29,7 +29,6 @@ def MatrixMul(met,A,B):
 		result = numpy.dot(A,B)
 		finish = time()
 		print "Producto punto demoro " + str(finish - start) + " segundos."
-		print result
 	elif met == "enf_col":
 		print "Enfoque de Columna"
 	elif met == "enf_row":
@@ -38,7 +37,7 @@ def MatrixMul(met,A,B):
 		print "Enfoque de Columna y Fila"
 	else:
 		print """[ERROR] Metodo desconocido.
-		Opciones: 'prod_punto', 'enf_col', 'enf_row', 'enf_col_row'.""" 
+Opciones: 'prod_punto', 'enf_col', 'enf_row', 'enf_col_row'.""" 
 	
 if __name__ == "__main__":
 	random = LoadMatrix("Anexos_lab1/random_matrix.csv")
@@ -46,7 +45,5 @@ if __name__ == "__main__":
 	sparse = LoadMatrix("Anexos_lab1/sparse.csv")
 	test1 = LoadMatrix("Anexos_lab1/test1.csv")
 	test2 = LoadMatrix("Anexos_lab1/test2.csv")
-	
-	print test1
 	
 	MatrixMul("prod_punto", test1, test2)
