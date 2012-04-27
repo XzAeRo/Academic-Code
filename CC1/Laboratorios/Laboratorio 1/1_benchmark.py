@@ -34,9 +34,14 @@ def prod_punto(A,C):
 	
 	"""
 	B = []
+	bi = []
 	bij = 0.0
-	aik = 0.0
-	ckj = 0.0
+	
+	for row in A:
+		for b in row:
+			
+	
+	return numpy.dot(A,C)
 	
 def MatrixMul(met,A,B):
 	start = 0.0
@@ -44,9 +49,10 @@ def MatrixMul(met,A,B):
 	if met == "prod_punto":
 		print "Ejecutando producto punto..."
 		start = time()
-		result = numpy.dot(A,B)
+		result = prod_punto(A,B)
 		finish = time()
 		print "Producto punto demoro " + str(finish - start) + " segundos."
+		print result
 	elif met == "enf_col":
 		print "Enfoque de Columna"
 	elif met == "enf_row":
