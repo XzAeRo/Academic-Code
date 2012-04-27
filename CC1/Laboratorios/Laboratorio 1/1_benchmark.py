@@ -1,12 +1,12 @@
+#!/usr/bin/env python
+
 import numpy
 import csv
 from time import time
 
 def LoadMatrix(path):
 	""" Returns: 2D Array
-
-	Funcion que lee archivos .csv y los retorna como una matriz 2D.
-
+	Description: Reads a CSV file and returns a 2D array with the contents of the csv with float type elements.
 	"""
 	# Leemos el archivo csv y preparamos la matriz de retorno
 	handle = csv.reader(open(path,"rb"),delimiter=",")
@@ -19,6 +19,24 @@ def LoadMatrix(path):
 		raw_matrix.append(row)
 	
 	return raw_matrix
+	
+def matrix_lenght(A):
+	""" Returns: Integers Tuple
+	Description: Calculates the lenght of the column and the row of a matrix.
+	"""
+	col_len = len(A)
+	row_len = len(A[0])
+	return row_len, col_len
+	
+def prod_punto(A,C):
+	""" Returns: 2D Array
+	
+	
+	"""
+	B = []
+	bij = 0.0
+	aik = 0.0
+	ckj = 0.0
 	
 def MatrixMul(met,A,B):
 	start = 0.0
