@@ -1,35 +1,38 @@
 #!/usr/bin/env python
 
-import numpy
+import numpy as np
 import csv
 from time import time
 
 def getColumn(A,j):
 	return [row[i] for row in A]
 
-def setEmptyMatrix(n_rows,n_cols):
-	A = [None]*n_rows
-	for i in range(n_rows):
-		A[i] = [0.0]*n_cols
-	return A
+def setEmptyMatrix(shape):
+	return np.zeros(shape)
 
 def loadMatrix(path):
 	""" Returns: 2D Array
 	Description: Reads a CSV file and returns a 2D array with the contents of the csv with float type elements.
 	"""
 	# Leemos el archivo csv y preparamos la matriz de retorno
-	handle = csv.reader(open(path,"rb"),delimiter=",")
+	csv_matrix = csv.reader(open(path,"rb"),delimiter=",")
 	raw_matrix = []
 	
-	for line in handle:
-		# Una linea de csv lo transformamos en una fila de la matriz
-		row = list(line)
-		row = [float(element) for element in row]
+	for row in csv_matrix:
 		raw_matrix.append(row)
+		
+	n_rows = len(raw_matrix)
+	n_cols = len(raw_matrix[0])
+	matrix = np.zeros((n_rows,n_cols))
 	
-	return raw_matrix
+	for row_index in range(n_rows):
+		for col_index in range(n_cols):
+			matrix[row_index][col_index] = float(raw_matrix[row_index][col_index])
+	
+	return matrix
 	
 def matrixLenght(A):
+	# Obsolete
 	""" Returns: Integers Tuple
 	Description: Calculates the lenght of the column and the row of a matrix.
 	"""
@@ -56,8 +59,8 @@ def enf_col(A,B,C,n_rows,n_cols):
 def MatrixMul(met,A,B):
 	start = 0.0
 	finish = 0.0
-	n_rows_A, n_cols_A = matrixLenght(A)
-	n_rows_B, n_cols_B = matrixLenght(B)
+	n_rows_A, n_cols_A = A.shape
+	n_rows_B, n_cols_B = B.shape
 	if met == "prod_punto":
 		C = setEmptyMatrix(n_rows_A,n_cols_B)
 		print "Ejecutando producto punto..."
@@ -82,4 +85,7 @@ if __name__ == "__main__":
 	test1 = loadMatrix("Anexos_lab1/test1.csv")
 	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
-	MatrixMul("prod_punto", test1, test2)
+	print test1
+	print test2
+	
+	#MatrixMul("prod_punto", test1, test2)

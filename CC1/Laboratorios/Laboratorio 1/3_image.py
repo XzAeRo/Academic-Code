@@ -1,9 +1,20 @@
 #!/usr/bin/env python
 
-import numpy, pylab
+from pylab import *
+from scipy.linalg import *
+import numpy as np
+
+def transr(A,degrees):
+	n_rows, n_cols = A.shape
+	rotation = np.array([[np.cos(degrees), np.sin(degrees)], [-np.sin(degrees), np.cos(degrees)]])
+	print rotation
+	
 
 if __name__ == "__main__":
-	A = pylab.imread("Anexos_lab1/pablo-palito.png")
+	A = imread("Anexos_lab1/pablo-palito.png")[:,:,0]
+	gray()
 	
-	pylab.imshow(A)
-	pylab.show()
+	transr(A,0)
+	
+	#imshow(A)
+	#show()
