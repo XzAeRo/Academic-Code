@@ -43,7 +43,7 @@ def matrixLenght(A):
 def prod_punto(A,B,C,n_rows,n_cols):
 	""" Returns: 2D Array
 	
-	A and C are the two given matrix to do dot product.
+	A and B are the two given matrix to do dot product.
 	B is an empty Array, and n_rows and n_cols are its dimentions.
 	
 	"""	
