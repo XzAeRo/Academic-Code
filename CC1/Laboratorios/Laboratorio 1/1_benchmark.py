@@ -4,6 +4,12 @@ import numpy
 import csv
 from time import time
 
+def SetEmptyMatrix(n_rows,n_cols):
+	A = [None]*n_rows
+	for i in range(0,n_rows):
+		A[i] = [0.0]*n_cols
+	return A
+
 def LoadMatrix(path):
 	""" Returns: 2D Array
 	Description: Reads a CSV file and returns a 2D array with the contents of the csv with float type elements.
@@ -24,35 +30,35 @@ def matrix_lenght(A):
 	""" Returns: Integers Tuple
 	Description: Calculates the lenght of the column and the row of a matrix.
 	"""
-	col_len = len(A)
-	row_len = len(A[0])
-	return row_len, col_len
+	n_rows = len(A)
+	n_cols = len(A[0])
+	return n_rows, n_cols
 	
-def prod_punto(A,C):
+def prod_punto(A,B,C,n_rows,n_cols):
 	""" Returns: 2D Array
 	
+	A and C are the two given matrix to do dot product.
+	B is an empty Array, and n_rows and n_cols are its dimentions.
 	
-	"""
-	B = []
-	bi = []
-	bij = 0.0
-	
-	for row in A:
-		for b in row:
-			
-	
-	return numpy.dot(A,C)
+	"""	
+	for i in range(0,n_rows):
+		for j in range(0,n_cols):
+			for k in range(0,n_cols):
+				C[i][j] = C[i][j] + A[i][k]*B[k][j]
+	return C
 	
 def MatrixMul(met,A,B):
 	start = 0.0
 	finish = 0.0
+	n_rows_A, n_cols_A = matrix_lenght(A)
+	n_rows_B, n_cols_B = matrix_lenght(B)
 	if met == "prod_punto":
+		C = SetEmptyMatrix(n_rows_A,n_cols_B)
 		print "Ejecutando producto punto..."
 		start = time()
-		result = prod_punto(A,B)
+		prod_punto(A,B,C,n_rows_A,n_cols_B)
 		finish = time()
 		print "Producto punto demoro " + str(finish - start) + " segundos."
-		print result
 	elif met == "enf_col":
 		print "Enfoque de Columna"
 	elif met == "enf_row":

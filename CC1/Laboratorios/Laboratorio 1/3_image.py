@@ -3,7 +3,7 @@
 import numpy, pylab
 
 if __name__ == "__main__":
-	A = imread("Anexos_lab1")
+	A = pylab.imread("Anexos_lab1/pablo-palito.png")
 	
-	imshow(A,origin="lower")
-	show()
+	pylab.imshow(A)
+	pylab.show()
