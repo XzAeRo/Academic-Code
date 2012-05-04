@@ -97,5 +97,5 @@ if __name__ == "__main__":
 	unitaria = np.array([[4,-2],[-3,1]])
 	
 	A = ortogonal
-	checkOrthogonal(hermitica)
+	print checkOrthogonal(unitaria)
 	#print checkSimetry(A), checkHermitian(A)
