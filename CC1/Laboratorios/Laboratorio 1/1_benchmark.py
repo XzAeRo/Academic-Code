@@ -4,13 +4,16 @@ import numpy
 import csv
 from time import time
 
-def SetEmptyMatrix(n_rows,n_cols):
+def getColumn(A,j):
+	return [row[i] for row in A]
+
+def setEmptyMatrix(n_rows,n_cols):
 	A = [None]*n_rows
-	for i in range(0,n_rows):
+	for i in range(n_rows):
 		A[i] = [0.0]*n_cols
 	return A
 
-def LoadMatrix(path):
+def loadMatrix(path):
 	""" Returns: 2D Array
 	Description: Reads a CSV file and returns a 2D array with the contents of the csv with float type elements.
 	"""
@@ -26,7 +29,7 @@ def LoadMatrix(path):
 	
 	return raw_matrix
 	
-def matrix_lenght(A):
+def matrixLenght(A):
 	""" Returns: Integers Tuple
 	Description: Calculates the lenght of the column and the row of a matrix.
 	"""
@@ -41,19 +44,22 @@ def prod_punto(A,B,C,n_rows,n_cols):
 	B is an empty Array, and n_rows and n_cols are its dimentions.
 	
 	"""	
-	for i in range(0,n_rows):
-		for j in range(0,n_cols):
-			for k in range(0,n_cols):
+	for i in range(n_rows):
+		for j in range(n_cols):
+			for k in range(n_cols):
 				C[i][j] = C[i][j] + A[i][k]*B[k][j]
 	return C
+	
+def enf_col(A,B,C,n_rows,n_cols):
+	print "Do nothing"
 	
 def MatrixMul(met,A,B):
 	start = 0.0
 	finish = 0.0
-	n_rows_A, n_cols_A = matrix_lenght(A)
-	n_rows_B, n_cols_B = matrix_lenght(B)
+	n_rows_A, n_cols_A = matrixLenght(A)
+	n_rows_B, n_cols_B = matrixLenght(B)
 	if met == "prod_punto":
-		C = SetEmptyMatrix(n_rows_A,n_cols_B)
+		C = setEmptyMatrix(n_rows_A,n_cols_B)
 		print "Ejecutando producto punto..."
 		start = time()
 		prod_punto(A,B,C,n_rows_A,n_cols_B)
@@ -70,10 +76,10 @@ def MatrixMul(met,A,B):
 Opciones: 'prod_punto', 'enf_col', 'enf_row', 'enf_col_row'.""" 
 	
 if __name__ == "__main__":
-	random = LoadMatrix("Anexos_lab1/random_matrix.csv")
-	vandermonde = LoadMatrix("Anexos_lab1/vandermonde.csv")
-	sparse = LoadMatrix("Anexos_lab1/sparse.csv")
-	test1 = LoadMatrix("Anexos_lab1/test1.csv")
-	test2 = LoadMatrix("Anexos_lab1/test2.csv")
+	random = loadMatrix("Anexos_lab1/random_matrix.csv")
+	vandermonde = loadMatrix("Anexos_lab1/vandermonde.csv")
+	sparse = loadMatrix("Anexos_lab1/sparse.csv")
+	test1 = loadMatrix("Anexos_lab1/test1.csv")
+	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
 	MatrixMul("prod_punto", test1, test2)

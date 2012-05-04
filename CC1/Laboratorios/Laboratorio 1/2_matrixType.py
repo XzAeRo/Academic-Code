@@ -13,14 +13,9 @@ def squareMatrix(A):
 		return False
 
 def transposeMatrix(A):
-	n_rows = len(A)
-	A_t = [None]*n_rows
-	for index in range(n_rows):
-		A_t[index] = [None]*n_rows
-
-	for row_index in range(n_rows):
-		for col_index in range(n_rows):            
-			A_t[row_index][col_index] = A[col_index][row_index]	
+	A_t = []
+	for row_index in range(len(A)):
+		A_t.append([row[row_index] for row in range(len(A[0]))])
 	
 	return A_t
 
@@ -34,8 +29,8 @@ def checkSimetry(A):
 	
 	# verify that the given matrix equals the transposed matrix
 	A_t = transposeMatrix(A)
-	for row_index in range(0,n_rows):
-		for col_index in range(0,n_cols):
+	for row_index in range(n_rows):
+		for col_index in range(n_cols):
 			if not A[row_index][col_index] == A_t[row_index][col_index]:
 				return ""
 	
@@ -52,8 +47,8 @@ def checkHermitian(A):
 	
 	# verify that the conjugate of the transposed matrix equals the matrix
 	A_t = transposeMatrix(A)
-	for row_index in range(0,n_rows):
-		for col_index in range(0,n_cols):
+	for row_index in range(n_rows):
+		for col_index in range(n_cols):
 			A_ij = complex(A[row_index][col_index])
 			A_t_ij = complex(A_t[row_index][col_index])
 			if A_ij != A_t_ij.conjugate():
@@ -72,7 +67,4 @@ if __name__ == "__main__":
 	unitaria = [[4,-2],[-3,1]]
 	
 	A = [[1,2],[3,4]]
-	checkOrthogonal(A)
-	A = numpy.matrix(A)
-	print A[0]
-	#print checkSimetry(A), checkHermitian(A)
+	print checkSimetry(A), checkHermitian(A)
