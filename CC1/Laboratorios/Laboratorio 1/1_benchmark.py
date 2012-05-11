@@ -23,7 +23,7 @@ def loadMatrix(path):
 		
 	n_rows = len(raw_matrix)
 	n_cols = len(raw_matrix[0])
-	matrix = np.zeros((n_rows,n_cols))
+	matrix = setEmptyMatrix((n_rows,n_cols))
 	
 	for row_index in range(n_rows):
 		for col_index in range(n_cols):
@@ -53,8 +53,10 @@ def prod_punto(A,B,C,n_rows,n_cols):
 				C[i][j] = C[i][j] + A[i][k]*B[k][j]
 	return C
 	
-def enf_col(A,B,C,n_rows,n_cols):
-	print "Do nothing"
+def enf_col(A):
+	print A
+	print A[:,0]
+	print A[:,0]*3
 	
 def MatrixMul(met,A,B):
 	start = 0.0
@@ -62,12 +64,12 @@ def MatrixMul(met,A,B):
 	n_rows_A, n_cols_A = A.shape
 	n_rows_B, n_cols_B = B.shape
 	if met == "prod_punto":
-		C = setEmptyMatrix(n_rows_A,n_cols_B)
+		C = setEmptyMatrix((n_rows_A,n_cols_B))
 		print "Ejecutando producto punto..."
 		start = time()
 		prod_punto(A,B,C,n_rows_A,n_cols_B)
 		finish = time()
-		print "Producto punto demoro " + str(finish - start) + " segundos."
+		print "Producto punto demoro " , str(finish - start) , " segundos."
 	elif met == "enf_col":
 		print "Enfoque de Columna"
 	elif met == "enf_row":
@@ -85,7 +87,5 @@ if __name__ == "__main__":
 	test1 = loadMatrix("Anexos_lab1/test1.csv")
 	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
-	print test1
-	print test2
-	
+	enf_col(test1)
 	#MatrixMul("prod_punto", test1, test2)
