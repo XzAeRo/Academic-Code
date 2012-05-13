@@ -55,20 +55,34 @@ def prod_punto(A,B,C,n_rows,n_cols):
 	# print C
 	
 def enf_col(A,B,n_cols_A,n_cols_B,zero_column):
-	for b_col_index in range(n_cols_B):
-		c_j = zero_column
-		for b_row_index in range(n_cols_A):
-			mul = B[b_row_index,b_col_index]*A[:,b_row_index]
+	"""
+	
+	A and B are the two given matrix to do the column product
+	
+	"""
+	for j in range(n_cols_B):
+		c_j = zero_column # sets an empty column
+		for i in range(n_cols_A):
+			# each column a_j is multiplicated by the coeficient b_i_j
+			mul = B[i,j]*A[:,i]
+			# now we sum the coeficient*vector product
 			c_j = c_j + mul
-		# print c_j # traspuesta!
+		# print c_j # show the transposed c_j column
 
-def enf_row(A,B,n_rows_A,n_rows_B,zero_row):	
-	for a_row_index in range(n_rows_A):
-		c_i = zero_row
-		for b_row_index in range(n_rows_B):
-			mul = B[b_row_index,:]*A[a_row_index,b_row_index]
+def enf_row(A,B,n_rows_A,n_rows_B,zero_row):
+	"""
+	
+	A and B are the two given matrix to do the row product
+	
+	"""	
+	for i in range(n_rows_A):
+		c_i = zero_row # sets an empty row
+		for j in range(n_rows_B):
+			# each row b_j is multiplicated by each column element of A
+			mul = B[j,:]*A[i,j]
+			# now we sum the product
 			c_i = c_i + mul
-		# print c_i
+		# print c_i # show the c_i row
 		
 	
 def MatrixMul(met,A,B):
@@ -78,10 +92,10 @@ def MatrixMul(met,A,B):
 	n_rows_B, n_cols_B = B.shape
 	
 	if met == "prod_punto":
-		C = setEmptyMatrix((n_rows_A,n_cols_B))
-		start = time()
+		C = setEmptyMatrix((n_rows_A,n_cols_B)) # setup output matrix
+		start = time() # start the benchmark
 		prod_punto(A,B,C,n_rows_A,n_cols_B)
-		finish = time()
+		finish = time() # stop the benchmark
 		print "Producto punto:\t\t" , str(finish - start) , " segundos."
 		
 	elif met == "enf_col":
@@ -111,6 +125,6 @@ if __name__ == "__main__":
 	test1 = loadMatrix("Anexos_lab1/test1.csv")
 	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
-	MatrixMul("prod_punto", test1, test2)
-	MatrixMul("enf_col", test1, test2)
-	MatrixMul("enf_row", test1, test2)
+	MatrixMul("prod_punto", vandermonde, sparse)
+	MatrixMul("enf_col", random, vandermonde)
+	MatrixMul("enf_row", sparse, random)
