@@ -53,10 +53,12 @@ def prod_punto(A,B,C,n_rows,n_cols):
 				C[i][j] = C[i][j] + A[i][k]*B[k][j]
 	return C
 	
-def enf_col(A):
-	print A
-	print A[:,0]
-	print A[:,0]*3
+def enf_col(A,B):
+	n_rows_A, n_cols_A = A.shape
+	n_rows_B, n_cols_B = B.shape
+	
+	for col_index in range(n_cols_B):
+		
 	
 def MatrixMul(met,A,B):
 	start = 0.0

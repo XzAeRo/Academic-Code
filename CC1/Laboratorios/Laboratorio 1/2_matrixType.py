@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	simetrica = np.array([[1,2,-3],[2,0,5],[-3,5,1]])
 	hermitica = np.array([[3,'2+j'],['2-j',1]])
 	ortogonal = np.array([[6,-2],[2,6]])
-	unitaria = np.array([[4,-2],[-3,1]])
+	unitaria = np.array([[1,0],[0,1]])
 	
 	A = ortogonal
 	print checkOrthogonal(unitaria)
