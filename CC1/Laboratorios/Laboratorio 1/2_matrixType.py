@@ -68,7 +68,9 @@ def checkOrthogonal(A):
 	
 	for i in range(n_rows):
 		for j in range(n_cols):
-			p_value = round(product[i,j])
+			# we round the result in case the computed result is something like 1.000000000000001
+			p_value = round(product[i,j]) 
+			# check if the product between A and the transposed equals the identity matrix
 			if i==j and p_value != 1:
 				return False
 			if i!=j and p_value != 0:
@@ -84,14 +86,17 @@ def checkUnitary(A):
 	if squareMatrix(A) == False:
 		return False
 		
-	# get the transpose and get the product between the matrix A and the transposed
+	# get the conjugated transpose as an array using numpy.matrix functions
 	A_c = np.asarray(np.matrix(A).getH())
 	
+	# get the product between A and the conjugated transpose
 	product = np.dot(A,A_c)
 	
 	for i in range(n_rows):
 		for j in range(n_cols):
+			# we round the result in case the computed result is something like 1.000000000000001
 			p_value = round(product[i,j])
+			#check if the product between A and the conjugated transpose equals the identity matrix
 			if i==j and p_value != complex(1):
 				return False
 			if i!=j and p_value != complex(0):
@@ -100,9 +105,11 @@ def checkUnitary(A):
 	return True
 					
 def prop(A):
+	# get all the results
 	simetrica, hermitiana, ortogonal, unitaria = checkSimetry(A), checkHermitian(A), checkOrthogonal(A), checkUnitary(A)
 	result = ""
 	
+	# show what type of matrix is
 	if simetrica:
 		result += "simetrica"
 	if hermitiana:

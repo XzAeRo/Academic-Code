@@ -125,6 +125,6 @@ if __name__ == "__main__":
 	test1 = loadMatrix("Anexos_lab1/test1.csv")
 	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
-	MatrixMul("prod_punto", vandermonde, sparse)
+	MatrixMul("prod_punto", vandermonde, random)
 	MatrixMul("enf_col", random, vandermonde)
 	MatrixMul("enf_row", sparse, random)
