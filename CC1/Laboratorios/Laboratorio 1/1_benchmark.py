@@ -41,7 +41,7 @@ def matrixLenght(A):
 	return n_rows, n_cols
 	
 def prod_punto(A,B,C,n_rows,n_cols):
-	""" Returns: 2D Array
+	"""
 	
 	A and B are the two given matrix to do dot product.
 	C is an empty Array, and n_rows and n_cols are its dimentions.
@@ -50,14 +50,25 @@ def prod_punto(A,B,C,n_rows,n_cols):
 	for i in range(n_rows):
 		for j in range(n_cols):
 			for k in range(n_cols):
-				C[i][j] = C[i][j] + A[i][k]*B[k][j]
-	return C
+				C[i,j] = C[i,j] + A[i,k]*B[k,j]
+				
+	# print C
 	
-def enf_col(A,B):
-	n_rows_A, n_cols_A = A.shape
-	n_rows_B, n_cols_B = B.shape
-	
-	for col_index in range(n_cols_B):
+def enf_col(A,B,n_cols_A,n_cols_B,zero_column):
+	for b_col_index in range(n_cols_B):
+		c_j = zero_column
+		for b_row_index in range(n_cols_A):
+			mul = B[b_row_index,b_col_index]*A[:,b_row_index]
+			c_j = c_j + mul
+		# print c_j # traspuesta!
+
+def enf_row(A,B,n_rows_A,n_rows_B,zero_row):	
+	for a_row_index in range(n_rows_A):
+		c_i = zero_row
+		for b_row_index in range(n_rows_B):
+			mul = B[b_row_index,:]*A[a_row_index,b_row_index]
+			c_i = c_i + mul
+		# print c_i
 		
 	
 def MatrixMul(met,A,B):
@@ -65,17 +76,28 @@ def MatrixMul(met,A,B):
 	finish = 0.0
 	n_rows_A, n_cols_A = A.shape
 	n_rows_B, n_cols_B = B.shape
+	
 	if met == "prod_punto":
 		C = setEmptyMatrix((n_rows_A,n_cols_B))
-		print "Ejecutando producto punto..."
 		start = time()
 		prod_punto(A,B,C,n_rows_A,n_cols_B)
 		finish = time()
-		print "Producto punto demoro " , str(finish - start) , " segundos."
+		print "Producto punto:\t\t" , str(finish - start) , " segundos."
+		
 	elif met == "enf_col":
-		print "Enfoque de Columna"
+		zero_column = np.zeros((1,n_cols_A))[0]
+		start = time()
+		enf_col(A,B,n_cols_A,n_cols_B,zero_column)
+		finish = time()
+		print "Enfoque Columna:\t" , str(finish - start) , " segundos."
+		
 	elif met == "enf_row":
-		print "Enfoque de Fila"
+		zero_row = np.zeros((1,n_cols_A))[0]
+		start = time()
+		enf_row(A,B,n_rows_A,n_rows_B,zero_row)
+		finish = time()       
+		print "Enfoque Fila:\t\t" , str(finish - start) , " segundos."   
+		                               
 	elif met == "enf_col_row":
 		print "Enfoque de Columna y Fila"
 	else:
@@ -89,5 +111,6 @@ if __name__ == "__main__":
 	test1 = loadMatrix("Anexos_lab1/test1.csv")
 	test2 = loadMatrix("Anexos_lab1/test2.csv")
 	
-	enf_col(test1)
-	#MatrixMul("prod_punto", test1, test2)
+	MatrixMul("prod_punto", test1, test2)
+	MatrixMul("enf_col", test1, test2)
+	MatrixMul("enf_row", test1, test2)
