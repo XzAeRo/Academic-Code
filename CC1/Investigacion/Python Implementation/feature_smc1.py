@@ -69,11 +69,12 @@ def feature_smc1(I,I_p):
 	
 	for j in range(1,4):   
 		for k in range(1,4):  
-			######## j and k will be from 1 to 4 for 512 by 512 image;there will be totally 4x4=16 such blocks ##############
+			# j and k will be from 1 to 4 for 512 by 512 image
+			# there will be totally 4x4=16 such blocks
 			blck = I[z:z+127, y:y+127]
 			blck_p = I_p[z:z+127, y:y+127]
 			
-			u,s,v = svd(blck)# SVD of reference image block
+			u,s,v = svd(blck) # SVD of reference image block
 			u1,s1,v1 = svd(blck_p) # SVD of distorted image block
 			
 			feature_vec[:,col] = (abs(dot(u,u1)) + abs(dot(v,v1)))/2 # vector features
@@ -83,7 +84,8 @@ def feature_smc1(I,I_p):
 			if(maxi == 0):
 				maxi = 1
 			
-			feature_val[:,col] = feature_val[:,col]/maxi # divide by maximum value to avoid large values
+			# divide by maximum value to avoid large values
+			feature_val[:,col] = feature_val[:,col]/maxi
 			y = y + 128
 			x = x + 1
 			col = col + 1
