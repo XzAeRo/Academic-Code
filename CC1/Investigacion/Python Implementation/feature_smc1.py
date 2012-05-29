@@ -1,8 +1,8 @@
-# INFORMATION
 # ========================================================================
 # SVD-Based Quality Metric for Image and Video Using Machine Learning 
-# Submitted to IEEE Trans. On SMC Part B 2010.
-#----------------------------------------------------------------------
+# 			Submitted to IEEE Trans. On SMC Part B 2010.
+# ========================================================================
+#
 # Original Code Authors: Manish Narwaria and Weisi Lin.
 # Python Implementation Authors: Victor Gonzalez, Priscila Cruz, Andrea Ortega
 # and Susana Dominguez.
@@ -10,8 +10,8 @@
 # Computation 1" class.
 # University: Universidad Tecnica Federico Santa Maria, Valparaiso, Chile.
 # Date: June 2012
+# 
 # ========================================================================
-#
 # COPYRIGHT AND LICENSE
 # ========================================================================
 # Permission to use, copy, or modify this software and its documentation
@@ -24,6 +24,7 @@
 # this software for any purpose. It is provided "as is" without express
 # or implied warranty.
 #
+# ========================================================================
 # USAGE
 # ========================================================================
 # fea_vec, fea_val = feature_smc1(I,I_p)
@@ -33,8 +34,7 @@
 #
 # Output: 256 dimensional feature vector for further processing with machine
 #         learning technique like SVR
-#        
-# ========================================================================
+#
 
 from svm import *
 
