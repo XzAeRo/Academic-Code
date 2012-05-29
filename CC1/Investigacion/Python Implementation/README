@@ -1,1 +1,66 @@
-Python implementation code of the SVD-Based Quality Metric Using Machine Learning.
+********************************************************************************
+		SVDBased Quality Metric for Image and Video Using Machine Learning 
+				Submitted to IEEE Trans. On SMC Part B 2010.
+********************************************************************************
+
+Original Code Authors:
+	Manish Narwaria and Weisi Lin.
+	
+Python Implementation Authors:
+	Victor Gonzalez, Priscila Cruz, Andrea Ortega and Susana Dominguez.
+	
+Context:
+	Implementation made for a investigation research for the "Scientific
+	Computation 1" class.
+	
+University:
+	Universidad Tecnica Federico Santa Maria, Valparaiso, Chile.
+	
+Date: June 2012
+ 
+********************************************************************************
+		COPYRIGHT AND LICENSE
+********************************************************************************
+ 
+Permission to use, copy, or modify this software and its documentation for
+educational and research purposes only and without fee is hereby granted,
+provided that this copyright notice and the original authors' names appear on
+all copies and supporting documentation. This program shall not be used,
+rewritten, or adapted as the basis of a commercial software or hardware product
+without first obtaining permission of the authors. The authors make no 
+epresentations about the suitability of this software for any purpose.
+It is provided "as is" without express or implied warranty.
+
+********************************************************************************
+		SOFTWARE DEPENDENCIES
+********************************************************************************
+- Python 2.6.x or newer (except Python 3)
+	Download from here: http://www.python.org/getit/
+	
+- LibSVM
+	Download from here: http://www.csie.ntu.edu.tw/~cjlin/libsvm/
+	Plase remember to install the Python bindings.
+	
+- NumPy
+	Download from here: http://sourceforge.net/projects/numpy/files/
+	
+- SciPy
+	Download from here: http://sourceforge.net/projects/scipy/files/
+	
+Please note that most recent Linux distributions, comes with Python previously
+installed.
+Since Ubuntu 10.04 all this software is available from Synaptic.
+
+********************************************************************************
+		USAGE
+********************************************************************************
+ 
+fea_vec, fea_val = feature_smc1(I,I_p)
+
+Input : (1) I: reference image
+		(2) I_p: distorted image
+
+Output: 256 dimensional feature vector for further processing with machine
+		learning technique like SVR
+        
+ 
