@@ -42,6 +42,7 @@ from numpy import *
 from numpy.linalg import *
 
 from scipy import *
+from scipy.ndimage import *
 
 def feature_smc1(I,I_p):
 
@@ -96,4 +97,9 @@ def feature_smc1(I,I_p):
 	# e=mean2(dis)
 	fea_vec = mean(conjugate(feature_vec))
 	fea_val = mean(conjugate(feature_val))
-	return array([fea_vec fea_val])
+	return array([fea_vec,fea_val])
+	
+if __name__ == "__main__":
+	I = imread("facebookicon.png")
+	I_p = imread("facebookicon.jpg")
+	print feature_smc1(I,I_p)

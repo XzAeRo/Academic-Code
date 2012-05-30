@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from pylab import *
-from scipy.linalg import *
+from scipy.ndimage import *
 import numpy as np
 import math
 
