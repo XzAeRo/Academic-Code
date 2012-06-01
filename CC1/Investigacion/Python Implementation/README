@@ -1,6 +1,6 @@
 ********************************************************************************
-		SVDBased Quality Metric for Image and Video Using Machine Learning 
-				Submitted to IEEE Trans. On SMC Part B 2010.
+SVDBased Quality Metric for Image and Video Using Machine Learning
+Submitted to IEEE Trans. On SMC Part B 2010.
 ********************************************************************************
 
 Original Code Authors:
@@ -17,22 +17,22 @@ University:
 	Universidad Tecnica Federico Santa Maria, Valparaiso, Chile.
 	
 Date: June 2012
- 
+
 ********************************************************************************
-		COPYRIGHT AND LICENSE
+COPYRIGHT AND LICENSE
 ********************************************************************************
- 
+
 Permission to use, copy, or modify this software and its documentation for
 educational and research purposes only and without fee is hereby granted,
 provided that this copyright notice and the original authors' names appear on
 all copies and supporting documentation. This program shall not be used,
 rewritten, or adapted as the basis of a commercial software or hardware product
-without first obtaining permission of the authors. The authors make no 
-epresentations about the suitability of this software for any purpose.
+without first obtaining permission of the authors. The authors make no
+representations about the suitability of this software for any purpose.
 It is provided "as is" without express or implied warranty.
 
 ********************************************************************************
-		SOFTWARE DEPENDENCIES
+SOFTWARE DEPENDENCIES
 ********************************************************************************
 - Python 2.6.x or newer (except Python 3)
 	Download from here: http://www.python.org/getit/
@@ -52,9 +52,9 @@ installed.
 Since Ubuntu 10.04 all this software is available from Synaptic.
 
 ********************************************************************************
-		USAGE
+USAGE
 ********************************************************************************
- 
+
 fea_vec, fea_val = feature_smc1(I,I_p)
 
 Input : (1) I: reference image
@@ -62,5 +62,3 @@ Input : (1) I: reference image
 
 Output: 256 dimensional feature vector for further processing with machine
 		learning technique like SVR
-        
- 
