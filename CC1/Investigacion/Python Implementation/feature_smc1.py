@@ -42,7 +42,10 @@ from numpy import *
 from numpy.linalg import *
 
 from scipy import *
-from scipy.ndimage import *
+
+from pylab import *
+
+
 
 def feature_smc1(I,I_p):
 
@@ -66,7 +69,7 @@ def feature_smc1(I,I_p):
 	# I=im2double(I)
 	# I_p=im2double(I_p)
 	
-	x, y, z, col = 1
+	x, y, z, col = 1, 1, 1, 1
 	
 	for j in range(1,4):   
 		for k in range(1,4):  
@@ -77,9 +80,10 @@ def feature_smc1(I,I_p):
 			
 			u,s,v = svd(blck) # SVD of reference image block
 			u1,s1,v1 = svd(blck_p) # SVD of distorted image block
-			
+
 			feature_vec[:,col] = (abs(dot(u,u1)) + abs(dot(v,v1)))/2 # vector features
 			feature_val[:,col] = (diag(s) - diag(s1))**2 # values features
+			print feature_val[:,col]
 			
 			maxi = max(feature_val[:,col])
 			if(maxi == 0):
@@ -100,6 +104,8 @@ def feature_smc1(I,I_p):
 	return array([fea_vec,fea_val])
 	
 if __name__ == "__main__":
-	I = imread("facebookicon.png")
-	I_p = imread("facebookicon.jpg")
+	I = imread("facebookicon.png")[:,:,0]
+	gray()
+	I_p = imread("facebookicon.jpg")[:,:,0]
+	gray()
 	print feature_smc1(I,I_p)
