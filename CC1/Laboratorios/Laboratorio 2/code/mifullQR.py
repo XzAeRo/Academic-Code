@@ -1,8 +1,8 @@
 from numpy import *
 from matrices import *
 
+def mifullQR(A):
+	return None
+	
 if __name__ == "__main__":
-	q1 = gs(A)
-	q,r = linalg.qr(A)
-	print q1
-	print q
+	print "NONE"
