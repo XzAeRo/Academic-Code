@@ -3,8 +3,7 @@ from matrices import *
 
 def miredQR(A):
 	## GRAMM-SCHMIDT ORTHOGONALIZATION ##
-	
-	Q = A[:,:] # safe copy of A
+	Q = copy(A) # safe copy of A
 	n, k = Q.shape # number of rows and columns
 
 	for j in range(k):
@@ -27,9 +26,10 @@ def miredQR(A):
 	
 if __name__ == "__main__":
 
-	Q,R = miredQR(A)
+	X = A
+	Q,R = miredQR(X)
 		
-	print "X:\n", A
+	print "X:\n", X
 	print "Q:\n", Q
 	print "R:\n", R
 	print "QR:\n", dot(Q,R)
