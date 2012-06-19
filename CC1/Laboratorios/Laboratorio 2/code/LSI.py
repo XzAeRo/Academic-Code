@@ -1,13 +1,19 @@
 from numpy import *
 from matrices import documents, incidenceTerms, q1, q2
 
-def reduceMatrix(matrix):
-	return matrix
+def reduceMatrix(matrix, p):
+	U, s, V = linalg.svd(matrix)
+	U_r = U[:,[0,p-1]]
+	s_r = s[[0,U_r.shape[1]],:]
+	V_r = V[:,[0,p-1]]
+	matrix_r = dot(U_r, dot(s_r,V_r))
+	
+	return matrix_rs, U_r, s_r, V_r
 	
 def translateQuery(query, U, s):
-	return query
+	return dot(transpose(query),dot(U,s))
 
-def LSI(documents, incidenceTerms, q, reduced=False):
+def LSI(documents, incidenceTerms, q, reduced=False, p=None):
 	docs = copy(documents)
 	terms = copy(incidenceTerms)
 	n_docs = len(docs)
@@ -26,7 +32,7 @@ def LSI(documents, incidenceTerms, q, reduced=False):
 				A[i,j] = 1.0
 				
 	if reduced:
-		A, U, s, V = reduceMatrix(A)
+		A, U, s, V = reduceMatrix(A,p)
 	
 	# initialize the query array
 	query = zeros((n_terms))
@@ -48,7 +54,9 @@ def LSI(documents, incidenceTerms, q, reduced=False):
 		den = q_norm * linalg.norm(doc)
 		results[i] = num / den # calculates the cos between two vectors
 		
+	print results
+		
 	
 if __name__ == "__main__":
 	q = q1
-	LSI(documents, incidenceTerms, q)
+	LSI(documents, incidenceTerms, q, True, 2)
