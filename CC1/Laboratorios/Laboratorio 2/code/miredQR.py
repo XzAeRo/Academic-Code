@@ -1,5 +1,5 @@
 from numpy import *
-from matrices import *
+from matrices import A,B,C,D,E
 
 def miredQR(A):
 	## GRAMM-SCHMIDT ORTHOGONALIZATION ##
@@ -26,7 +26,7 @@ def miredQR(A):
 	
 if __name__ == "__main__":
 
-	X = A
+	X = E
 	Q,R = miredQR(X)
 		
 	print "X:\n", X
