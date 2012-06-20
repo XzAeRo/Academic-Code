@@ -2,7 +2,7 @@ from numpy import *
 from matrices import A,B,C,D,E
 
 def miredQR(A):
-	## GRAMM-SCHMIDT ORTHOGONALIZATION ##
+	# Gramm-Schmidt Orthogonalization
 	Q = copy(A) # safe copy of A
 	n, k = Q.shape # number of rows and columns
 
