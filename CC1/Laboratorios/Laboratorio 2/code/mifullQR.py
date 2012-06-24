@@ -18,13 +18,15 @@ def mifullQR(A):
 		Q[:,j] *= 1.0/norm
 	
 	# we already have our Q matrix
+	left_null = linalg.solve(transpose(A),zeros((A.shape[0],1)))
+	print left_null
 	
 	## R MATRIX CALCULATION ##
-	R_min = dot(transpose(Q),A)
-	R = zeros((Q.shape[0],min(A.shape))
-	
-	for i in range(R_min.shape[0]):
-		R[i,:] = R_min[i,:]
+	#R_min = dot(transpose(Q),A)
+	# add the following zeros
+	#R = zeros((Q.shape[0],min(A.shape))
+	#for i in range(Q.shape[1]):
+	#	R[i,:] = R_min[i,:]
 	
 	return Q,R
 	

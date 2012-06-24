@@ -2,17 +2,17 @@
 
 from numpy import *
 import pylab as pl
+from scipy import linalg as la
 from matrices import documents, incidenceTerms, q1, q2
 
 def reduceMatrix(matrix, p):
 	U, s, V = linalg.svd(matrix)
 	s = diag(s)
-	U_r = U[:,[0,p-1]]
-	s_r = s[[0,U_r.shape[1]],:]
-	V_r =  transpose(V[:,[0,p-1]])
-	V_r = append(V_r,zeros((s_r.shape[1]-p,V.shape[0])),axis=0)
+	U_r = U
+	s_r = s[:,[0,p]]
+	V_r =  V[[0,p],:]
 	
-	matrix_r = dot(U_r, dot(s_r,V_r))
+	matrix_r = dot(dot(U_r,s_r),V_r)
 
 	return matrix_r, U_r, s_r, V_r
 	
@@ -97,6 +97,7 @@ if __name__ == "__main__":
 	print
 	print "Query 2:\n", q4
 	print "Resultado:\n", r4
+	print v3.shape, q3.shape
 	pl.plot(v3,q3,'ro')
 	pl.show()
 	pl.plot(v4,q4,'ro')

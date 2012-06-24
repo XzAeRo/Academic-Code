@@ -33,3 +33,9 @@ if __name__ == "__main__":
 	print "Q:\n", Q
 	print "R:\n", R
 	print "QR:\n", dot(Q,R)
+	
+	print "rank(A): ", rank(A)
+	print "rank(B): ", rank(B)
+	print "rank(C): ", rank(C)
+	print "rank(D): ", rank(D)
+	print "rank(E): ", rank(E)
