@@ -1,0 +1,104 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenx} %Codificacion del texto (ISO Latin1 encoding)
+
+\usepackage{fancyhdr} %Permite acomodar a tu gusto la parte de arriba y
+% abajo del documento
+\usepackage[spanish]{babel} %Permite definir el idioma del dcumento
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{url} %Tipo de fuente para correos y paginas
+\usepackage{pgf}
+\usepackage{fleqn}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{colortbl} %Permite colocar colores a las tablas
+\usepackage{booktabs}
+\usepackage[final]{pdfpages}
+%%%%%%%%%%
+%Margenes%
+%%%%%%%%%%
+\parskip 1mm %Espacio entre parrafos
+
+\setlength{\topmargin}{0pt}
+\topmargin      0.5cm
+\oddsidemargin	0.1cm  % Ancho Letter 21,59cm
+\evensidemargin 0.5cm  % Alto  Letter 27,81cm
+\textwidth	17cm%15.5cm
+\textheight	21.0cm
+\headsep	4 mm
+\parindent	0.5cm
+%%%%%%%%%%%%%%%%%%%%%%
+%Estilo del documento%
+%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancyplain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fancyheadings. Top y Bottom del documento%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recuerde que en este documento la portada del documento no posee
+% numeracion, pero de igual manera llamaremos a esa primera pagina la numero
+% 1, y la que viene la dos. Esto es para tener una idea de las que
+% llamaremos pares e impares
+\lhead{Innovación Tecnológica} %Parte superior izquierda
+\rhead{\bf \it Departamento de Informática - UTFSM} %Parte superior derecha
+\lfoot{\it Analytic Network Process} %Parte inferior izquierda. \thepage indica
+% el numero de pagina
+\cfoot{} %Parte inferior central
+\rfoot{\bf \thepage} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\newcommand{\primaria}[1]{
+	\textbf{\underline{#1}}
+}
+
+\newcommand{\foranea}[1]{
+	\textbf{\textsl{#1}}
+}
+
+\newcommand{\primyfor}[1]{
+	\underline{\foranea{#1}}
+}
+
+\makeatletter
+\newcommand\subsubsubsection{\@startsection {paragraph}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus.2ex}%
+                                   {\normalfont\bfseries}}
+\newcommand\subsubsubsubsection{\@startsection {subparagraph}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus.2ex}%
+                                   {\normalfont\bfseries}}
+
+
+\makeatother
+ 
+
+\begin{document}
+\title{Analytic Network Process \\ \begin{Large}\it Una Estimación del Mejor Proveedor para Natural Response\end{Large}} 
+\author{\emph{Autor:}\\Victor Gonzalez Rodriguez\\\url{victor.gonzalezr@usm.cl} \\
+\and \emph{Profesor:}\\Lautaro Guerra\\\url{lautaro.guerra@usm.cl}}
+\date{24 de Junio de 2012}
+
+
+\maketitle
+
+\begin{abstract}
+El mercado de los proveedores de Natural Response, es un mercado altamente dinámico, donde cada proveedor disponible lucha por vender sus productos a empresas como Natural Response. Por esta razón, a Natural Response le interesa saber cuales son sus mejores opciones dentro del amplio mercado de proveedores tanto nacionales como internacionales. Si consideramos todas las condiciones que Natural Response presenta, el problema se ajusta muy bien a la estructura del Analytic Network Process, por lo que se desarrolló un modelo basado en este método para así estimar y entender mejor cuales son las mejores opciones de proveedores para Natural Response. Los criterios más relevantes para la elección de un proveedor para esta empresa son: principales marcas, 
+\end{abstract}
+
+
+\section{Introducción}
+
+
+\section{El método Analytic Network Process}
+
+
+\section{El modelo para Natural Response}
+
+
+\section{Validación de Los Resultados vs. La Realidad}
+
+\section{Conclusión}
+
+\end{document} 
