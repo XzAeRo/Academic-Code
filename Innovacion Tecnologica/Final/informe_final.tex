@@ -5,6 +5,7 @@
 % abajo del documento
 \usepackage[spanish]{babel} %Permite definir el idioma del dcumento
 \usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{hyperref}
 \usepackage{url} %Tipo de fuente para correos y paginas
 \usepackage{pgf}
 \usepackage{fleqn}
@@ -27,7 +28,7 @@
 \textwidth	17cm%15.5cm
 \textheight	21.0cm
 \headsep	4 mm
-\parindent	0.5cm
+\parindent	1.2cm
 %%%%%%%%%%%%%%%%%%%%%%
 %Estilo del documento%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -72,26 +73,51 @@
 
 
 \makeatother
- 
+\makeindex
 
 \begin{document}
+\begin{titlepage}
 \title{Analytic Network Process \\ \begin{Large}\it Una Estimación del Mejor Proveedor para Natural Response\end{Large}} 
 \author{\emph{Autor:}\\Victor Gonzalez Rodriguez\\\url{victor.gonzalezr@usm.cl} \\
 \and \emph{Profesor:}\\Lautaro Guerra\\\url{lautaro.guerra@usm.cl}}
-\date{24 de Junio de 2012}
-
-
+\date{\today}
 \maketitle
 
 \begin{abstract}
-El mercado de los proveedores de Natural Response, es un mercado altamente dinámico, donde cada proveedor disponible lucha por vender sus productos a empresas como Natural Response. Por esta razón, a Natural Response le interesa saber cuales son sus mejores opciones dentro del amplio mercado de proveedores tanto nacionales como internacionales. Si consideramos todas las condiciones que Natural Response presenta, el problema se ajusta muy bien a la estructura del Analytic Network Process, por lo que se desarrolló un modelo basado en este método para así estimar y entender mejor cuales son las mejores opciones de proveedores para Natural Response. Los criterios más relevantes para la elección de un proveedor para esta empresa son: principales marcas, 
+El mercado de los proveedores de Natural Response, es un mercado altamente dinámico, donde cada proveedor disponible lucha por vender sus productos a empresas como Natural Response. Por esta razón, a Natural Response le interesa saber cuales son sus mejores opciones dentro del amplio mercado de proveedores tanto nacionales como internacionales. Si consideramos todas las condiciones que Natural Response presenta, el problema se ajusta muy bien a la estructura del Analytic Network Process, por lo que se desarrolló un modelo basado en este método para así estimar y entender mejor cuales son las mejores opciones de proveedores para Natural Response. Los criterios más relevantes para la elección de un proveedor para esta empresa son: relación comercial, calidad, costos, sensibilidad/comprensión y despacho. Los resultados fueron validados al comparar las estimaciones del modelo ANP con las estimaciones realizadas por el estudio periódico que realiza la empresa. Los resultados indican que el modelo representa de manera acertada la realidad de la empresa en cuanto se trata de evaluar proveedores, por lo que Natural Response se ha mostrado interesado en implementar este modelo en su análisis de incorporación y evaluación periódica de proveedores.
 \end{abstract}
+\end{titlepage}
+\newpage
 
+\tableofcontents
+\newpage
 
 \section{Introducción}
-asdadadsdadd asudisdisd
+La empresa Natural es una empresa jóven, dinámica y con mucho crecimiento año a año, la cual la ha posicionado internacionalmente como una de las mejores empresas a nivel mundial en la extracción sustentable de productos naturales obtenidos de la flora chilena, tales como el quillay. Es por esto, que la empresa maneja cada vez más proveedores que le entreguen sus materias primas para el desarrollo de sus productos, con una base de datos de proveedores autorizados que bordea la cifra de los 60, y con una cantidad de más de 80 proveedores que está a la espera de ser autorizado para colaborar con Natural Response. Es por esto, que se ha hecho necesario establecer una métrica que le permita a la empresa saber que empresa está cumpliendo de mejor manera los criterios que Natural Response estima pertinentes, ya que la empresa espera producir con estándares de alta calidad, que le permitan posicionarse de manera estable en el mercado mundial.\\
+
+En la actualidad, Natural Response utiliza un símil a lo que se conoce como Analytic Hierarchy Process, donde se tiene un sistema de calificación de proveedores a partir de 5 criterios, almacenados en una plantilla Excel con más de 80 libros. Si bien este modelo está funcionando de buena manera, se puede obtener un mejor modelo que permita entender de que manera la empresa necesita priorizar las características que debe tener un proveedor que quiere ser autorizado, o se quiere mantener autorizado.\\
+
+El método que nos permite entender ``Cual es el mejor proveedor para Natural Response'', es claramente el método Analytic Network Process, basado en el análisis de \textit{Beneficios, Costos y Riesgos}, donde podemos comparar una cantidad limitada de proveedores.\\
+Para esto, supondremos que 4 proveedores actualmente autorizados, son proveedores que están a la espera de ingresar a la lista de proveedores autorizados, y que veremos cual de ellos merece ingresar, y los datos se validarán comparando con la evaluación periódica de proveedores que nos ha facilitado la empresa Natural Response. Además, utilizaremos el programa \textit{Super Decisions Software\footnote{\url{http://www.superdecisions.com/}}}, desarrollado por el \textit{Creative Decisions Foundation}, basandose en la teoría creada por Thomas L. Saaty sobre el Analytic Network Process, el cual nos permitirá facilitar el trabajo y los pasos necesarios para realizar el análisis del método que estudiaremos.
+\newpage
 
 \section{El método Analytic Network Process}
+\subsection{Definición}
+El Analytic Network Process (ANP), es una generalización del Analytic
+Hierarchy Process (AHP) utilizado en el análisis de decisiones multi-criterio. Es un método realizado por el matemático y analista Thomas L. Saaty, ha probado ser un método robusto y ampliamente usado por empresas y gobiernos\footnote{El 2005, un libro citó ejemplos de los Estados Unidos, Brasil, Chile, República Checa, Alemania, India, Indonesia, Italia, Korea, Polonia, Rusia, España, Taiwan y Turkia.} a nivel de evaluación de las tecnologías de la información (TIC).\\
+
+Por un lado, el AHP toma la decisión de problemas transformándolas en una estructura
+de jerarquías con una meta, un criterio de decisión y alternativas, mientras que el ANP se estructura como una red. Ambos procesos usan un sistema de comparación basado en pares para medir los pesos de los componentes en la estructura, para finalmente clasificar las alternativas de decisión. Esto sucede básicamente así, porque el AHP no siempre sirve para casos de la vida real, y las decisiones de problemas no se pueden estructurar dentro de una jerarquía, ya que las decisiones se pueden relacionar entre elementos de alto nivel con elementos de bajo nivel, o con relaciones de feedback. Esa es la ventaja primordial del ANP en comparación con AHP, mejorar la simulación de las relaciones entre todos los elementos y criterios, osea, gracias al método ANP podemos obtener un modelo mejorado.\\
+
+La estructura básica del ANP es una red de influencias de grupos y nodos contenidos en grupos, relacionados entre si gracias a criterios tangibles y no necesariamente tangibles, como por ejemplo, la calidad y la comodidad de un producto respectivamente.\\
+\indent Una vez que se cuenta con el modelo, se procede a desarrollar una comparación evaluada a pares (nodo a nodo), y se procede a rellenar una matriz de n x n (donde n es la cantidad de nodos), luego se procede a realizar una normalización a nivel de la red global, para asi obtener los pesos relativos a cada nodo.\\
+\indent Este proceso se encuentra completamente detallado en el texto original, y puede ser obtenido públicamente en sitios como Wikipedia\footnote{\url{http://en.wikipedia.org/wiki/Analytic_network_process\#Outline_of_the_steps_of_the_ANP}}.
+\newpage
+\subsection{Redes Normales (Market Share)}
+El concepto de redes normales no solo se aplica al Analytic Network Process, sino que es una generalización de la teoría de redes. Una \textit{red normal}, es una red que se compone de una grilla de nodos conectados entre sí en un solo nivel de redes, es decir, una red de nodos sin subredes.\\
+Cuando hablamos de \textit{redes normales} en el Analytic Network Process, estamos frente a un caso donde queremos modelar una situación que en los textos de Saaty se ejemplifica con la \textit{repartición de mercados} (market share).
+\subsection{Redes de  Beneficios, Costos y Riesgos (BCR)}
+\subsection{Redes de  Beneficios, Oportunidades, Costos y Riesgos (BOCR)}
 
 
 \section{El modelo para Natural Response}
@@ -100,5 +126,13 @@ asdadadsdadd asudisdisd
 \section{Validación de Los Resultados vs. La Realidad}
 
 \section{Conclusión}
+
+\section{Bibliografía}
+\itemize
+\item Saaty, Thomas L. (1996). Decision Making with Dependence and Feedback: The Analytic Network Process. Pittsburgh, Pennsylvania: RWS Publications. ISBN 0-9620317-9-8.
+\item Saaty, Thomas L. (2005). \href{http://www.amazon.com/dp/1888603062}{Theory and Applications of the Analytic Network Process: Decision Making with Benefits, Opportunities, Costs and Risks. Pittsburgh, Pennsylvania: RWS Publications. ISBN 1-888603-06-2.}
+\item Saaty, Thomas L.; Luis G. Vargas (2006). \href{http://www.amazon.com/dp/0387338594}{Decision Making with the Analytic Network Process: Economic, Political, Social and Technological Applications with Benefits, Opportunities, Costs and Risks. New York: Springer. ISBN 0-387-33859-4.}
+\item Saaty, Thomas L.; Brady Cillo (2009). \href{http://rwspublications.com/}{The Encyclicon, Volume 2: A Dictionary of Complex Decisions using the Analytic Network Process. Pittsburgh, Pennsylvania: RWS Publications. ISBN 1-888603-09-7.}
+\item Saaty, Thomas L.; Müjgan S. Özermir (2005). \href{http://www.amazon.com/dp/1888603054}{The Encyclicon: A Dictionary of Decisions with Dependence and Feedback Based on the Analytic Network Process. Pittsburgh, Pennsylvania: RWS Publications. ISBN 1-888603-05-4.}
 
 \end{document} 
