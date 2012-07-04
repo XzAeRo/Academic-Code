@@ -13,6 +13,7 @@
 \usepackage{amsmath}
 \usepackage{fancyvrb}
 \usepackage{makeidx}
+\usepackage{multirow}
 \usepackage{colortbl} %Permite colocar colores a las tablas
 \usepackage{booktabs}
 \usepackage[final]{pdfpages}
@@ -115,18 +116,120 @@ La estructura básica del ANP es una red de influencias de grupos y nodos conten
 \newpage
 \subsection{Redes Normales (Market Share)}
 El concepto de redes normales no solo se aplica al Analytic Network Process, sino que es una generalización de la teoría de redes. Una \textit{red normal}, es una red que se compone de una grilla de nodos conectados entre sí en un solo nivel de redes, es decir, una red de nodos sin subredes.\\
-Cuando hablamos de \textit{redes normales} en el Analytic Network Process, estamos frente a un caso donde queremos modelar una situación que en los textos de Saaty se ejemplifica con la \textit{repartición de mercados} (market share).
+
+Cuando hablamos de \textit{redes normales} en el Analytic Network Process, estamos frente a un caso donde queremos modelar una situación que en los textos de Saaty se ejemplifica con la \textit{repartición de mercados} (market share). Este modelo de análisis nos permite entender \textbf{como se reparten las características}, entre las distintas firmas en un mercado. Es por esto que es muy común ver ejemplos basados en este modelo en internet\footnote{\url{http://www.slideserve.com/jana/the-essentials-of-the-analytic-network-process-with-seven-examples}}\footnote{\url{www.iticu.edu.tr/yayin/dergi/f11/M00180.pdf}}, ya que son los más sencillos de explicar. Pero es importante destacar que este modelo solamente sirve para casos donde se quiere analizar cómo de un grupo de alternativas se reparten ciertas características, por ejemplo, si se quiere analizar cual es el mejor candidato para un puesto de trabajo, este modelo de trabajo no va a servir, pero si se quiere saber cuales son las características que se consideran relevantes entre un grupo de candidatos, este modelo sí es el adecuado.\\
+Este tipo de confusiones es común y en el desarrollo del análisis de este trabajo, se cayó en el error antes mencionado, y se corrigió utilizando el modelo de \textit{redes BCR}.
+
 \subsection{Redes de  Beneficios, Costos y Riesgos (BCR)}
+El concepto de redes ANP basadas en modelos de \textit{beneficios, costos y riesgos}, es un modelo que se aprovecha del modelo matemático del cálculo de $beneficios / (costos * riesgos)$. Este tipo de modelo de ANP, nos permite identificar (por lo general), cual es \textit{la mejor alternativa}, entre un grupo de alternativas.\\
+
+Las características de este tipo de red, es que se compone de 2 capas de red: una red superior que se estructura como una red jerárquica de criterios (Analytic Hierarchy Process), y subredes bajo cada uno de los criterios definidos en la red superior. Cada subred contiene las alternativas disponibles que podrían permitir satisfacer el nodo objetivo definido en la red superior.\\
+\indent Esto permite modelar situaciones más complejas bajo ciertos criterios, ya que cada subred puede contener una red compleja de relaciones entre los subcriterios definidos en cada subred. Esto es particularmente beneficioso para comprender decisiones de elección de la mejor alternativa entre un grupo de alternativas. En otras palabras, este modelo se compone de dos capas: una jerárqica, y otra donde se pueden ingresar modelos de \textit{redes normales}.\\
+Dado que utilizaremos este modelo para desarrollar nuestro caso práctico, la pregunta \textit{"¿Cuál es el mejor proveedor para Natural Response?"}, se puede utilizar como ejemplo.
 \subsection{Redes de  Beneficios, Oportunidades, Costos y Riesgos (BOCR)}
+Este modelo es una generalización del modelo BCR, y un paso casi natural después de la definición del modelo anterior, ya que básicamente agrega el concepto de \textit{oportunidad}, al modelo. Aunque, esto parece algo bastante trivial, a nivel del modelado cambia radicalmente y viene a presentar una mejora respecto al BCR.\\
 
+Las características de este modelo incluye múltiples subredes distribuidas en distintos niveles. Y cada subred puede contener aún más subredes, generando así un modelo mucho más robusto y complejo, el cual puede ser utilizado para modelar sistemas tan complejos como un modelo de sistemas militar de defensa.\\
+\indent Pero al tener un sistema tán complejo, hay que tener en cuenta qué resuelve este modelo, y paradójicamente la respuesta es sencilla: \textit{elementos críticos}. Y esto se vuelve más evidente aún cuando recordamos que el Analytic Network Process lo que hace es repartir a nivel global, la importancia que tienen los distintos elementos o criterios en nuestra nube de elementos/criterios.
 
+\newpage
 \section{El modelo para Natural Response}
+\subsection{Recopilación de datos}
+El modelo ANP que utilizaremos, busca resolver la siguiente interrogante: \textit{¿Cual es el mejor proveedor para Natural Response?}, para así saber cual entre un grupo de alternativas, es la mejor opción para Natural Response considerando los siguientes criterios facilitados mediante el documento Excel original, facilitado por la empresa.\\
+Es importante recordar que la red principal que crearemos es una red jerárquica con subredes en cada uno de sus nodos hijos, luego a cada subred se le agregarán los subcriterios correspondientes de acuerdo a cada criterio.
 
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Criterios & Subcriterios \\
+\hline
+\multirow{1}{*}{Relación Comercial}
+ & Asistencia Técnica \\
+ & Constituido \\
+ & Información de Productos \\
+ & Organización y Responsabilidad \\
+ & Productos y/o servicio competitivo \\
+ & Representante Exclusivo\\
+\hline
+\multirow{1}{*}{Calidad}
+ & Atención de Reclamos \\
+ & Buena Imágen de Mercado \\
+ & Certificación \\
+ & Emite Certificados \\
+ & Niveles de Calidad de Proveedores \\
+ & Procedimientos Claros\\
+\hline
+\multirow{1}{*}{Costos}
+ & Precios Competitivos \\
+ & Transporte \\
+\hline
+\multirow{1}{*}{Sensibilidad/Comprensión}
+ & Flexibilidad Orden de Compra \\
+ & Flexibilidad Planificación \\
+ & Flexibilidad Servicios Adicionales \\ 
+\hline
+\multirow{1}{*}{Despacho}
+ & Anticipación de Problemas \\
+ & Despachos Satisfactorios \\
+ & Disponibilidad de Productos \\ 
+ & Responsabilidad \\
+\hline
+\end{tabular}
+\caption{Criterios relevantes para Natural Response}
+\label{tab:criterios}
+\end{table}
+\newpage
 
+\subsection{Generación del modelo AHP}
+De acuerdo a lo rescatado de su evaluación de proveedores, en el cuadro 2 se puede observar como se armó la primera capa del modelo ANP basado en BCR:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=400px]{img/1.PNG}
+\end{tabular}
+\caption{Modelo AHP para la primera capa de criterios}
+\label{tab:modelo capa 1}
+\end{table}
+\newpage
+\subsection{Generación de las subredes}
+Luego, para cada nodo se procede a crear una subred con los subcriterios del cuadro 1, tal como se vé en la siguiente imagen:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=\textwidth]{img/2.PNG}
+\end{tabular}
+\caption{Modelo ANP basado en BCR}
+\label{tab:modelo capa 1}
+\end{table}
+
+Se puede notar que en cada subred existe un nodo en común, el cual es el de los \textit{Proveedores}. Esto es escencial para el modelo, ya que es esto lo que nos permite saber cual será el mejor proveedor entre las 4 alernativas que estamos considerando.\\
+Recordemos que estos proveedores actualmente se encuentra autorizados por Natural Response, pero los estudiamos para tener un punto de comparación respecto a los valores reales que estima la empresa Natural Response bajo el método AHP.
+\newpage
+\subsection{Comparación a pares}
+Esta es básicamente la última etapa importante en el proceso del análisis bajo el método ANP, ya que necesitamos comparar cada uno de los nodos respecto a los nodos de su mismo nivel y a los nodos conectados a el. Como ya se podrá entender considerando la gran cantidad de nodos con la que cuenta nuestro modelo, estamos hablando de más de 300 combinaciones en total, por lo que solo mostrarémos como se vé el resultado para la capa más alta:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=\textwidth]{img/3.PNG}
+\end{tabular}
+\caption{Modelo ANP basado en BCR}
+\label{tab:modelo capa 1}
+\end{table}
+
+Es importante notar como el programa \textit{Super Decisions Software} ayuda notablemente a reducir el cálculo de las matrices de comparación a pares, el cual es notablemente ademas el paso más tedioso.
+\newpage
 \section{Validación de Los Resultados vs. La Realidad}
+\textit{Bajo revisión...}
 
+\newpage
 \section{Conclusión}
-
+El Analytic Network Process es una herramienta que permite entender de mejor manera el problema que estamos enfrentando, y usado de manera correcta, puede ayudar además a resolver problemas tan complejos y delicados como la decisión de aliarse a un determinado proveedor en un gran grupo de alternativas.\\
+Esto ha ayudado a mejorar el modelo que utilizaba Natural Response, y la empresa ya se encuentra interesada en desarrollar un software que permita de manera sencilla ir realizando evaluaciones periódicas de los proveedores y de proveedores que esperan a ser insertados como proveedores autorizados, ya que la empresa ha logrado entender el potencial que representa utilizar un modelo de análisis basado en redes, y que ha probado ser efectivo a la hora de mejorar el modelo existente.
+\newpage
 \section{Bibliografía}
 \itemize
 \item Saaty, Thomas L. (1996). Decision Making with Dependence and Feedback: The Analytic Network Process. Pittsburgh, Pennsylvania: RWS Publications. ISBN 0-9620317-9-8.
