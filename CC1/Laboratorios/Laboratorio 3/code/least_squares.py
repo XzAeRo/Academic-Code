@@ -28,8 +28,17 @@ def pregunta2(x,y):
 	plot(x,y,".",xp,p1(xp),"-",xp,p2(xp),"--")
 	ylim(-5,5)
 	show()
+	
+def pregunta3(x,y):
+	degree1 = 10
+	degree2 = 20
+	p1 = poly1d(polyfit(x, y, degree1))
+	p2 = poly1d(polyfit(x, y, degree2))
+	van = vander(p1)
+	print linalg.cond(van)
 
 if __name__ == "__main__":
 	x,y = function()
 	#pregunta1(x,y)
-	pregunta2(x,y)
+	#pregunta2(x,y)
+	pregunta3(x,y)
