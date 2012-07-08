@@ -201,28 +201,65 @@ Luego, para cada nodo se procede a crear una subred con los subcriterios del cua
 \includegraphics[width=\textwidth]{img/2.PNG}
 \end{tabular}
 \caption{Modelo ANP basado en BCR}
-\label{tab:modelo capa 1}
+\label{tab:modelo BCR}
 \end{table}
 
 Se puede notar que en cada subred existe un nodo en común, el cual es el de los \textit{Proveedores}. Esto es escencial para el modelo, ya que es esto lo que nos permite saber cual será el mejor proveedor entre las 4 alernativas que estamos considerando.\\
 Recordemos que estos proveedores actualmente se encuentra autorizados por Natural Response, pero los estudiamos para tener un punto de comparación respecto a los valores reales que estima la empresa Natural Response bajo el método AHP.
 \newpage
 \subsection{Comparación a pares}
-Esta es básicamente la última etapa importante en el proceso del análisis bajo el método ANP, ya que necesitamos comparar cada uno de los nodos respecto a los nodos de su mismo nivel y a los nodos conectados a el. Como ya se podrá entender considerando la gran cantidad de nodos con la que cuenta nuestro modelo, estamos hablando de más de 300 combinaciones en total, por lo que solo mostrarémos como se vé el resultado para la capa más alta:
+Esta es básicamente la etapa más importante en el proceso del análisis bajo el método ANP, ya que necesitamos comparar cada uno de los nodos respecto a los nodos de su mismo nivel y a los nodos conectados a el. Como ya se podrá entender considerando la gran cantidad de nodos con la que cuenta nuestro modelo, estamos hablando de más de 300 combinaciones en total.\\
+
+Podemos observar que en la siguiente imagen, las subredes han sido asignadas con los porcentajes que la empresa estima convenientes. Esto es debido a que en su modelo AHP así tienen los pesos de los árboles:
 
 \begin{table}[h]
 \centering
 \begin{tabular}{c}
 \includegraphics[width=\textwidth]{img/3.PNG}
 \end{tabular}
-\caption{Modelo ANP basado en BCR}
-\label{tab:modelo capa 1}
+\caption{Comparación a pares con entrada directa}
+\label{tab:comparacion entrada directa}
 \end{table}
 
-Es importante notar como el programa \textit{Super Decisions Software} ayuda notablemente a reducir el cálculo de las matrices de comparación a pares, el cual es notablemente ademas el paso más tedioso.
+Lo interesante de esto, es que el programa \textit{Super Decisions Software}, provee una completa interface para el análisis y comparación de los resultados a medida que se van llenando los datos correspondites a cada nodo. Por ejemplo, en el cuadro 4, podemos observar como el software nos muestra de manera gráfica mediante un gráfico la diferencia de la importancia entre las subredes de calidad y costos, y además entrega una guia en formato texto para entender qué es lo que significan los datos, por ejemplo: ``El nodo Calidad es considerablemente más importante que el nodo Costos".
+
+\newpage
+Para las subredes, se debe realizar la comparación a pares para cada una de las combinaciones entre las alternativas (Desert king, Merck, Oxiquim y Wenco). Para entenderlo prácticamente, verémos la comparación a pares en la subred de Costos para el nodo Transportes. Es crítico notar que el programa genera automáticamente todas las combinaciones posibles para todas las alternativas:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=\textwidth]{img/4.PNG}
+\end{tabular}
+\caption{Comparación a pares en subred}
+\label{tab:comparacion a pares}
+\end{table}
+
+En este punto es válido cuestionarse \textit{¿Cómo sé que una alternativa es mejor que otra?}. La respuesta es relativa, ya que depende de la percepción de cada evaluador, y es por esto que hay que recordar que \textbf{este método solo sirve para realizar estimaciones y predicciones}.\\
+
+Este proceso hay que repetirlo para todas los nodos existentes en todas las subredes, y rellenar con cada una de las preferencias para cada una de las alternativas y relaciones que pudiesen existir. Una vez culminado ese proceso, el software automáticamente ya ha hecho los cálculos de la mejor opción, solo nos queda revisar los resultados.\\
+
+\textit{Tip: los nodos de alternativas en cada una de las subredes debe llamarse ``Alternatives", de este modo el programa entiende automáticamente que estamos utilizando una red de tipo BO/CR.}
+
 \newpage
 \section{Validación de Los Resultados vs. La Realidad}
-\textit{Bajo revisión...}
+A continuación comprobaremos la efectividad del método Analytic Network Process en su capacidad predictiva y de análisis. Recordemos que estamos simulando que 5 de los mejores proveedores que posee actualmente Natural Response, están intentando ingresar a ser uno de los proveedores autorizados, pero Natural Response quiere saber entre las 4 alternativas cual sería la mejor opción a incorporar.
+
+\subsection{Resultados del método}
+El programa \textit{Super Decisions Software}, tiene la capacidad de sintetizar los pesos totales entre los nodos \textit{Alternative} de cada subred, y luego los une para entregar la mejor opción. Es por esto que es de suma importancia entender a priori, que tipo de red ANP estamos modelando, ya que el software entiende automáticamente que estamos desarrollando a partir de la estructura del modelo.\\
+A continuación observamos los resultados no normalizados de la red:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=\textwidth]{img/5.PNG}
+\end{tabular}
+\caption{Resultados ANP no normalizados}
+\label{tab:ANP no normalizado}
+\end{table}
+
+\newpage
+\subsection{Resultados de evaluaciones internas de la empresa}
 
 \newpage
 \section{Conclusión}
