@@ -175,7 +175,7 @@ Criterios & Subcriterios \\
  & Responsabilidad \\
 \hline
 \end{tabular}
-\caption{Criterios relevantes para Natural Response}
+\caption{Criterios de evaluación. \textit{Fuente: Natural Response.}}
 \label{tab:criterios}
 \end{table}
 \newpage
@@ -247,19 +247,57 @@ A continuación comprobaremos la efectividad del método Analytic Network Proces
 
 \subsection{Resultados del método}
 El programa \textit{Super Decisions Software}, tiene la capacidad de sintetizar los pesos totales entre los nodos \textit{Alternative} de cada subred, y luego los une para entregar la mejor opción. Es por esto que es de suma importancia entender a priori, que tipo de red ANP estamos modelando, ya que el software entiende automáticamente que estamos desarrollando a partir de la estructura del modelo.\\
-A continuación observamos los resultados no normalizados de la red:
+A continuación observamos los resultados de la subred de costos (la columna \textit{Normal}, es la que nos interesa):
 
 \begin{table}[h]
 \centering
 \begin{tabular}{c}
-\includegraphics[width=\textwidth]{img/5.PNG}
+\includegraphics[width=310px]{img/5.PNG}
 \end{tabular}
-\caption{Resultados ANP no normalizados}
-\label{tab:ANP no normalizado}
+\caption{Porcentajes sintetizados para la subred de Costos}
+\label{tab:Porcentajes sintetizados para la subred de Costos}
 \end{table}
+
+El resultado mostrado en el cuadro 6, es automáticamente generado para cada subred una vez que se completó la comparación a pares, por lo que ahora solo nos queda ver cual es resultado final estimado mediante el uso de ANP de tipo BCR:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c}
+\includegraphics[width=400px]{img/6.PNG}
+\end{tabular}
+\caption{Porcentajes sintetizados para la subred de Costos}
+\label{tab:Porcentajes sintetizados para la subred de Costos}
+\end{table}
+
+Gracias a este resultado, podemos decir que según la estimación calculada mediante el método Analytic Network Process, la mejor alternativa entre los 4 proveedores es Desert King, por lo cual se podría recomendar que Desert King sea un proveedor autorizado. Además, podemos decir que entre las 4 alternativas, Desert King es quien cumple de mejor manera las características que exige Natural Response.
 
 \newpage
 \subsection{Resultados de evaluaciones internas de la empresa}
+Desde los datos entregados por Natural Response, la evaluación entregada por ellos arroja los siguientes resultados (más es mejor):
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Proveedor} & \textbf{Evaluación}\\
+\hline
+Desert King & 4,34\\
+\hline
+Merck & 4,08\\
+\hline
+Oxiquim & 4,05\\
+\hline
+Wenco & 2,86\\
+\hline
+\end{tabular}
+\caption{Evaluaciones de proveedores autorizados. \textit{Fuente: Natural Response}.}
+\label{tab:tabla de evaluacion}
+\end{table}
+
+Estos datos vienen a confirmar lo que se observa en los datos arrojados por el método Analytic Network Process, ya que el método ha logrado predecir de manera exitosa el proveedor mejor evaluado de Natural Response.\\
+
+Esto se debe a que Natural Response busca sobre todas las cosas \textbf{calidad y certificación}. Y según los datos predecidos, Desert King ha potenciado esas características fuertemente por sobre sus competidores.\\
+Respecto al resto de las alternativas, podemos concluir que Natural Response podría considerar una reevaluación de las alternativas de sus proveedores autorizados, ya que el modelo generado por este método, presenta una mejora, por lo cual esto debe ser considerado para futuras evaluaciones.
 
 \newpage
 \section{Conclusión}
