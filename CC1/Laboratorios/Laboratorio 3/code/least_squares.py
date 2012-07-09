@@ -66,7 +66,9 @@ def pregunta4():
 	degree1 = 2
 	degree2 = 4
 	p1 = poly1d(polyfit(x, y, degree1))
+	print p1
 	p2 = poly1d(polyfit(x, y, degree2))
+	print p2
 	xp = linspace(-5,5,100)
 	plot(x,y,".",xp,p1(xp),"-",xp,p2(xp),"--")
 	show()
