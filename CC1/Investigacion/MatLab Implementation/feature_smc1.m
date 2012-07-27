@@ -29,7 +29,10 @@ function [fea]=feature_smc1(I,I_p)
 % overlapping blocks or zero padding
 
 %------------------------------------------------------------------------
+
+% Inicializar una matriz de vectores de caracteristicos
  feature_vec=zeros(128,16);%%for image size 512 by 512
+% Inicializar una matriz de valores caracteristicos
  feature_val=zeros(128,16);
 
 % %feature_vec=zeros(64,64);%%
@@ -42,34 +45,42 @@ function [fea]=feature_smc1(I,I_p)
 % feature_vec=zeros(128,24); %%for image size 768 by 512
 % feature_val=zeros(128,24);
 
+% Transformamos los valores de la imagen (que vienen en formato int), a formato double
 I=im2double(I);
 I_p=im2double(I_p);
 x=1;
 y=1;
 z=1;
 col=1;
+
+
 for j=1:4   
     for k=1:4
         %%%%%%%%j and k will be from 1 to 4 for 512 by 512 image;there will be totally 4x4=16 such blocks%%%%%%%%%%%%%%
-        blck=I(z:z+127, y:y+127);
-        blck_p=I_p(z:z+127, y:y+127);
-        [u,s,v]=svd(full(blck));% SVD of reference image block
-        [u1,s1,v1]=svd(full(blck_p)); % SVD of distorted image block
-        feature_vec(:,col)=(abs(dot(u,u1))+abs(dot(v,v1)))/2; % vector features
-        feature_val(:,col)=(diag(s)-diag(s1)).^2; % values features
+       
+        blck=I(z:z+127, y:y+127); % tomamos un bloque de la imagen original
+        blck_p=I_p(z:z+127, y:y+127); % tomamos un bloque de la imagen distorsionada
+        [u,s,v]=svd(full(blck));% SVD de la imagen original
+        [u1,s1,v1]=svd(full(blck_p)); % SVD de la imagen distosionada
+        feature_vec(:,col)=(abs(dot(u,u1))+abs(dot(v,v1)))/2; % obtenemos los vectores caracteristicos
+        feature_val(:,col)=(diag(s)-diag(s1)).^2; % obtenemos los valores caracteristicos
         maxi=max(feature_val(:,col));
         if(maxi==0)
+          % evitamos hacer divisiones por 0
           maxi=1;
         end
-        feature_val(:,col)=feature_val(:,col)/maxi; % divide by maximum value to avoid large values
+        feature_val(:,col)=feature_val(:,col)/maxi; % normalizamos respecto al valor mas grande
+        % avanzamos al siguiente bloque
         y=y+128;
         x=x+1;
         col=col+1;
     end
+    % avanzamos al siguiente bloque
     z=z+128;
     y=1;
 end
 % e=mean2(dis);
+% retornamos los valores
 fea_vec=(mean(feature_vec'));
 fea_val=(mean(feature_val'));
 fea=[fea_vec fea_val]; %%final feature vector
