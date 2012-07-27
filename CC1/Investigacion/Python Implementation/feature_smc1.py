@@ -51,6 +51,7 @@ def feature_smc1(I,I_p):
 
 	# For images whose resolution is not multiple of 128 by 128, please use
 	# overlapping blocks or zero padding
+	
 
 	#------------------------------------------------------------------------
 	feature_vec = zeros((128,16))##for image size 512 by 512

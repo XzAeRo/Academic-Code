@@ -30,6 +30,7 @@ function [fea]=feature_smc1(I,I_p)
 
 %------------------------------------------------------------------------
 
+
 % Inicializar una matriz de vectores de caracteristicos
  feature_vec=zeros(128,16);%%for image size 512 by 512
 % Inicializar una matriz de valores caracteristicos
@@ -46,8 +47,8 @@ function [fea]=feature_smc1(I,I_p)
 % feature_val=zeros(128,24);
 
 % Transformamos los valores de la imagen (que vienen en formato int), a formato double
-I=im2double(I);
-I_p=im2double(I_p);
+%I=im2double(I);
+%I_p=im2double(I_p);
 x=1;
 y=1;
 z=1;
