@@ -1,0 +1,15 @@
+I=imread('facebookicon.png');
+I_p=imread('facebookicon.jpg');
+fea=feature_smc1(I,I_p);
+
+# ahora deberia predecir los resultados usando svmpredict utilizando datos de comparacion basados en una base de datos.
+# sin embargo, solo utilizaremos el producto punto sobre el vector caracteristico
+dot(fea,fea')
+
+# para comparar...
+I_p=imread('facebookicon.jpg');
+fea=feature_smc1(I,I_p);
+
+# ahora deberia predecir los resultados usando svmpredict utilizando datos de comparacion basados en una base de datos.
+# sin embargo, solo utilizaremos el producto punto sobre el vector caracteristico
+dot(fea,fea')
