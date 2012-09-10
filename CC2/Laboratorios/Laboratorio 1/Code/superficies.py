@@ -6,8 +6,9 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.linalg as la
 
-def eigen_surface(A,B,C):
+def plot_figure(x,y,z):
 	fig = plt.figure()
 	ax = Axes3D(fig)
 	u = np.linspace(0, 2 * np.pi, 100)
@@ -20,5 +21,13 @@ def eigen_surface(A,B,C):
 
 	plt.show()
 
+def eigen_surface(A,B,C):
+	Q, R = la.qr(A)
+	Q_inv = la.inv(Q)
+	D = Q_inv*A*Q
+	print D
+	print la.svd(A)
+
 if __name__ == "__main__":
-	eigen_surface(1,2,3)
+	A = np.array([[5,2,0],[2,6,2],[0,2,7]])
+	eigen_surface(A,2,3)
