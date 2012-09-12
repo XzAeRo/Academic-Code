@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+try:
+	from mpl_toolkits.mplot3d import Axes3D
+	from matplotlib import cm
+	from matplotlib.ticker import LinearLocator
+	import matplotlib.pyplot as plt
+except:
+	print "Missing matplotlib modules:\n\t- mpl_toolkits.mplot3d\n\t- matplotlib\n\t- matplotlib.ticker\n\t- matplotlib.pyplot\n\tIgnoring...\n\n"
 
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator
-import matplotlib.pyplot as plt
 import numpy as np
 import numpy.linalg as la
 
@@ -26,7 +29,7 @@ def eigen_surface(A,B,C):
 	Q_inv = la.inv(Q)
 	D = Q_inv*A*Q
 	print D
-	print la.svd(A)
+	print la.svd(A)[1]
 
 if __name__ == "__main__":
 	A = np.array([[5,2,0],[2,6,2],[0,2,7]])
