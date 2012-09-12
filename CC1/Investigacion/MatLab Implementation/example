@@ -1,3 +1,5 @@
+# 85% de compresion
+
 I=imread('facebookicon.png');
 I_p=imread('facebookicon.jpg');
 fea=feature_smc1(I,I_p);
@@ -6,8 +8,10 @@ fea=feature_smc1(I,I_p);
 # sin embargo, solo utilizaremos el producto punto sobre el vector caracteristico
 dot(fea,fea')
 
+
+# 35% de compresion
 # para comparar...
-I_p=imread('facebookicon.jpg');
+I_p=imread('facebookicon2.jpg'); 
 fea=feature_smc1(I,I_p);
 
 # ahora deberia predecir los resultados usando svmpredict utilizando datos de comparacion basados en una base de datos.
