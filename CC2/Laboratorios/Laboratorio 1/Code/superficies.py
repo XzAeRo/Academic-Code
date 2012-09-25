@@ -18,22 +18,22 @@ def plot_implicit(fn, bbox=(-2.5,2.5)):
     xmin, xmax, ymin, ymax, zmin, zmax = bbox*3
     fig = plt.figure()
     ax = Axes3D(fig)
-    A = np.linspace(xmin, xmax, 100) # resolution of the contour
-    B = np.linspace(xmin, xmax, 15) # number of slices
-    A1,A2 = np.meshgrid(A,A) # grid on which the contour is plotted
+    a = np.linspace(xmin, xmax, 100) # resolution of the contour
+    b = np.linspace(xmin, xmax, 15) # number of slices
+    A1,A2 = np.meshgrid(a,a) # grid on which the contour is plotted
 
-    for z in B: # plot contours in the XY plane
+    for z in b: # plot contours in the XY plane
         X,Y = A1,A2
         Z = fn(X,Y,z)
         cset = ax.contour(X, Y, Z+z, [z], zdir='z')
         # [z] defines the only level to plot for this contour for this value of z
 
-    for y in B: # plot contours in the XZ plane
+    for y in b: # plot contours in the XZ plane
         X,Z = A1,A2
         Y = fn(X,y,Z)
         cset = ax.contour(X, Y+y, Z, [y], zdir='y')
 
-    for x in B: # plot contours in the YZ plane
+    for x in b: # plot contours in the YZ plane
         Y,Z = A1,A2
         X = fn(x,Y,Z)
         cset = ax.contour(X+x, Y, Z, [x], zdir='x')
@@ -47,11 +47,22 @@ def plot_implicit(fn, bbox=(-2.5,2.5)):
 
     plt.show()
 
+def set_global(b,c,d,q):
+	global B
+	global C
+	global D
+	global Q
+	B = b
+	C = c
+	D = d
+	Q = q
+
 def implicit_function(x,y,z):
 	xyz = np.transpose(np.array([x,y,z]))
-	return np.transpose(xyz)*D*xyz + B*Q
-def surface(A, B, C, D):
-	plot_implicit
+	return np.transpose(xyz)*D*xyz + B*Q*xyz + C
+	
+def surface():
+	plot_implicit(implicit_function)
 
 def eigen_surface(A, B, C):
 
@@ -68,11 +79,13 @@ def eigen_surface(A, B, C):
 			
 	D = np.dot(np.dot(la.inv(Q_k),A),Q_k)
 	
-	surface(A,B,C,D,Q_k)
+	set_global(B,C,D,Q_k)
+	surface()
 	
 	
 
 if __name__ == "__main__":
-	A = np.array([[5,2,0],[2,6,2],[0,2,7]])
-	B = np.array([0,0,0])
-	C = -1
+	A = np.array([[5.0,2.0,0.0],[2.0,6.0,2.0],[0.0,2.0,7.0]])
+	B = np.array([0.0,0.0,0.0])
+	C = -1.0
+	eigen_surface(A,B,C)
