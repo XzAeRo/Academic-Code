@@ -1,0 +1,65 @@
+Una fábrica produce tres tipos de fruto seco: maní almendra y pistacho. Cada uno se vende en paquetes de 1 kilo. Cada fruto pasa a trav\'es de tres procesos: limpieza, pelado y tostado. La fábrica dispone de 20 personas para tostar, 30 para limpiar y 10 para pelar. Los requerimientos para producir un kilo de fruto y su utilidad es la siguiente:
+
+\begin{center}
+
+\begin{tabular}{ c | c | c | c }
+Requerimientos	& Man\'i & Almendra & Pistacho\\
+\hline
+Limpiar [pers/kilo]	& 1	  & 2   & 1\\
+Pelado [pers/kilo]	& 1	  & 3   & 2\\
+Tostado [pers/kilo]	& 1	  & 2   & 5\\
+Utilidad [\$/kilo]	& 5000	  & 9500   & 15000\\
+\end{tabular}
+
+\end{center}
+
+Definiendo las variables de decisi\'on $x_1$ ,$x_2$ y $x_3$ , que representan la cantida de kilos de maní, almendra y pistacho a producir respectivamente, se ha formulado el siguiente modelo de programación lineal y el tableau final:
+
+máx $z = 5000x_1 + 9500x_2 + 15000x_3$\\
+St.\\
+$x_1 + 2x_2 + 5x_3 \leq 20$ (Tostar)\\
+$x_1 + 2x_2 + x_3 \leq 30$ (Limpiar)\\
+$x_1 + 3x_2 + 2x_3 \leq 10$ (Pelar)\\
+$x_i \geq 0$
+
+\begin{center}
+
+\begin{tabular}{ c | c | c | c | c | c | c | c }
+			& $x_1$ & $x_2$ & $x_3$ & $s_1$ & $s_2$ & $s_3$ &\\
+Base $c_j$	& 5000	& 9500	& 15000	&   0	& 0 		&   0	& $b_j$\\
+\hline
+			& 0  & 1/3 & 1 & 1/3 & 0 & -1/3 & 10/3\\
+			& 0  & -4/3 & 0 & 1/3 & 1 & -4/3 & 70/3\\
+			& 1  & 11/3 & 0 & -2/3 & 0 & 5/3 & 10/3\\
+\hline
+$z_j$		&   &   &  & & & &\\
+$c_j - z_j$	&   &   &  & & & &\\
+\end{tabular}
+
+\end{center}
+
+A partir de lo anterior, responda cada una de las preguntas de forma independiente, es decir, si en alguna modificó el tableau, no considere dicho cambio en la próxima pregunta.\\
+
+1. Complete el tableau final para obtener la solución óptima e interprete el valor de cada una de las variables que ahí aparecen. Indique si existe o no solución alternativa. Justifique.\\
+
+2. Se cree que si el precio del kilo de almendra llega a 12000, es conveniente producirla. Está ud. de acuerdo? Justifique. ¿Cuál debiera ser el precio mínimo de las almendras?\\
+
+3. Debido a una acumulación de maní en las bodegas, se ha iniciado una campaña de venta basándose en un precio muy bajo para el público. ¿Cuál debiera ser este precio si la idea es mantener el nivel de producción?\\
+
+4. Si producto de una nueva tecnología incorporada al proceso, se necesita que cada kilo de fruto seco esté almacenado en una bodega con temperatura y humedad regulada según la siguiente tabla:
+
+\begin{center}
+
+\begin{tabular}{ c | c | c | c | c}
+Requerimiento	& Man\'i & Almendra & Pistacho & Disponibilidad [hr]\\
+\hline
+Almacenamiento [Hr/kilo]	& 2	  & 5   & 8  & 35\\
+\end{tabular}
+
+\end{center}
+
+¿Qué ocurre con la solución óptima encontrada? ¿Se mantiene? ¿Cambia? Argumente.
+
+
+
+
