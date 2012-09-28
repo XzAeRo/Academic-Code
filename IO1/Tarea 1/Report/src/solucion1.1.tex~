@@ -1,3 +1,4 @@
+\subsubsection{Modelo de programación lineal}
 \begin{description}
 \item[Variables:]
 \item $A_i$: Cantidad de kilogramos de encurtidos ácidos en el mes i, donde $i=[1,4]$
@@ -6,6 +7,67 @@
 \end{description}
 
 \begin{description}
-\item[Función Objetivo]
+\item[Función Objetivo:]
+\item[] $min z =$
+\item[] $1000*0.3A_i + \frac{35000}{40}*0.7*A_i+300A_i$ // costo de encurtidos ácidos
+\item[] $400D_i + 1000D_i$ // costo de encurtidos dulces
+\item[] $700E_i + 1000E_i$ // costo de encurtidos de eneldo 
 \end{description}
 
+\begin{description}
+\item[Sujeto A:]
+\item[] $A_1 \geq 105$ // "15 kg de ácidos el primer mes"
+\item[] $D_2 + D_3 \geq 400$ // "400 kg de dulce entre el segundo y tercer mes"
+\item[] $E_3 + E_4 \geq 100$ // "100 kg de eneldo entre los últimos 2 meses"
+\item[] $\frac{A_i+D_i+E_i}{4} \geq 400$ // "se necesita una media mensual de 400[$\frac{kg}{mes}$]"
+\item[] $A_i, D_i, E_i \geq 0.2(A_i+D_i+E_i)$ // producción de un encurtido no menor al 20\% del total del mes
+\item[] $A_i, D_i, E_i \geq 0$ // naturaleza de las variables
+\end{description}
+
+\subsubsection{Solución con LP\_Solve}
+
+\textbf{Código en LP\_Solve}
+\begin{verbatim}
+min:	661.25 A1 + 661.25 A2 + 661.25 A3 + 661.25 A4 +
+	1400 D1 + 1400 D2 + 1400 D3 + 1400 D4 +
+	1700 E1 + 1700 E2 + 1700 E3 + 1700 E4;
+
+A1 >= 105;
+D2 + D3 >= 400;
+E3 + E4 >= 100;
+A1 + A2 + A3 + A4 + D1 + D2 + D3 + D4 + E1 + E2 + E3 + E4 >= 1600;
+
+A1 >= 0.2 A1 + 0.2 D1 + 0.2 E1;
+A2 >= 0.2 A2 + 0.2 D2 + 0.2 E2;
+A3 >= 0.2 A3 + 0.2 D3 + 0.2 E3;
+A4 >= 0.2 A4 + 0.2 D4 + 0.2 E4;
+
+D1 >= 0.2 A1 + 0.2 D1 + 0.2 E1;
+D2 >= 0.2 A2 + 0.2 D2 + 0.2 E2;
+D3 >= 0.2 A3 + 0.2 D3 + 0.2 E3;
+D4 >= 0.2 A4 + 0.2 D4 + 0.2 E4;
+
+E1 >= 0.2 A1 + 0.2 D1 + 0.2 E1;
+E2 >= 0.2 A2 + 0.2 D2 + 0.2 E2;
+E3 >= 0.2 A3 + 0.2 D3 + 0.2 E3;
+E4 >= 0.2 A4 + 0.2 D4 + 0.2 E4;
+\end{verbatim}
+
+\textbf{Resultado de LP\_Solve}
+\begin{verbatim}
+Value of objective function: 1.71176e+06
+
+Actual values of the variables:
+A1                            105
+A2                            440
+A3                            300
+A4                              0
+D1                             35
+D2                            300
+D3                            100
+D4                              0
+E1                             35
+E2                            185
+E3                            100
+E4                              0
+\end{verbatim}
