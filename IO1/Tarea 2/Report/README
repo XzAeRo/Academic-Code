@@ -1,0 +1,5 @@
+Ubicarse sobre esta carpeta en linea de comandos y ejecutar algunas de estas opciones:
+$ make: compila y genera el pdf a partir del archivo .tex del informe
+$ make all: compila y genera el pdf a partir del archivo .tex del informe
+$ make clean: limpia la basura generada por los compiladores latex
+$make all clean: genera un pdf del informe y limpia la basura generada por los compiladores

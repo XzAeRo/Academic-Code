@@ -1,0 +1,19 @@
+La fábrica de encurtidos Pep \& Nillo ofrece tres productos: encurtidos ácidos, dulces y encurtidos al eneldo. La empresa estima que necesita para su horizonte de planificación, que cubre los próximos 4 meses, una media de 400[kg/mes] de encurtidos, con, al menos, 105 kilos de encurtidos ácidos durante el primer mes, 400 kilos de encurtido dulce entre el segundo y tercer mes y 100 kilos de encurtidos al eneldo para cada uno de los ultimos dos meses.\\
+
+Además, en cualquier mes la producción de cualquiera de los tres tipos de encurtido no puede bajar del 20 \% de la producción total de encurtidos del mes. La empresa sabe lo siguiente:\\
+
+Los encurtidos dulces y los encurtidos al eneldo se producen unicamente a base de pepinillos.\\
+
+Los encurtidos ácidos además incluyen zanahorias, cebollitas y otras especies hortícolas que se encargan ya pasteurizadas a otra compañía que sólo entrega barriles de 40 kilos, cada barril con un costo de \$$35000$.\\
+
+Un kilo de encurtido ácido se produce mezclando 300 gr de pepinillos y 700 gr de otros frutos.\\
+
+El costo de recolección, lavado y pasteurización de un kilo de pepinillo es de \$$1000$.\\
+
+Además, los costos de producción de cada tipo de encurtido son los siguientes:
+
+1. Formule un modelo de programación lineal que le permita satisfacer la demanda a mínimo
+costo.
+
+2. Encuentre una solución con LP Solve y adjunte el código en la entrega.
+

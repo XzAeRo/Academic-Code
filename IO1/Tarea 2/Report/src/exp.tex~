@@ -1,0 +1,24 @@
+Una fábrica produce tres tipos de fruto seco: maní almendra y pistacho. Cada uno se vende en paquetes de 1 kilo. Cada fruto pasa a trav ́s de tres procesos: limpieza, pelado y tostado. La fábrica dispone de 20 personas para tostar, 30 para limpiar y 10 para pelar. Los requerimientos
+para producir un kilo de fruto y su utilidad es la siguiente:\\
+
+Definiendo las variables de decisi ́n x1 ,x2 y x3 , que representan la cantida de kilos de maní, almendra y pistacho a producir respectivamente, se ha formulado el siguiente modelo de programación lineal y el tableau final:\\
+
+máx $z = 5000x_1 + 9500x_2 + 15000x_3$
+St.
+$x_1 + 2x_2 + 5x_3 \leq 20$ (Tostar)
+$x_1 + 2x_2 + x_3 \leq 30$ (Limpiar)
+$x_1 + 3x_2 + 2x_3 \leq 10$ (Pelar)
+$x_i \geq 0$
+
+A partir de lo anterior, responda cada una de las preguntas de forma independiente, es decir, si en alguna modificó el tableau, no considere dicho cambio en la próxima pregunta.
+
+1. Complete el tableau final para obtener la solución óptima e interprete el valor de cada una de las variables que ahí aparecen. Indique si existe o no solución alternativa. Justifique.\\
+
+2. Se cree que si el precio del kilo de almendra llega a 12000, es conveniente producirla. Está ud. de acuerdo? Justifique. ¿Cuál debiera ser el precio mínimo de las almendras?\\
+
+3. Debido a una acumulación de maní en las bodegas, se ha iniciado una campaña de venta basándose en un precio muy bajo para el público. ¿Cuál debiera ser este precio si la idea es mantener el nivel de producción?\\
+
+4. Si producto de una nueva tecnología incorporada al proceso, se necesita que cada kilo de fruto seco esté almacenado en una bodega con temperatura y humedad regulada según la siguiente tabla:\\
+
+
+
