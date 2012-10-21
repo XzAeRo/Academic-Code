@@ -1,6 +1,6 @@
 from numpy import *
 from numpy.linalg import *
-from collections import namedtuple
+import timeit, table_print, sys
 
 def partition(ran,n):
 	"""	This function partitions a range in n parts and returns an array with
@@ -120,42 +120,24 @@ def inter_pol(x_int, n, pol):
 		"\t'diff':\tNewton Interpolation\n" \
 		"\t'spl':\tSplines\n"
 		raise ValueError("Unknown interpolation method")
-		
-def pprinttable(rows):
-	if len(rows) > 1:
-		headers = rows[0]._fields
-		lens = []
-		for i in range(len(rows[0])):
-			lens.append(len(max([x[i] for x in rows] + [headers[i]],key=lambda x:len(str(x)))))
-		formats = []
-		hformats = []
-		for i in range(len(rows[0])):
-			if isinstance(rows[0][i], int):
-				formats.append("%%%dd" % lens[i])
-			else:
-				formats.append("%%-%ds" % lens[i])
-			hformats.append("%%-%ds" % lens[i])
-		pattern = " | ".join(formats)
-		hpattern = " | ".join(hformats)
-		separator = "-+-".join(['-' * n for n in lens])
-		print hpattern % tuple(headers)
-		print separator
-		for line in rows:
-			print pattern % tuple(line)
-	elif len(rows) == 1:
-		row = rows[0]
-		hwidth = len(max(row._fields,key=lambda x: len(x)))
-		for i in range(len(row)):
-			print "%*s = %s" % (hwidth,row._fields[i],row[i])
     
 if __name__ == "__main__":
 	X = array([-0.5,-0.25,0.0,0.25,0.5])
 	y = evaluate(X)
-	
+	data = []
+	data.append(["n", "x", "y_k", "y_int", "pol", "Error Relativo", "Tiempo de Computo"])
 	for m in range(1,6):
 		n = 2**m
-		for x in X:
-			y_diff = inter_pol(x, n, "diff")
-			y_spl = inter_pol(x, n, "spl")
-			y_real = evaluate([x])[0]
+		for pol in ["diff", "spl"]:
+			for x in X:
+				y_int = inter_pol(x, n, pol)
+				comp_time = timeit.timeit("inter_pol(x,n,pol)",setup='x='+str(x)+'; n='+str(n)+'; pol="'+pol+'"; from __main__ import inter_pol',number=10)
+				y_real = evaluate([x])[0]
+				if y_real != 0:
+					rel_err = abs((y_real - y_int) / y_real)
+				else:
+					rel_err = abs(y_real - y_int)
+				data.append([str(n),x,y_real,y_int,pol,rel_err,comp_time])
+	
+	table_print.pprint_table(sys.stdout, data)
 	
