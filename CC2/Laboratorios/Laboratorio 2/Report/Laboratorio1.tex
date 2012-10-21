@@ -15,6 +15,7 @@
 \usepackage{colortbl} %Permite colocar colores a las tablas
 \usepackage{multirow}
 \usepackage{booktabs}
+\usepackage{moreverb}
 \usepackage[final]{pdfpages}
 %%%%%%%%%%
 %Margenes%
@@ -105,10 +106,24 @@ Se nos pide desarrollar una función que permita calcular la interpolación poli
 
 Donde \verb+x_int+ $\in [-1,1]$, \verb+n+ un número que particiona el dominio y \verb+pol+ un string que puede ser \verb+diff+ para calcular mediante \textit{diferecias divididas}, o \verb+spl+ para calcular mediante \textit{splines}.
 
-Para esto, se desarrolló el siguiente código\footnote{Esta porción de código y todas las que saldrán mas adelante han sido modificadas para reducir el espacio utilizado en este documento, por lo cual se han omitido comentarios e incluso algunas funciones. El código completo se puede obtener en los archivos correspondientes.}:
-\begin{verbatim}
-aiodnaosudbaosdboasd ai da p
-\end{verbatim}
+Para esto, se desarrolló el siguiente código\footnote{Esta porción de código y todas las que saldrán mas adelante han sido modificadas para reducir el espacio utilizado en este documento, por lo cual se han omitido comentarios e incluso algunas funciones. El código completo se puede obtener en los archivos correspondientes.}, el cual puede ser encontrado en el archivo \textit{inter\_pol.py}:
+\begin{verbatimtab}[4]
+def inter_pol(x_int, n, pol):
+	ran = [-1,1]
+	if x_int < ran[0] or x_int > ran[1]:
+		raise ValueError("Invalid 'x_int' value")
+	
+	x = partition(ran,n) # partition the domain in n parts
+	y = evaluate(x) # evaluate each point of the partition
+	
+	# execute the chosen interpolation
+	if pol == "diff":
+		return divided_differences(x,y,x_int)
+	elif pol == "spl":
+		return splines(x,y,x_int)
+	else:
+		raise ValueError("Unknown interpolation method")
+\end{verbatimtab}
 
 \subsubsection{Benchmark Comparativo}
 Se nos pide desarrollar un benchmark entre los dos métodos interpoladores: diferencias divididas y splines. Para realizar el benchmark, se utilizará el mismo código desarrollado en la pregunta anterior, utilizando cierta data de prueba, la cual se puede ver tabulada junto a los resultados del benchmark en la siguiente tabla:
