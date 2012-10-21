@@ -73,7 +73,7 @@ def splines(x,y,x_int):
 	coef_mat = create_spl_mat(len(x)) # get the Splines matrix for the c_j coef.
 	C = solve(coef_mat,Y)	# gets the c_j coeficients
 	"""	The following code snipet was taken from the StackOverflow forums.
-		Returns the index of the value closes to x_int.
+		Returns the index of the value closest to 'x_int' in the array.
 		Link: http://goo.gl/Is7W0
 	"""
 	j = min(range(len(x)), key=lambda i: abs(x[i]-x_int))
