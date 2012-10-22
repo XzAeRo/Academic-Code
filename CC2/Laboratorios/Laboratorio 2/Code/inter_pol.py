@@ -83,7 +83,7 @@ def splines(x,y,x_int):
 	h = float((x[len(x)-1] - x[0])/len(x))
 	a_j = y[j]
 	c_j = C[j]
-	b_j = (1/h)*(y[j+1]+y[j]) - (h/3)*(C[j+1]+c_j)
+	b_j = (1/h)*(y[j+1]+y[j]) - (h/3)*(C[j+1]+2*c_j)
 	d_j = (C[j+1] - c_j)/(3*h)
 	diff = x_int - x_j
 	
@@ -126,6 +126,7 @@ if __name__ == "__main__":
 	y = evaluate(X)
 	data = []
 	data.append(["n", "x", "y_k", "y_int", "pol", "Error Relativo", "Tiempo de Computo"])
+	f = open('tmp', 'w')
 	for m in range(1,6):
 		n = 2**m
 		for pol in ["diff", "spl"]:
@@ -138,6 +139,7 @@ if __name__ == "__main__":
 				else:
 					rel_err = abs(y_real - y_int)
 				data.append([str(n),x,y_real,y_int,pol,rel_err,comp_time])
+				f.write("${}$ & ${}$ & \\verb+{}+ & ${}$ & ${}$ \\\\\n".format(y_real,y_int,pol,rel_err,comp_time))
 	
 	table_print.pprint_table(sys.stdout, data)
 	
