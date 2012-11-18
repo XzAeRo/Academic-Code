@@ -103,7 +103,7 @@ Para resolver este problema, se hizo un matriz con todas los tiempos entre los d
 En primera instancia se programó el siguiente código:
 
 \begin{verbatim}
-/* Función objetivo: minimizar tiempos*/
+/* Función objetivo: minimizar tiempos */
 min: 999999 x11 + 999999 x22 + 999999 x33 + 999999 x44 + 999999 x55 + 999999 x66
  + 999999 x77 + 999999 x88 + 999999 x99 + 999999 x14 + 999999 x41 + 999999 x18 +
 999999 x81 + 999999 x19 + 999999 x91 + 999999 x25 + 999999 x52 + 999999 x26 +
@@ -114,7 +114,8 @@ min: 999999 x11 + 999999 x22 + 999999 x33 + 999999 x44 + 999999 x55 + 999999 x66
 15 x61 + 12 x17 + 12 x71 + 35 x23 + 35 x32 + 17 x24 + 17 x42 + 27 x34 + 27 x43
 + 25 x35 + 25 x53 + 20 x38 + 20 x83 + 12 x45 + 12 x54 + 18 x47 + 18 x74 + 15 x49
 + 15 x94 + 20 x56 + 20 x65 + 24 x57 + 24 x75 + 40 x58 + 40 x85 + 21 x69 + 21 x96
-+ 5 x78 + 21 x79 + 15 x87 + 23 x89 + 15 x97 + 7 x98; 
++ 5 x78 + 21 x79 + 15 x87 + 23 x89 + 15 x97 + 7 x98 + 20 x29 + 20 x92
++ 8 x27 + 8 x72; 
 
 /* Método hungaro */
 /* Máximo una asignación por fila */
@@ -148,25 +149,70 @@ x12 representa el camino entre HQ y AL.
 \\
 
 El resultado de esto nos indica que la ruta a seguir por el repartidor es:
-$HQ \to NIC \to HQ$ y $DAN \to USM \to JP \to NIL \to AL \to PUCV \to YON \to DAN$. Con un tiempo total del viaje
-de 107 minutos.
+$HQ \to  NIC \to HQ$ y $AL \to PUCV \to AL$ y $DAN \to USM \to JP \to NIL \to YON \to DAN$. Con un tiempo total del viaje
+de 125 minutos.
 
-Podemos identificar inmediatamente que hay un loop entre lo que es HQ y NIC, por lo que agregaremos una nueva restricción, para quebrar ese loop, de manera que no hay camino de $HQ \to NIC$ o no hay camino de $NIC \to HQ$, por lo cual se agrega la restricción: \verb+x16 = 0;+ y se modifica la F.O. a $... + 999999 x_{16} + ...$. Por otro lado se prueba también con la alternativa de: \verb+x61 = 0;+ y se modifica la F.O. a $... + 999999 x_{61} + ...$.
+Podemos identificar inmediatamente que hay un loop entre lo que es HQ y NIC, y ademas entre AL y PUCV, por lo que agregaremos nuevas restricciones, para quebrar esos loops. En primera instancia se prueba una ramificación del problema, tal que: \verb+x16 = 0;+ y se modifica la F.O. a $... + 999999 x_{16} + ...$. Por otro lado se prueba también con la alternativa de: \verb+x61 = 0;+ y se modifica la F.O. a $... + 999999 x_{61} + ...$. Y de manera análoga se realiza para $x_{27}$ y $x_{72}$.
+\\
 
-Entre las 2 alternativas, la que más conviene es el segundo caso, ya que su función objetivo es de solo 109 minutos, comparados con los 111 de el caso cuando se rompe $HQ \to NIC$. El camino generado es: 
-$JP \to USM \to JP$ y $HQ \to NIC \to NIL \to AL \to PUCV \to YON \to DAN \to HQ$.
+Cada una de esas ramificaciones generará nuevos loops, pero resumiremos la información obtenida, solo para que se entienda el caso general.
 
-Esto nuevamente entrega un loop, por lo que probaremos rompiendo $JP \to USM$ y $USM \to JP$. La opción que más combiene es:
+Al romper el camino entre $HQ \to NIC$, el tiempo de viaje queda en 131. Al romper entre $NIC \to HQ$, el tiempo de viaje queda en 127. Al romper entre $AL \to PUCV$, el tiempo de viaje queda en 133. Y finalmente al romper entre $PUCV \to AL$, el tiempo de viaje queda en 131.
 
-Esto nos entrega el siguiente recorrido del motociclista: $HQ \to NIC \to USM \to JP \to NIL \to AL \to PUCV \to YON \to DAN \to HQ$, con un tiempo de recorrido total de 111 minutos.
+Claramente nuestra opción óptima se obtendrá al seguir la ramificación cuando se rompe $NIC \to HQ$. Por lo cual se sigue buscando el óptimo por esa rama.
+Lamentablemente, esto se vuelve a repetir un par de veces más al seguir generando resultados, pero el resultado final se obtiene al romper $NIC \to HQ$, $JP \to USM$, $AL \to PUCV$ y $YON \to DAN$ (en ese orden), el cual entrega un tiempo óptimo de viaje de 136 minutos mediante la siguiente ruta:
+
+\begin{center}$HQ \to NIC \to NIL \to YON \to DAN \to USM \to JP \to PUCV \to AL \to HQ$\end{center}
 
 \subsubsection{¿Tiene otras posibilidades de rutas?}
-Para verificar otras posibles rutas, debemos forzar al cálculo que pase por caminos más económicos. En nuestro caso, el camino que más tarda es entre $DAN \to HQ$, por lo que queremos mejorar esto, para lo cual se añade una nueva restricción que impida que se pase por ahi, simplemente añadiendo ese camino como inexistente en esa dirección.
+La posibilidad de ruta que tenía este problema, era al encontrarse con las ramificaciónes de $AL \to PUCV$ y $PUCV \to AL$, ya que al romper estas rutas, ambas daban un recorrido de 135 minutos, pero al ramificar la ruta sin el camino $AL \to PUCV$, se encontró el óptimo (luego de quebrar tambien $DAN \to YON$). Y por la otra rama, cuando se rompe $PUCV \to AL$, se generaron 4 ramas más al romper $JP \to NIL$, $NIL \to NIC$, $NIC \to USM$ y $USM \to JP$, cada una de las cuales generaba una solución no óptima con un tiempo de recorrido de 137 minutos.
+
+Por lo tanto, no existen rutas alternativas óptimas.
+
 \subsubsection{¿Grafo de recorrido?}
+A partir de lo obtenido, el grafo óptimo del recorrido del repartidor de NutraFat, es:
+
+\begin{center}$HQ \to NIC \to NIL \to YON \to DAN \to USM \to JP \to PUCV \to AL \to HQ$\end{center}
 
 \subsection{Condiciones de costo}
 \subsubsection{¿Cual es la ruta más económica para el chofer?}
+Para resolver este problema, se utilizó el siguiente código:
+\begin{verbatim}
+/* Función objetivo: minimizar costos*/
+min: 999999 x11 + 999999 x22 + 999999 x33 + 999999 x44 + 999999 x55 + 999999 x66
++ 999999 x14 + 999999 x41 + 999999 x25 + 999999 x52 + 999999 x26 + 999999 x62 +
+999999 x36 + 999999 x63 + 999999 x46 + 999999 x64 + 12 x12 + 12 x21 + 16 x13 +
+16 x31 + 25 x15 + 25 x51 + 10 x16 + 10 x61 +  23 x23 + 23 x32 + 19 x24 + 19 x42
++ 27 x34 + 27 x43 + 22 x35 + 22 x53 + 20 x45 + 20 x54 + 14 x56 + 14 x65;
 
+/* Método hungaro */
+/* Máximo una asignación por fila */
+x11 + x12 + x13 + x14 + x15 + x16 = 1;
+x21 + x22 + x23 + x24 + x25 + x26 = 1;
+x31 + x32 + x33 + x34 + x35 + x36 = 1;
+x41 + x42 + x43 + x44 + x45 + x46 = 1;
+x51 + x52 + x53 + x54 + x55 + x56 = 1;
+x61 + x62 + x63 + x64 + x65 + x66 = 1;
+
+/* Máximo una asignación por columna */
+x11 + x21 + x31 + x41 + x51 + x61 = 1;
+x12 + x22 + x32 + x42 + x52 + x62 = 1;
+x13 + x23 + x33 + x43 + x53 + x63 = 1;
+x14 + x24 + x34 + x44 + x54 + x64 = 1;
+x15 + x25 + x35 + x45 + x55 + x65 = 1;
+x16 + x26 + x36 + x46 + x56 + x66 = 1;
+\end{verbatim}
+
+Al hacer funcionar este código, recibimos por resultado la siguiente ruta: $HQ \to DAN \to HQ$, $AL \to JP \to AL$ y $USM \to NIC \to USM$.
+
+Claramente estamos frente a muchos loops, y al hacer las ramificaciones correspondientes para resolver este problema, se generan 6 ramas en primera instancia, de las cuales solo 4 son óptimas, con un costo para el repartidor de 100 (las otras son de 102).
+
+Estas 4 ramas, generan soluciones nuevamente con loops, los cuales deben ser quebrados nuevamente, por lo que se generan en total 8 nuevas ramas, de las cuales solo 6 son óptimas con una solución de costo de 102. Aquí se generan muchas rutas alternativas, pero para hacer esto más rápido, pondremos el caso cuando rompemos la ruta entre $HQ \to DAN$ y $AL \to JP$ (en ese orden).
+
+Para encontrar la solución, tuvimos que ingresar en el código las siguientes modificaciones: en las restricciones se agregó \verb+x13 = 0;+, y \verb+x24 = 0;+. En la función objetivo, se modificó $... + 999999 x_{13} + 999999 x_{24} + ...$.
+
+Con estos cambios, se pudo obtener \textbf{un} camino óptimo (de los tantos), el cual es:
+\begin{center}$HQ \to NIC \to USM \to JP \to AL \to DAN \to HQ$\end{center}
 
 \bibliographystyle{alpha}
 \bibliography{bibbase}
