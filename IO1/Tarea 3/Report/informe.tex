@@ -79,204 +79,94 @@
  
 
 \begin{document}
-\title{Investigación de Operaciones I \\ \begin{Large}Tarea 2\end{Large}} 
+\title{Investigación de Operaciones I \\ \begin{Large}Tarea 3\end{Large}} 
 \author{Victor Gonzalez (2.773.029-9)
 \and Cesar Muñoz (2.973.053-0)}
 \date{\today}
 \maketitle
 
 
-\section{Constructin S.A.}
-\subsection{Gráfico de la malla.}
-\includegraphics[angle=90]{./src/malla_parte1.jpg}
-\subsection{Acelerar el proyecto en 2 días.}
-\input{./src/tarea2_parte1.ltx}
-\subsection{Programación Lineal en Lp\_Solve.}
-\input{./src/tarea2_parte1_costo.ltx}
+\section{Maximizando el lucro}
+\subsection{¿Cuál es la mínima cantidad de proveedores requerida para cumplir con las ganancias pedido y quiénes serían?}
+\subsubsection{Solución no óptima}
+\subsubsection{Solución optimizada}
+
+\subsection{Solución con todos los vendedores}
+%\input{./src/tarea2_parte1_costo.ltx}
 
 
-\section{Novister, conexiones por fibra optica.}
-\subsection{Modelo de programación lineal entera.}
-\subsubsection{Variables:	}
-\begin{description}
-\item[Regiones:] I, II, ..., XV, RM. Variables binarias que indican si se instalará una central en la region correspondiente (variables binarias).
-\item[Costos Variables:] $C_i$, donde $i={1,\dots,15,RM}$. Representan si se instalaran enlaces adicionales para la región $i$, para cubrir la demanda (variables binarias).
-\item[Variable if-else:] Y. Variable que se utiliza para condicionar una situación if-else (variable binaria).
-\end{description}
+\section{NutraFat Alimentos}
+\subsection{Condiciones de tiempo}
+\subsubsection{¿Cual es el recorrido óptimo que debe hacer el chofer?}
+Para resolver este problema, se hizo un matriz con todas los tiempos entre los destinos, pero dada la complejidad por la cantidad de conexiones, se recurrió al uso de \textit{lp\_solve}.
 
-\subsubsection{Función Objetivo:}
-$min z = 4 XV + 3 I + 2 II + 5 III + 7 IV + 6 V + 8 RM + 7 VI + 8 VII + 7 VIII + 9 IX + 9 X + 10 XI + 11 XII + 4 XIII + 7 XIV + 2 C_15 + 2 C_1 + 2 C_2 + 2 C_3 + 2 C_4 + 2 C_5 + 2 C_{RM} + 2 C_6 + 2 C_7 + 2 C_8 + 2 C_9 + 2 C_{10} + 2 C_{11} + 2 C_{12} + 2 C_{13} + 2 C_{14}$
+En primera instancia se programó el siguiente código:
 
-\subsubsection{Sujeto a:}
-Restricciones de Demanda:
-$\\
-1800 XV + 1800 I + 400 C15 + 400 C1 + 400 C2 \geq 650 \\
-1800 XV + 1800 I + II 1800 + 400 C15 + 400 C1 + 400 C2 \geq 650 \\
-1800 I + 1800 II  + 1800 III + 400 C1 + 400 C2 + 400 C3 \geq 700 \\
-1800 II + 1800 III + 1800 IV + 400 C2 + 400 C3 + 400 C4 \geq 800 \\
-1800 III + 1800 IV + 1800 V + 400 C3 + 400 C4 + 400 C5 \geq 400 \\
-1800 IV + 1800 V + 1800 RM + 400 C4 + 400 C5 + 400 CRM \geq 950 \\
-1800 V + 1800 RM + 1800 VI + 400 C5 + 400 CRM + 400 C6 \geq 1200 \\
-1800 RM + 1800 VI + 1800 VII + 400 CRM + 400 C6 + 400 C7 \geq 600 \\
-1800 VI + 1800 VII + 1800 VIII + 400 C6 + 400 C7 + 400 C8 \geq 400 \\
-1800 VII + 1800 VIII + 1800 IX + 400 C7 + 400 C8 + 400 C9 \geq 700 \\
-1800 VIII + 1800 IX + 1800 X + 400 C8 + 400 C9 + 400 C10 \geq 450 \\
-1800 IX + 1800 X + 1800 XI + 400 C9 + 400 C10 + 400 C11 \geq 400 \\
-1800 X + 1800 XI + 1800 XII + 400 C10 + 400 C11 + 400 C12 \geq 350 \\
-1800 XI + 1800 XII + 1800 XIII + 400 C11 + 400 C12 + 400 C13 \geq 350 \\
-1800 XII + 1800 XIII + 1800 XIV + 400 C12 + 400 C13 + 400 C14 \geq 300 \\
-1800 XIII + 1800 XIV + 400 C13 + 400 C14 \geq 250 \\
-$
-
-Restricciones de distancia (al menos 1 central cada 2 regiones):
-$\\XV + I \geq 1 \\
-II + III \geq 1 \\
-IV + V \geq 1 \\
-RM + VI \geq 1 \\
-VII + VIII \geq 1 \\
-IX + X \geq 1 \\
-XI + XII \geq 1 \\
-XIII + XIV \geq 1$
-
-$\\
-C1 \leq I \\
-C2 \leq II \\
-C3 \leq III \\
-C4 \leq IV \\
-C5 \leq V \\
-C6 \leq VI \\
-C7 \leq VII \\
-C8 \leq VIII \\
-C9 \leq IX \\
-C10 \leq X \\
-C11 \leq XI \\
-C12 \leq XII \\
-C13 \leq XIII \\
-C14 \leq XIV \\
-C15 \leq XV \\
-CRM \leq RM
-$
-
-Restricción "Si se construye central en Santiago, no se construye ninguna en V ni en VI":
-$\\
-V + VI \leq Y \\
-RM \leq 1 - Y
-$
-
-\subsubsection{Naturaleza de las variables:}
-$I, II, III, IV, V, VI, VII, VIII, IX, X, XI, XII, XIII, XIV, XV, RM, Y,\\ C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, CRM, Y \in \{0,1\}$
-\subsection{Código LINDO.}
-\begin{verbatim}[4]
-/* Funcion objetivo */
-min: 4 XV + 3 I + 2 II + 5 III + 7 IV + 6 V + 8 RM + 7 VI + 8 VII + 7 VIII + 9 IX + 9 X + 10 XI + 11 XII + 4 XIII + 7 XIV + 2 C15 + 2 C1 + 2 C2 + 2 C3 + 2 C4 + 2 C5 + 2 CRM + 2 C6 + 2 C7 + 2 C8 + 2 C9 + 2 C10 + 2 C11 + 2 C12 + 2 C13 + 2 C14;
-
-/* Restricciones de demanda */
-1800 XV + 1800 I + 400 C15 + 400 C1 + 400 C2 >= 650 ;				/* XV Region*/
-1800 XV + 1800 I + II 1800 + 400 C15 + 400 C1 + 400 C2 >= 650;		/* I Region */
-1800 I + 1800 II  + 1800 III + 400 C1 + 400 C2 + 400 C3 >= 700;		/* II Region */
-1800 II + 1800 III + 1800 IV + 400 C2 + 400 C3 + 400 C4 >= 800;		/* III Region */
-1800 III + 1800 IV + 1800 V + 400 C3 + 400 C4 + 400 C5 >= 400;		/* IV Region */
-1800 IV + 1800 V + 1800 RM + 400 C4 + 400 C5 + 400 CRM >= 950;		/* V Region */
-1800 V + 1800 RM + 1800 VI + 400 C5 + 400 CRM + 400 C6 >= 1200;		/* Region Metropolitana*/
-1800 RM + 1800 VI + 1800 VII + 400 CRM + 400 C6 + 400 C7 >= 600;	/* VI Region */
-1800 VI + 1800 VII + 1800 VIII + 400 C6 + 400 C7 + 400 C8 >= 400;	/* VII Region */
-1800 VII + 1800 VIII + 1800 IX + 400 C7 + 400 C8 + 400 C9 >= 700;	/* VIII Region */
-1800 VIII + 1800 IX + 1800 X + 400 C8 + 400 C9 + 400 C10 >= 450;	/* IX Region */
-1800 IX + 1800 X + 1800 XI + 400 C9 + 400 C10 + 400 C11 >= 400;		/* X Region */
-1800 X + 1800 XI + 1800 XII + 400 C10 + 400 C11 + 400 C12 >= 350;	/* XI Region */
-1800 XI + 1800 XII + 1800 XIII + 400 C11 + 400 C12 + 400 C13 >= 350;/* XII Region */
-1800 XII + 1800 XIII + 1800 XIV + 400 C12 + 400 C13 + 400 C14 >= 300;/* XIII Region */
-1800 XIII + 1800 XIV + 400 C13 + 400 C14 >= 250;					/* XIV Region */
-
-/* Restricciones de distancia (al menos 1 central cada 2 regiones) */
-XV + I >= 1;
-II + III >= 1;
-IV + V >= 1;
-RM + VI >= 1;
-VII + VIII >= 1;
-IX + X >= 1;
-XI + XII >= 1;
-XIII + XIV >= 1;
-
-/* Restricciones de costo: no se pueden usar enlaces
-adicionales si no se ha instalado central */
-C1 <= I;
-C2 <= II;
-C3 <= III;
-C4 <= IV;
-C5 <= V;
-C6 <= VI;
-C7 <= VII;
-C8 <= VIII;
-C9 <= IX;
-C10 <= X;
-C11 <= XI;
-C12 <= XII;
-C13 <= XIII;
-C14 <= XIV;
-C15 <= XV;
-CRM <= RM;
-
-
-/* Restriccion if-else: si se hace una central
-en RM no se puede construir en V o VI */
-/* Si RM > 0 entonces V = VI = 0 */
-V + VI <= Y;
-RM <= 1 - Y;
-
-/* Naturaleza de las variables */
-bin I, II, III, IV, V, VI, VII, VIII, IX, X, XI, XII, XIII, XIV, XV, RM, Y, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12, C13, C14, C15, CRM, Y;
-\end{verbatim}
-
-\textbf{Lo cual arroja el siguiente resultado:}
 \begin{verbatim}
-Value of objective function: 49
+/* Función objetivo: minimizar tiempos*/
+min: 999999 x11 + 999999 x22 + 999999 x33 + 999999 x44 + 999999 x55 + 999999 x66
+ + 999999 x77 + 999999 x88 + 999999 x99 + 999999 x14 + 999999 x41 + 999999 x18 +
+999999 x81 + 999999 x19 + 999999 x91 + 999999 x25 + 999999 x52 + 999999 x26 +
+999999 x62 + 999999 x28 + 999999 x82 + 999999 x36 + 999999 x63 + 999999 x37 +
+999999 x73 + 999999 x39 + 999999 x93 + 999999 x46 + 999999 x64 + 999999 x48 +
+999999 x84 + 999999 x59 + 999999 x95 + 999999 x67 + 999999 x76 + 999999 x68 +
+999999 x86 + 10 x12 + 10 x21 + 24 x13 + 24 x31 + 30 x15 + 30 x51 + 15 x16 +
+15 x61 + 12 x17 + 12 x71 + 35 x23 + 35 x32 + 17 x24 + 17 x42 + 27 x34 + 27 x43
++ 25 x35 + 25 x53 + 20 x38 + 20 x83 + 12 x45 + 12 x54 + 18 x47 + 18 x74 + 15 x49
++ 15 x94 + 20 x56 + 20 x65 + 24 x57 + 24 x75 + 40 x58 + 40 x85 + 21 x69 + 21 x96
++ 5 x78 + 21 x79 + 15 x87 + 23 x89 + 15 x97 + 7 x98; 
 
-Actual values of the variables:
-XV                              0
-I                               1
-II                              1
-III                             0
-IV                              1
-V                               0
-RM                              0
-VI                              1
-VII                             0
-VIII                            1
-IX                              1
-X                               0
-XI                              1
-XII                             0
-XIII                            1
-XIV                             0
-C15                             0
-C1                              0
-C2                              0
-C3                              0
-C4                              0
-C5                              0
-CRM                             0
-C6                              0
-C7                              0
-C8                              0
-C9                              0
-C10                             0
-C11                             0
-C12                             0
-C13                             0
-C14                             0
-Y                               1
+/* Método hungaro */
+/* Máximo una asignación por fila */
+x11 + x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 = 1;
+x21 + x22 + x23 + x24 + x25 + x26 + x27 + x28 + x29 = 1;
+x31 + x32 + x33 + x34 + x35 + x36 + x37 + x38 + x39 = 1;
+x41 + x42 + x43 + x44 + x45 + x46 + x47 + x48 + x49 = 1;
+x51 + x52 + x53 + x54 + x55 + x56 + x57 + x58 + x59 = 1;
+x61 + x62 + x63 + x64 + x65 + x66 + x67 + x68 + x69 = 1;
+x71 + x72 + x73 + x74 + x75 + x76 + x77 + x78 + x79 = 1;
+x81 + x82 + x83 + x84 + x85 + x86 + x87 + x88 + x89 = 1;
+x91 + x92 + x93 + x94 + x95 + x96 + x97 + x98 + x99 = 1;
+
+/* Máximo una asignación por columna */
+x11 + x21 + x31 + x41 + x51 + x61 + x71 + x81 + x91 = 1;
+x12 + x22 + x32 + x42 + x52 + x62 + x72 + x82 + x92 = 1;
+x13 + x23 + x33 + x43 + x53 + x63 + x73 + x83 + x93 = 1;
+x14 + x24 + x34 + x44 + x54 + x64 + x74 + x84 + x94 = 1;
+x15 + x25 + x35 + x45 + x55 + x65 + x75 + x85 + x95 = 1;
+x16 + x26 + x36 + x46 + x56 + x66 + x76 + x86 + x96 = 1;
+x17 + x27 + x37 + x47 + x57 + x67 + x77 + x87 + x97 = 1;
+x18 + x28 + x38 + x48 + x58 + x68 + x78 + x88 + x98 = 1;
+x19 + x29 + x39 + x49 + x59 + x69 + x79 + x89 + x99 = 1;
 \end{verbatim}
 
-\subsection{Definiciones}
-\begin{description}
-\item[Variable de holgura:] Se utiliza para convertir una desigualdad del tipo $\leq$ en una igualdad simple. Esto se obtiene añadiendo una variable no negativa (por lo general representada por una $S_i$), al lado izquierdo de una restricción, mostrando asi, "que es lo que falta para cumplir la igualdad" de la inecuación.\\
-Se refieren tambien a esta variable como la de máximo consumo de un recurso en una solución óptima del problema planteado.
-\item[Variable de exceso:] Se utiliza de manera similar a la variable de holgura, pero en este caso para desigualdades del tipo $\geq$. Se representan por una letra $E_i$ por lo general. Estas variables se restan al lado izquierdo de la desigualdad con un valor no negativo.\\
-Estas variables representan la cantidad mínima de un recurso que se debe utilizar en la solución óptima.
-\item[Variable artificial:] Se usan estas variables cuando se presentan restricciones del tipo $=$ y $\geq$ no contienen al origen dentro de la región factible, por lo que se trata de llevar esas restricciones a una dimensión donde sí se encuentre el origen.\\
-Por lo general estas variables se denotan por $A_i$, y no representan nada en especial salvo, llevar la restricción a una región factible del problema.
-\end{description}
+\{1,2,3,4,5,6,7,8,9\} = \{HQ, AL, DAN, JP, USM, NIC, PUCV, YON, NIL\}
+
+x12 representa el camino entre HQ y AL.
+
+\textit{\textbf{Nota:} no es necesario indicar la naturaleza de las variables dada las restricciones del problema.}
+\\
+
+El resultado de esto nos indica que la ruta a seguir por el repartidor es:
+$HQ \to NIC \to HQ$ y $DAN \to USM \to JP \to NIL \to AL \to PUCV \to YON \to DAN$. Con un tiempo total del viaje
+de 107 minutos.
+
+Podemos identificar inmediatamente que hay un loop entre lo que es HQ y NIC, por lo que agregaremos una nueva restricción, para quebrar ese loop, de manera que no hay camino de $HQ \to NIC$ o no hay camino de $NIC \to HQ$, por lo cual se agrega la restricción: \verb+x16 = 0;+ y se modifica la F.O. a $... + 999999 x_{16} + ...$. Por otro lado se prueba también con la alternativa de: \verb+x61 = 0;+ y se modifica la F.O. a $... + 999999 x_{61} + ...$.
+
+Entre las 2 alternativas, la que más conviene es el segundo caso, ya que su función objetivo es de solo 109 minutos, comparados con los 111 de el caso cuando se rompe $HQ \to NIC$. El camino generado es: 
+$JP \to USM \to JP$ y $HQ \to NIC \to NIL \to AL \to PUCV \to YON \to DAN \to HQ$.
+
+Esto nuevamente entrega un loop, por lo que probaremos rompiendo $JP \to USM$ y $USM \to JP$. La opción que más combiene es:
+
+Esto nos entrega el siguiente recorrido del motociclista: $HQ \to NIC \to USM \to JP \to NIL \to AL \to PUCV \to YON \to DAN \to HQ$, con un tiempo de recorrido total de 111 minutos.
+
+\subsubsection{¿Tiene otras posibilidades de rutas?}
+Para verificar otras posibles rutas, debemos forzar al cálculo que pase por caminos más económicos. En nuestro caso, el camino que más tarda es entre $DAN \to HQ$, por lo que queremos mejorar esto, para lo cual se añade una nueva restricción que impida que se pase por ahi, simplemente añadiendo ese camino como inexistente en esa dirección.
+\subsubsection{¿Grafo de recorrido?}
+
+\subsection{Condiciones de costo}
+\subsubsection{¿Cual es la ruta más económica para el chofer?}
+
 
 \bibliographystyle{alpha}
 \bibliography{bibbase}
