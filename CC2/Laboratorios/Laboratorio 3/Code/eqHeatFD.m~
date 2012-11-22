@@ -1,7 +1,6 @@
 function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
 	
 	result = [];
-
 	m = L/h;
 
 %Se genera la partición de L con los m valores correspondientes a los X_i.

@@ -1,9 +1,8 @@
 function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
 	
+	% Inicialización de variables
 	result = [];
 	m = L/h;
-
-%Se genera la partición de L con los m valores correspondientes a los X_i.
 	X = linspace(0,L,m);
 	u_0 = zeros(1,m);
 	u_j = [];
