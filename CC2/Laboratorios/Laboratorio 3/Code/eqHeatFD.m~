@@ -1,4 +1,4 @@
-function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
+function [answer] = eqHeatFD(L, h, k, a, MAX_ITER)
 	
 	% inicialización de variables del programa
 	result = [];
@@ -7,7 +7,7 @@ function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
 	u_0 = zeros(1,m);
 	u_j = [];
 
-	% generamos u_0
+	% generamos u_0: condiciones de borde
 	for i = 1:m,
 		u_0(i) = (exp(2*X(i)))*sin(X(i))*cos(X(i));
 	end
@@ -44,9 +44,13 @@ function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
 		result(:,i) = u_prev;
 		u_prev = u_j2;		
 		
+		% si nos aproximamos lo suficiente nos detenemos
 		if max(abs(local_dif)) <= (1.1*10^(-4))
 			result(:,i) = u_prev;
+			answer = false;
 			break
 		end
 	end
+	
+	answer = true;
 end
