@@ -1,4 +1,4 @@
 % Completar de acuerdo al enunciado.
-function [] = surfaceDataTime(MAX_ITER)
-	mesh(eqHeatFD(1,0.01,0.00000001,1,MAX_ITER))
-end
+function [] = surfaceDataTime(L,h,k,a,MAX_ITER)
+	mesh(eqHeatFD(L,h,k,a,MAX_ITER))
+end 
