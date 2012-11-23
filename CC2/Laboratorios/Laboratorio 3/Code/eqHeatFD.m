@@ -1,4 +1,4 @@
-function [answer] = eqHeatFD(L, h, k, a, MAX_ITER)
+function [result, answer] = eqHeatFD(L, h, k, a, MAX_ITER)
 	
 	% inicialización de variables del programa
 	result = [];
@@ -51,6 +51,5 @@ function [answer] = eqHeatFD(L, h, k, a, MAX_ITER)
 			break
 		end
 	end
-	
 	answer = true;
 end

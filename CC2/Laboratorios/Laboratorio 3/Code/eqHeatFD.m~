@@ -1,4 +1,4 @@
-function [answer] = eqHeatFD(L, h, k, a, MAX_ITER)
+function [result] = eqHeatFD(L, h, k, a, MAX_ITER)
 	
 	% inicialización de variables del programa
 	result = [];
@@ -47,10 +47,7 @@ function [answer] = eqHeatFD(L, h, k, a, MAX_ITER)
 		% si nos aproximamos lo suficiente nos detenemos
 		if max(abs(local_dif)) <= (1.1*10^(-4))
 			result(:,i) = u_prev;
-			answer = false;
 			break
 		end
 	end
-	
-	answer = true;
 end
