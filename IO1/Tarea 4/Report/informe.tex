@@ -1,0 +1,175 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenx} %Codificacion del texto (ISO Latin1 encoding)
+
+\usepackage{fancyhdr} %Permite acomodar a tu gusto la parte de arriba y
+% abajo del documento
+\usepackage[spanish]{babel} %Permite definir el idioma del dcumento
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url} %Tipo de fuente para correos y paginas
+\usepackage{pgf}
+\usepackage{fleqn}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{colortbl} %Permite colocar colores a las tablas
+\usepackage{booktabs}
+\usepackage[final]{pdfpages}
+%%%%%%%%%%
+%Margenes%
+%%%%%%%%%%
+\parskip 1mm %Espacio entre parrafos
+
+\setlength{\topmargin}{0pt}
+\topmargin      0.5cm
+\oddsidemargin	0.1cm  % Ancho Letter 21,59cm
+\evensidemargin 0.5cm  % Alto  Letter 27,81cm
+\textwidth	17cm%15.5cm
+\textheight	21.0cm
+\headsep	4 mm
+\parindent	0.5cm
+%%%%%%%%%%%%%%%%%%%%%%
+%Estilo del documento%
+%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancyplain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fancyheadings. Top y Bottom del documento%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recuerde que en este documento la portada del documento no posee
+% numeracion, pero de igual manera llamaremos a esa primera pagina la numero
+% 1, y la que viene la dos. Esto es para tener una idea de las que
+% llamaremos pares e impares
+\lhead{Investigación de Operaciones I} %Parte superior izquierda
+\rhead{\bf \it Tarea 4} %Parte superior derecha
+\lfoot{\it } %Parte inferior izquierda. \thepage indica
+% el numero de pagina
+\cfoot{} %Parte inferior central
+\rfoot{\bf \thepage} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\newcommand{\primaria}[1]{
+	\textbf{\underline{#1}}
+}
+
+\newcommand{\foranea}[1]{
+	\textbf{\textsl{#1}}
+}
+
+\newcommand{\primyfor}[1]{
+	\underline{\foranea{#1}}
+}
+
+\makeatletter
+\newcommand\subsubsubsection{\@startsection {paragraph}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus.2ex}%
+                                   {\normalfont\bfseries}}
+                       
+                                
+                                 
+\newcommand\subsubsubsubsection{\@startsection {subparagraph}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {1.5ex \@plus.2ex}%
+                                  
+                                   {\normalfont\bfseries}}
+
+
+\makeatother
+ 
+
+\begin{document}
+\title{Investigación de Operaciones I \\ \begin{Large}Tarea 4\end{Large}} 
+\author{Victor Gonzalez (2.773.029-9)
+\and Cesar Muñoz (2.973.053-0)}
+\date{\today}
+\maketitle
+
+\section{Hidroeléctrica Zeus}
+\subsection{Flujo máximo a los generadores}
+Para determinar el flujo máximo hacia cada uno de los generadores, primero se deben identificar los distintos caminos desde el nodo 1 hacia el nodo 6.
+
+Suponiendo que los flujos no se pueden devolver a nodos anteriores, podemos decir que se generan los siguientes caminos:
+
+\begin{enumerate}
+\item $1\to2\to5\to6$
+\item $1\to2\to3\to6$
+\item $1\to2\to5\to3\to6$
+\item $1\to2\to3\to5\to6$
+\item $1\to2\to3\to4\to6$
+\item $1\to2\to5\to3\to4\to6$
+\item $1\to3\to6$
+\item $1\to3\to5\to6$
+\item $1\to3\to2\to5\to6$
+\item $1\to3\to4\to6$
+\item $1\to4\to6$
+\item $1\to4\to3\to6$
+\item $1\to4\to3\to2\to5\to6$
+\item $1\to4\to3\to5\to6$
+\end{enumerate}
+
+Ahora, tomamos algun camino conveniente para calcular los flujos. Haremos esto de manera gráfica para hacer más entendible el trabajo.
+
+Se utilizará la notación ``$X,Y$", donde $Y$ representa el flujo acumulado en ese vértice, y $X$ la capacidad no utilizada de ese vértice.
+
+Primero, tomaremos la ruta que comprende los nodos $1\to2\to5\to6$. Dado que el máximo flujo en ese camino es $30$, se resta esa capacidad a todos los vértices, y se agrega a todos los flujos acumulados:
+
+\begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it0.png}
+                \caption{Camino elegido}
+        \end{subfigure}
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it1.png}
+                \caption{Camino iterado}
+        \end{subfigure}
+\end{figure}
+
+De inmediato notamos que el vértice entre los nodos $2\to5$, se ha ocupado toda la capacidad, por lo que todos los caminos que utilicen ese vertice, ya no serán ``iterables". Por lo tanto, los caminos: $(1\to2\to5\to3\to6)$, $(1\to2\to5\to3\to4\to6)$, $(1\to3\to2\to5\to6)$ y $(1\to4\to3\to2\to5\to6)$, ya no se considerarán para futuras iteraciones.
+
+Luego, elegimos el camino $1\to2\to3\to5\to6$, y aplicamos el mismo algoritmo, para todo el resto de los caminos que van quedando disponibles:
+
+\begin{figure}[htbp]
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it2.png}
+                \caption{Camino $1\to2\to3\to5\to6$}
+        \end{subfigure}
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it3.png}
+                \caption{Camino $1\to2\to3\to6$}
+        \end{subfigure}
+\end{figure}
+
+\begin{figure}[htbp]
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it4.png}
+                \caption{Camino $1\to3\to6$}
+        \end{subfigure}
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it5.png}
+                \caption{Camino $1\to3\to4\to6$}
+        \end{subfigure}
+\end{figure}
+
+\begin{figure}[htbp]
+        \begin{subfigure}[htbp]{8cm}
+                \centering
+                \includegraphics[width=8cm]{./it6.png}
+                \caption{Camino $1\to4\to6$}
+        \end{subfigure}
+\end{figure}
+\newpage
+Luego, el grafo de flujos ya no es iterable, por lo que se ha encontrado una solución a el flujo que corre por la Hidroeléctrica Zeus.
+
+De los resultados podemos concluir, que la demanda que va a hacia los generadores del nodo 6, se cumplen a cabalidad, y es más, los vértices ($1\to2$), ($1\to3$), ($1\to4$) y ($3\to5$) quedaron con una capacidad sin utilizar total de $90 [\frac{m^3}{h}]$.
+
+\end{document}

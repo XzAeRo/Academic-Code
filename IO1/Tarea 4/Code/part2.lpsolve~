@@ -1,0 +1,24 @@
+max F;
+
+/* Origen */
+x12 + x13 + x14 - F = 0;
+/* Destino */
+x56 + x36 + x46 - F = 0;
+/* Capacidades (se omiten arcos que no aportan al problema como x52) */
+x12 <= 100;
+x13 <= 50;
+x14 <= 60;
+x23 <= 40;
+x25 <= 30;
+x35 <= 30;
+x34 <= 20;
+x36 <= 40;
+x46 <= 40;
+x56 <= 50;
+/* Lo que entra a un nodo, es lo mismo que sale */
+x12 + x23 - x25 - x23 = 0; /* nodo 2 */
+x13 + x23 + x34 + x35 - x23 - x35 - x36 - x34 = 0; /* nodo 3 */
+x14 + x34 - x34 - x46 = 0; /* nodo 4 */
+x25 + x35 - x35 - x56 = 0;/* nodo 5 */
+/* Asegurar satisfaccion de demanda */
+x56 + x36 + x46 = 130;
