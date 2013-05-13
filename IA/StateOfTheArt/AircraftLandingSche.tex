@@ -1,0 +1,89 @@
+\documentclass[letter, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsfonts}
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{url} %Tipo de fuente para correos y paginas
+\usepackage{pgf}
+\usepackage{fleqn}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{colortbl} %Permite colocar colores a las tablas
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{moreverb}
+\usepackage{rotating}
+\usepackage[final]{pdfpages}
+
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+
+
+\begin{document}
+\title{Inteligencia Artificial \\ \begin{Large}Estado del Arte: Problema \textit{Aircraft Landing Scheduling}\end{Large}}
+\author{Victor Gonzalez Rodriguez\\ \url{victor.gonzalezro@alumnos.usm.cl}}
+\date{\today}
+\maketitle
+
+
+%--------------------No borrar esta secci\'on--------------------------------%
+\section*{Evaluación}
+
+\begin{tabular}{ll}
+Resumen (5\%): & \underline{\hspace{2cm}} \\
+Introducci\'on (5\%):  & \underline{\hspace{2cm}} \\
+Definici\'on del Problema (10\%):  & \underline{\hspace{2cm}} \\
+Estado del Arte (35\%):  & \underline{\hspace{2cm}} \\
+Modelo Matem\'atico (20\%): &  \underline{\hspace{2cm}}\\
+Conclusiones (20\%): &  \underline{\hspace{2cm}}\\
+Bibliograf\'ia (5\%): & \underline{\hspace{2cm}}\\
+ &  \\
+\textbf{Nota Final (100\%)}:   & \underline{\hspace{2cm}}
+\end{tabular}
+%---------------------------------------------------------------------------%
+\vspace{2cm}
+
+
+\begin{abstract}
+En este informe, consideramos el problema de Aircraft Landing Scheduling, donde se modela el aterrizaje de aviones en distintas pistas de un aeropuerto. Este problema nos ayuda a decidir el tiempo y lugar donde un avión debería aterrizar dentro de una ventana predeterminada de tiempo, respetando la separación de tiempo entre aterrizajes y la secuencia respectiva de aviones que deben aterrizar después. Analizaremos el estado del arte de los métodos actualmente publicados, de manera que se genere una idea general de las implementaciones disponibles para resolver este problema, y analizar así cuales son los mejores acercamientos y sus evoluciones. Finalmente, esto se presentará mediante un modelo matemático, formulando sus respectivas restricciones y variables, para luego comentar y concluir el estado del arte al presente año.
+\end{abstract}
+
+\begin{description}
+\item[Keywords:] Aircraft Landing Scheduling problem, estado del arte, modelo matemático, calendarización de aterrizajes, Aircraft Arrival and Departure Sequencing problem.
+\end{description}
+\newpage
+
+\section{Introducción}
+Una explicaci\'on breve del contenido del informe. Es decir, detalla: Prop\'osito, Estructura del Documento, Descripci\'on (muy breve) del Problema y Motivaci\'on.
+
+\section{Definici\'on del Problema}
+Explicaci\'on del problema que se va a estudiar, en que consiste, cuales son sus variables, restricciones y objetivos de manera general.
+Variantes m\'as conocidas que existen.
+
+\section{Estado del Arte}
+Lo m\'as importante que se ha hecho hasta ahora con relaci\'on al problema. Deber\'ia responder preguntas como las siguientes:
+?`cuando surge?, ?`qu\'e m\'etodos se han usado para resolverlo?, ?`cuales son los mejores algoritmos que se han creado hasta
+la fecha?, ?`qu\'e representaciones han tenido los mejores resultados?, ?`cu\'al es la tendencia actual?, tipos de movimientos,
+heur\'isticas, m\'etodos completos, tendencias, etc... Puede incluir gr\'aficos comparativos, o explicativos.\\
+La informaci\'on que describen en este punto se basa en los estudios realizados con antelaci\'on respecto al tema.
+Dichos estudios se citan de manera que quien lea su estudio pueda tambi\'en
+ acceder a las referencias que usted revis\'o. Las citas se realizan mediante el comando \verb+\cite{ }+.
+Por ejemplo, para hacer referencia al art\'iculo de algoritmos h\'ibridos para problemas de satisfacci\'on 
+ de restricciones que ley\'o para el primer certamen~\cite{Prosser93Hybrid}.
+
+\section{Modelo Matem\'atico}
+Uno o m\'as modelos matem\'aticos para el problema, idealmente indicando el espacio de b\'usqueda para cada uno.
+
+\section{Conclusiones}
+Conclusiones RELEVANTES del estudio realizado.
+
+\section{Bibliograf\'ia}
+Indicando toda la informaci\'on necesaria de acuerdo al tipo de documento revisado. Todas las referencias deben ser 
+citadas en el documento.
+\bibliographystyle{plain}
+\bibliography{Referencias}
+
+\end{document} 
