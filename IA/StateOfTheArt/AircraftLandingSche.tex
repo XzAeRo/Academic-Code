@@ -1,4 +1,4 @@
-\documentclass[letter, 10pt]{article}
+\documentclass[letter, 11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{amsfonts}
@@ -19,7 +19,21 @@
 \usepackage{rotating}
 \usepackage[final]{pdfpages}
 
-\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+%\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+
+%%%%%%%%%%
+%Margenes%
+%%%%%%%%%%
+\parskip 1mm %Espacio entre parrafos
+
+\setlength{\topmargin}{0pt}
+\topmargin      0.5cm
+\oddsidemargin	0.1cm  % Ancho Letter 21,59cm
+\evensidemargin 0.5cm  % Alto  Letter 27,81cm
+\textwidth	14cm
+\textheight	21.0cm
+\headsep	4 mm
+\parindent	0.5cm
 
 
 \begin{document}
@@ -57,11 +71,18 @@ En este informe, consideramos el problema de Aircraft Landing Scheduling, donde 
 \newpage
 
 \section{Introducción}
-Una explicaci\'on breve del contenido del informe. Es decir, detalla: Prop\'osito, Estructura del Documento, Descripci\'on (muy breve) del Problema y Motivaci\'on.
+El Aircraft Landing Scheduling Problem (ALSP), o \textit{Problema de Calendarización de Aterrizaje de Aeronaves} en español, es un problema que ha ganado mucha importancia a nivel mundial, especialmente los últimos años debido a la gran congestión de aviones que están circulando actualmente en el espacio aéreo mundial, y la necesidad de mantener el flujo de aeronaves lo más fluido posible sin perder de vista la seguridad de los pasajeros que son parte escencial de todo este sistema. Ejemplo de esto es la investigación impulsada gubernamentalmente en el aeropuerto de Heathrow hace un par de años atrás.
 
-\section{Definici\'on del Problema}
-Explicaci\'on del problema que se va a estudiar, en que consiste, cuales son sus variables, restricciones y objetivos de manera general.
-Variantes m\'as conocidas que existen.
+El ALSP es catalogado como un problema muy complejo, el cual en la clasificación estándar, se lo cataloga como NP-complejo\footnote{Tan complejo como el más dificil de los problemas polinomiales no-deterministas.}, y debido a esto mismo, las implementaciónes disponibles en las publicaciones a nivel mundial, pueden llegar a ser muy complejas y difíciles de entender. Debido a esta situación, hemos de entregar una definición del problema que sólo involucre los factores más comunes y/o significativos para modelar el ALSP, y a partir de esto, se presentará un modelo matemático tan sencillo como la definición del problema lo permita.
+
+Estudiaremos ademas, las distintas implementaciones disponibles actualmente de manera superficial, de modo que se pueda comparar a grandes rasgos cual es la tendencia mundial o histórica para resolver este tipo de problemas, situando al lector en la situación actual de la modelación de estos problemas.
+
+A partir de lo presentado previamente en este documento, se comentará, justificará y comentará lo expuesto en la sección llamada \textit{Estado del Arte} y \textit{Modelo Matemático}.
+
+Finalmente, es de esperar que la información entregada en este documento, sea de ayuda para tener una buena noción de lo que está ocurriendo actualmente respecto al ALSP, y cuales serían los mejores acercamientos para resolver este tipo de problemas en la actualidad.
+
+\section{Definición del Problema}
+
 
 \section{Estado del Arte}
 Lo m\'as importante que se ha hecho hasta ahora con relaci\'on al problema. Deber\'ia responder preguntas como las siguientes:
