@@ -88,6 +88,32 @@ El curso a seguir para resolver una ecuación diferencial utilizando \textit{Tra
 
 
 \section{Desarrollo}
+Primero alineamos todos los valores de las ecuaciones (1) y (2) hacia la izquierda, y luego aplicamos la transformada de Laplace en ambas ecuaciones:
+
+\begin{equation}\dfrac{dx}{dt} - 9 x - 2 y = 0\end{equation}
+\begin{equation}\dfrac{dy}{dt} + 2 x - 9 y = 0\end{equation}
+
+\begin{equation}sX-x(0)-9X-2Y=0\end{equation}
+\begin{equation}sY-y(0)+2X-9Y=0\end{equation}
+
+Ya que $x(0)=2$ y $y(0)=9$, las reemplazamos en (5) y (6). Luego, factorizamos y acomodamos:
+
+\begin{equation}(s-9)X-2Y=2\end{equation}
+\begin{equation}2X+(s-9)Y=9\end{equation}
+
+Multiplicamos a (7) por $(s-9)$ y a (8) por $2$:
+
+\begin{equation}(s-9)^2 X-2(s-9)Y=2(s-9)\end{equation}
+\begin{equation}4X+2(s-9)Y=18\end{equation}
+
+Si sumamos a (9) y (10), obtenemos la siguiente ecuación:
+
+\begin{equation}((s-9)^2+4)X=2s\end{equation}
+
+Simplificando y despejando:
+
+\begin{equation}X=\dfrac{2s}{s^2-18s+85}\end{equation}
+
 
 \section{Resultados Finales}
 
