@@ -17,20 +17,12 @@
 \usepackage{booktabs}
 \usepackage{moreverb}
 \usepackage{rotating}
+\usepackage{lastpage}
 \usepackage[final]{pdfpages}
 %%%%%%%%%%
 %Margenes%
 %%%%%%%%%%
-\parskip 1mm %Espacio entre parrafos
-
-\setlength{\topmargin}{0pt}
-\topmargin      0.5cm
-\oddsidemargin	0.1cm  % Ancho Letter 21,59cm
-\evensidemargin 0.5cm  % Alto  Letter 27,81cm
-\textwidth	17cm%15.5cm
-\textheight	21.0cm
-\headsep	4 mm
-\parindent	0.5cm
+\usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
 %%%%%%%%%%%%%%%%%%%%%%
 %Estilo del documento%
 %%%%%%%%%%%%%%%%%%%%%%
@@ -45,47 +37,55 @@
 % llamaremos pares e impares
 \lhead{Laboratorio mat023} %Parte superior izquierda
 \rhead{\bf \it Preinforme 2} %Parte superior derecha
-\lfoot{\it } %Parte inferior izquierda. \thepage indica
+\lfoot{\it Victor Gonzalez} %Parte inferior izquierda. \thepage indica
 % el numero de pagina
-\cfoot{} %Parte inferior central
-\rfoot{\bf \thepage} %Parte inferior derecha
+\cfoot{\bf \thepage} %Parte inferior central
+\rfoot{página \thepage\ de \pageref{LastPage}} %Parte inferior derecha
 \renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
 
-\newcommand{\primaria}[1]{
-	\textbf{\underline{#1}}
-}
-
-\newcommand{\foranea}[1]{
-	\textbf{\textsl{#1}}
-}
-
-\newcommand{\primyfor}[1]{
-	\underline{\foranea{#1}}
-}
-
-\makeatletter
-\newcommand\subsubsubsection{\@startsection {paragraph}{1}{\z@}%
-                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                   {1.5ex \@plus.2ex}%
-                                   {\normalfont\bfseries}}
-\newcommand\subsubsubsubsection{\@startsection {subparagraph}{1}{\z@}%
-                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
-                                   {1.5ex \@plus.2ex}%
-                                   {\normalfont\bfseries}}
-
-
-\makeatother
- 
-
 \begin{document}
-\title{Laboratorio mat023 \\ \begin{Large}Preinforme 2\end{Large}} 
-\author{Victor Gonzalez Rodriguez\\victor.gonzalezro@alumnos.usm.cl\\2773029-9}
-\date{\today}
-\maketitle
 
 \section{Enunciado}
+Para los problemas que se entregan a continuación, se deben usar las siguientes constantes:
+\begin{description}
+\item[$\alpha$] : penúltimo dígito no nulo de su rol. En mi caso: $9$.
+\item[$\beta$] : su bloque horario. En mi caso: $2$. 
+\end{description}
+
+Usando \textbf{Transformada de Laplace}, resolver el sistema de ecuaciones diferenciales de coeficientes constantes.
+
+\begin{center}
+	\begin{tabular}{ p{3.5cm} |}
+	$\dfrac{dx}{dt} = \alpha x + \beta y$ \\
+	\smallskip \\
+	$\dfrac{dy}{dt} = -\beta x + \alpha y$ \\
+	\smallskip \\
+	\hline
+	\end{tabular}
+\end{center}
+
+Donde $x(0)=\beta$, $y(0)=\alpha$
 
 \section{Planteo}
+Primero, reemplazamos los alfa y beta por los valores respectivos, quedandonos el siguiente sistema:
+
+\begin{equation}\dfrac{dx}{dt} = 9 x + 2 y\end{equation}
+\begin{equation}\dfrac{dy}{dt} = -2 x + 9 y\end{equation}
+
+Donde $x(0)=2$, $y(0)=9$ \\
+
+Luego, nos encontramos frente a un sistema de ecuaciones diferenciales, al cual se le debe encontrar soluciones empleando \textit{Transformaciones de Laplace}.
+
+El curso a seguir para resolver esto, sigue la misma mecánica que se utiliza para resolver sistemas de ecuaciones normales, pero con algunos pasos extras, ya que la idea es dejar resuelta una incógnita conveniente, para luego encontrar la otra (tal cual como en un sistema normal).
+
+El curso a seguir para resolver una ecuación diferencial utilizando \textit{Transformaciones de Laplace}, es el siguiente:
+
+\begin{enumerate}
+	\item Calculamos la transformada de Laplace de una ecuación, para obtener \textit{la ecuación subsidiaria}.
+	\item Luego, despejamos la transformada de Laplace de esta ecuación subsidiaria.
+	\item Buscamos la función inversa de la transformada que encontramos. Esta inversa de Laplace, es la solución de la ecuación diferencial.
+\end{enumerate}
+
 
 \section{Desarrollo}
 
@@ -94,6 +94,5 @@
 \section{Comentarios y Conclusiones}
 
 \section{Comandos Utilizados}
-
 
 \end{document}
