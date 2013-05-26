@@ -112,8 +112,60 @@ Si sumamos a (9) y (10), obtenemos la siguiente ecuación:
 
 Simplificando y despejando:
 
-\begin{equation}X=\dfrac{2s}{s^2-18s+85}\end{equation}
+\begin{equation}X(s)=2\dfrac{s}{(s-9)^2+2^2}\end{equation}
 
+Podemos notar que esta transformada de Laplace, tiene un cierto parecido a la transformada del coseno. La cual es:
+
+\begin{center}
+	$\mathcal{L}\{cos(at)\} = \dfrac{s}{s^2+a^2}$
+\end{center}
+
+Luego, sumamos un \textit{cero} conveniente:
+
+\begin{equation}X(s) = 2\dfrac{s}{(s-9)^2+2^2} = 2\left(\dfrac{s-9}{(s-9)^2+2^2} + \dfrac{9}{(s-9)^2+2^2}\right)\end{equation}
+\newpage
+
+Ahora notamos que el lado derecho de la suma, es similar a la transformada de Laplace del seno, el cual es:
+
+\begin{center}
+	$\mathcal{L}\{sin(at)\} = \dfrac{a}{s^2+a^2}$
+\end{center}
+
+Luego, multiplicamos el lado derecho de la suma, por un \textit{uno} conveniente:
+
+\begin{equation*}X(s) = 2\left(\dfrac{s-9}{(s-9)^2+2^2} + \dfrac{\frac{2}{9}}{\frac{2}{9}}\dfrac{9}{(s-9)^2+2^2}\right)\end{equation*}
+
+\begin{equation*}X(s) = 2\left(\dfrac{s-9}{(s-9)^2+2^2} + \dfrac{9}{2}\dfrac{2}{(s-9)^2+2^2}\right) \end{equation*}
+
+\begin{equation}X(s) = \dfrac{2(s-9)}{(s-9)^2+2^2} + 9\dfrac{2}{(s-9)^2+2^2} \end{equation}
+
+Ahora, notamos que ambas fracciones, tienen un corrimiento, lo que en transformada de Laplace se traduce como:
+
+\begin{center}
+	$\mathcal{L}^{-1}\{F(s-a)\} = e^{at}f(t)$
+\end{center}
+
+Luego, $\mathcal{L}^{-1}\{X(s)\}$ es:
+
+\begin{equation*}\mathcal{L}^{-1}\{X(s)\} = x(t) = 2e^{9t}cos(2t) + 9e^{9t}sin(2t)\end{equation*}
+
+\begin{equation}x(t) = e^{9t}\left(2cos(2t) + 9sin(2t)\right)\end{equation}
+
+Finalmente, hemos encontrado la solucion de $x(t)$, y al mirar la ecuacion (1), nos damos cuenta que $y(t)$ es simplemente una combinación lineal de $x(t)$ y $x'(t)$, por lo que solo nos falta encontrar $x'(t)$ para conocer a $y(t)$. Entonces:
+
+\begin{equation*}x(t) = e^{9t}\left(2cos(2t) + 9sin(2t)\right)\end{equation*}
+\begin{equation*}x'(t) = 9e^{9t}\left(2cos(2t) + 9sin(2t)\right) + e^{9t}\left(-4sin(2t) + 18cos(2t)\right)\end{equation*}
+\begin{equation}x'(t) = e^{9t}\left(36cos(2t)+77sin(2t)\right)\end{equation}
+
+Luego, despejando desde (1) a $y(t)$, tenemos que:
+
+\begin{equation}y(t)=\dfrac{1}{2}\left(x'(t)-9x(t)\right)\end{equation}
+
+\begin{equation}y(t) = \dfrac{1}{2}\left\{ e^{9t}\left(36cos(2t)+77sin(2t)\right) - 9\left[ e^{9t}\left(2cos(2t) + 9sin(2t)\right)\right] \right\}\end{equation}
+
+\begin{equation}y(t) = \dfrac{e^{9t}}{2}\left\{ 18cos(2t) - 4sin(2t) \right\}\end{equation}
+
+\begin{equation}y(t) = e^{9t}\left\{ 9cos(2t) - 2sin(2t) \right\}\end{equation}
 
 \section{Resultados Finales}
 
