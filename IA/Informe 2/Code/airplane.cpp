@@ -7,6 +7,7 @@
 #include <stdlib.h>
 using namespace std;
 
+/* Structures */
 typedef struct Airplane{
 	int bef;
 	int target;
@@ -16,6 +17,7 @@ typedef struct Airplane{
 	vector<int> sep;
 } Airplane;
 
+/* Structures: Airplane populate function */
 vector<Airplane> populate(){
     int plane_count, i,j;
 	string line, sp_temp;
@@ -66,3 +68,31 @@ vector<Airplane> populate(){
 	cout << endl;
 	return airplanes;
 }
+
+class CAirplane {
+	int bef, target, last;
+	float p_bef, p_last;
+	vector<int> sep;
+	
+	public:
+		void set_values(int,int,int,float,float,vector<int>);
+		int get_bef() {return bef;}
+		int get_target() {return target;}
+		int get_last() {return last;}
+		float get_p_bef() {return p_bef;}
+		float get_p_last() {return p_last;}
+		vector<int> get_sep() {return sep;}
+}
+
+
+
+
+int main() {
+	vector<Airplane> airplanes;
+	Airplane airplane;
+	
+	airplanes = populate();
+	
+	return 0;
+}
+
