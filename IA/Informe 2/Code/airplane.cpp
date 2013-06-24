@@ -7,14 +7,14 @@
 #include <stdlib.h>
 using namespace std;
 
-struct Airplane{
+typedef struct Airplane{
 	int bef;
 	int target;
 	int last;
 	float p_bef;
 	float p_last;
 	vector<int> sep;
-};
+} Airplane;
 
 vector<Airplane> populate(){
     int plane_count, i,j;
@@ -65,13 +65,4 @@ vector<Airplane> populate(){
 
 	cout << endl;
 	return airplanes;
-}
-
-int main() {
-	vector<Airplane> airplanes;
-	Airplane airplane;
-	
-	airplanes = populate();
-	
-	return 0;
 }
