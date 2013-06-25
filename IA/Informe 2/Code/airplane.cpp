@@ -82,11 +82,28 @@ vector<Airplane> populate(){
 	return airplanes;
 }
 
+vector<Airplane> sortByTarget(vector<Airplane> airplanes){
+	Airplane airplane;
+	for(int i=0 ; i<airplanes.size() ; i++){
+		for(int j=0 ; j<i ; j++){
+			if(airplanes.at(i).get_target() < airplanes.at(j).get_target()){
+				swap(airplanes.at(i), airplanes.at(j));
+			}
+		
+		}
+	}
+
+	return airplanes;
+}
+
 int main() {
 	vector<Airplane> airplanes;
 	
 	airplanes = populate();
+	airplanes = sortByTarget(airplanes);
+
+	for(int i=0 ; i<airplanes.size() ; i++)
+		cout << airplanes.at(i).get_target() << endl;
 	
 	return 0;
 }
-
