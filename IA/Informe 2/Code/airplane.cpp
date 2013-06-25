@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip>
 #include <vector>
 #include <sstream>
 #include <fstream>
@@ -8,13 +7,16 @@
 using namespace std;
 
 class Airplane {
-	int bef, target, last;
+	int id, bef, target, last;
 	float p_bef, p_last;
 	vector<int> sep;
 	
 	public:
-		void set_values(int,int,int,float,float);
+		void set_values(int,int,int,int,float,float);
 		void push_sep(int);
+		bool verify_time(int);
+		float check_cost(int);
+		int get_id() {return id;}
 		int get_bef() {return bef;}
 		int get_target() {return target;}
 		int get_last() {return last;}
@@ -23,7 +25,8 @@ class Airplane {
 		vector<int> get_sep() {return sep;}
 };
 
-void Airplane::set_values(int bef, int target, int last, float p_bef, float p_last){
+void Airplane::set_values(int id, int bef, int target, int last, float p_bef, float p_last){
+	this->id = id;
 	this->bef = bef;
 	this->target = target;
 	this->last = last;
@@ -32,6 +35,23 @@ void Airplane::set_values(int bef, int target, int last, float p_bef, float p_la
 }
 void Airplane::push_sep(int value){
 	this->sep.push_back(value);
+}
+bool Airplane::verify_time(int suggested_time){
+	if(suggested_time >= this->bef && suggested_time <= this->last)
+		return true;
+	else
+		return false;
+}
+float Airplane::check_cost(int suggested_time){
+	if(!this->verify_time(suggested_time))
+		return 99999;
+	else if(suggested_time >= this->bef && suggested_time < this->target)
+		return (float) (this->target - suggested_time)*this->p_bef;
+	else if(suggested_time > this->target && suggested_time <= this->last)
+		return (float) (suggested_time - this->target)*this->p_last;
+	else
+		return 0;
+
 }
 
 /* Structures: Airplane populate function */
@@ -43,7 +63,7 @@ vector<Airplane> populate(){
 	vector<Airplane> airplanes; // this is the return variable
 
 	/* Get plane count from the first line of the file */
-	ifstream input("airland13.txt");
+	ifstream input("airland1.txt");
 	getline(input, line);
 	plane_count = atoi(line.c_str());
 	
@@ -60,7 +80,7 @@ vector<Airplane> populate(){
 			++j;
 		}
 		// populate temp airplane data
-		temp.set_values(atoi(temp_str[0].c_str()), atoi(temp_str[1].c_str()), atoi(temp_str[2].c_str()), atof(temp_str[3].c_str()), atof(temp_str[4].c_str()));
+		temp.set_values(i, atoi(temp_str[0].c_str()), atoi(temp_str[1].c_str()), atoi(temp_str[2].c_str()), atof(temp_str[3].c_str()), atof(temp_str[4].c_str()));
 			
 		
 		/* Get airplane separation time for airplane i */
@@ -89,10 +109,30 @@ vector<Airplane> sortByTarget(vector<Airplane> airplanes){
 			if(airplanes.at(i).get_target() < airplanes.at(j).get_target()){
 				swap(airplanes.at(i), airplanes.at(j));
 			}
-		
 		}
 	}
-
+	return airplanes;
+}
+vector<Airplane> sortByBef(vector<Airplane> airplanes){
+	Airplane airplane;
+	for(int i=0 ; i<airplanes.size() ; i++){
+		for(int j=0 ; j<i ; j++){
+			if(airplanes.at(i).get_bef() < airplanes.at(j).get_bef()){
+				swap(airplanes.at(i), airplanes.at(j));
+			}
+		}
+	}
+	return airplanes;
+}
+vector<Airplane> sortByLast(vector<Airplane> airplanes){
+	Airplane airplane;
+	for(int i=0 ; i<airplanes.size() ; i++){
+		for(int j=0 ; j<i ; j++){
+			if(airplanes.at(i).get_last() < airplanes.at(j).get_last()){
+				swap(airplanes.at(i), airplanes.at(j));
+			}
+		}
+	}
 	return airplanes;
 }
 
@@ -102,8 +142,11 @@ int main() {
 	airplanes = populate();
 	airplanes = sortByTarget(airplanes);
 
-	for(int i=0 ; i<airplanes.size() ; i++)
-		cout << airplanes.at(i).get_target() << endl;
+
+	cout << airplanes.at(0).get_bef() << " " << airplanes.at(0).get_last() << endl;
+	cout << airplanes.at(0).verify_time(1000) << endl;
+	cout << airplanes.at(0).check_cost(1000) << endl;
+	cout << airplanes.at(0).get_id() << endl;
 	
 	return 0;
 }
