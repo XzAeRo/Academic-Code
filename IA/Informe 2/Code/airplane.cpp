@@ -1,21 +1,38 @@
-#include<iostream>
+#include <iostream>
 #include <iomanip>
-#include<vector>
+#include <vector>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <stdlib.h>
 using namespace std;
 
-/* Structures */
-typedef struct Airplane{
-	int bef;
-	int target;
-	int last;
-	float p_bef;
-	float p_last;
+class Airplane {
+	int bef, target, last;
+	float p_bef, p_last;
 	vector<int> sep;
-} Airplane;
+	
+	public:
+		void set_values(int,int,int,float,float);
+		void push_sep(int);
+		int get_bef() {return bef;}
+		int get_target() {return target;}
+		int get_last() {return last;}
+		float get_p_bef() {return p_bef;}
+		float get_p_last() {return p_last;}
+		vector<int> get_sep() {return sep;}
+};
+
+void Airplane::set_values(int bef, int target, int last, float p_bef, float p_last){
+	this->bef = bef;
+	this->target = target;
+	this->last = last;
+	this->p_bef = p_bef;
+	this->p_last = p_last;
+}
+void Airplane::push_sep(int value){
+	this->sep.push_back(value);
+}
 
 /* Structures: Airplane populate function */
 vector<Airplane> populate(){
@@ -43,11 +60,7 @@ vector<Airplane> populate(){
 			++j;
 		}
 		// populate temp airplane data
-		temp.bef = atoi(temp_str[0].c_str());
-		temp.target = atoi(temp_str[1].c_str());
-		temp.last = atoi(temp_str[2].c_str());
-		temp.p_bef = atof(temp_str[3].c_str());
-		temp.p_last = atof(temp_str[4].c_str());
+		temp.set_values(atoi(temp_str[0].c_str()), atoi(temp_str[1].c_str()), atoi(temp_str[2].c_str()), atof(temp_str[3].c_str()), atof(temp_str[4].c_str()));
 			
 		
 		/* Get airplane separation time for airplane i */
@@ -57,7 +70,7 @@ vector<Airplane> populate(){
     	j = 0;
 		while (sp.good() && j < plane_count){
 			sp >> sp_temp;
-			temp.sep.push_back(atoi(sp_temp.c_str()));
+			temp.push_sep(atoi(sp_temp.c_str()));
 			++j;
 		}
 		
@@ -69,27 +82,8 @@ vector<Airplane> populate(){
 	return airplanes;
 }
 
-class CAirplane {
-	int bef, target, last;
-	float p_bef, p_last;
-	vector<int> sep;
-	
-	public:
-		void set_values(int,int,int,float,float,vector<int>);
-		int get_bef() {return bef;}
-		int get_target() {return target;}
-		int get_last() {return last;}
-		float get_p_bef() {return p_bef;}
-		float get_p_last() {return p_last;}
-		vector<int> get_sep() {return sep;}
-}
-
-
-
-
 int main() {
 	vector<Airplane> airplanes;
-	Airplane airplane;
 	
 	airplanes = populate();
 	
