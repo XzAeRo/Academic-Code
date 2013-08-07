@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include "BackTrack.h"
 using namespace std;
 
 class Airplane {
@@ -63,7 +64,7 @@ vector<Airplane> populate(){
 	vector<Airplane> airplanes; // this is the return variable
 
 	/* Get plane count from the first line of the file */
-	ifstream input("airland1.txt");
+	ifstream input("airland13.txt");
 	getline(input, line);
 	plane_count = atoi(line.c_str());
 	
@@ -136,17 +137,39 @@ vector<Airplane> sortByLast(vector<Airplane> airplanes){
 	return airplanes;
 }
 
+
+/*****************************************************************************************/
+/******************** GBJ Implementation *************************************************/
+/*****************************************************************************************/
+
+
+
 int main() {
+	int i,j, n_pistas;
+	float costo, mejor_costo;
 	vector<Airplane> airplanes;
-	
-	airplanes = populate();
-	airplanes = sortByTarget(airplanes);
+	mejor_costo = 9999.0;
+	costo = 9999.0;
 
+	airplanes = sortByTarget(populate());
 
-	cout << airplanes.at(0).get_bef() << " " << airplanes.at(0).get_last() << endl;
-	cout << airplanes.at(0).verify_time(1000) << endl;
-	cout << airplanes.at(0).check_cost(1000) << endl;
-	cout << airplanes.at(0).get_id() << endl;
+	cout << "Ingrese el numero de pistas" << endl;
+	cin >> n_pistas;
+
+	int A_r[airplanes.size()][n_pistas];
+
+	for (i = 0 ; i < airplanes.size() ; i++){
+		for (j = 1 ; j <= n_pistas ; j++){
+			A_r[i][j] = 0;
+		}
+	}
+
+	for (i = 0 ; i < airplanes.size() ; i++){
+		for (j = 0 ; j < airplanes.size() ; j++){
+			// check if 
+		}
+	}	
 	
+
 	return 0;
 }
