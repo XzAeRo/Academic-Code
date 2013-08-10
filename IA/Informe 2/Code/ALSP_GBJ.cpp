@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
 	// process input data
 	if (argc < 5) {
-		cout << "Usage: ALSP_GBJ -file airlandXX.txt -n_runways N" << endl;
+		cout << "Usage: ALSP_GBJ -file airlandXX.txt -n_runways N" << endl << endl;;
 		return 0;
 	} else {
 		filename = argv[2];
