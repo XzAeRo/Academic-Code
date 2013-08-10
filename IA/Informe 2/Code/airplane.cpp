@@ -59,9 +59,10 @@ vector<Airplane> populate(char* filename){
 	string temp_str[5];
 	Airplane temp;
 	vector<Airplane> airplanes; // this is the return variable
+	char* folder = "input/";
 
 	/* Get plane count from the first line of the file */
-	ifstream input(filename);
+	ifstream input(folder + filename);
 	getline(input, line);
 	plane_count = atoi(line.c_str());
 	
