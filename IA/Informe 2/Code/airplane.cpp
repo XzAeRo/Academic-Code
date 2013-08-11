@@ -5,9 +5,9 @@
 using namespace std;
 
 class Airplane {
-	int id, bef, target, last;
+	int id, bef, target, last, landing_time, runway, min_landing_time;
 	float p_bef, p_last;
-	vector<int> sep;
+	vector<int> sep, domain;
 	
 	public:
 		// setters
@@ -18,9 +18,23 @@ class Airplane {
 			this->last = last;
 			this->p_bef = p_bef;
 			this->p_last = p_last;
+			landing_time = -1;
+			runway = -1;
+			this->min_landing_time = bef;
+
 		}
 		void push_sep(int value){
 			this->sep.push_back(value);
+		}
+		void set_landing_time(int value){
+			this->landing_time = value;
+			this->min_landing_time = value;
+		}
+		void reset_min_landing(){
+			this->min_landing_time = this->bef;
+		}
+		void set_runway(int value){
+			this->runway = value;
 		}
 
 		// getters
@@ -31,6 +45,7 @@ class Airplane {
 		float get_p_bef() {return p_bef;}
 		float get_p_last() {return p_last;}
 		int get_sep(int i) {return sep[i];}
+		int get_min_landing_time() {return min_landing_time;}
 
 		// misc functions
 		bool verify_time(int suggested_time){
@@ -39,7 +54,13 @@ class Airplane {
 			else
 				return false;
 		}
-		float check_cost(int suggested_time){
+		bool check_collision(int suggested_time, int plane_id){
+			if(suggested_time >= this->landing_time && suggested_time <= this->landing_time + sep[plane_id])
+				return true;
+			else
+				return false;
+		}
+		float get_cost(int suggested_time){
 			if(!this->verify_time(suggested_time))
 				return 99999;
 			else if(suggested_time >= this->bef && suggested_time < this->target)
