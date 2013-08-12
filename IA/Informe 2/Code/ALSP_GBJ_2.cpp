@@ -49,74 +49,74 @@ float solutionCost(matrix solution, vector<Airplane> airplanes, int n_planes, in
 
 bool consistent(matrix solution, vector<Airplane> airplanes, int n_planes, int n_runways){
 	for (int j = 0; j < n_runways; j++){
-		for (int i = 1; i < n_planes; i++){
-			int landing_time_1 = solution.getValue(i-1,j);
-			int landing_time_2 = solution.getValue(i,j);
-			if (landing_time_1 != 0 && landing_time_2 != 0 && airplanes[i-1].check_collision(landing_time_2, airplanes[i].get_id()))
-				return false;
+		for (int i = 0; i < n_planes; i++){
+			int landing_time_1 = solution.getValue(i,j);
+			for (int k=0; k < n_planes; k++){
+				int landing_time_2 = solution.getValue(k,j);
+				
+				if (landing_time_1 != 0 && landing_time_2 != 0 && airplanes[i].check_collision(landing_time_2, airplanes[k].get_id()) && airplanes[k].check_collision(landing_time_1, airplanes[i].get_id()))
+					return false;
+			}
 		}
 	}
 	return true;
 }
 
-matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vector<int> parent, int n_planes, int n_runways, int trials){
+int selectValue(matrix solution, vector<Airplane> airplanes, int n_planes, int n_runways, int plane_instantation){
+	for(int runway_instantation = 0; runway_instantation < n_runways; runway_instantation++){
+		int domain_instantation = airplanes[plane_instantation].get_best_landing_time();
+		airplanes[plane_instantation].set_landing_time(domain_instantation);
+		while(domain_instantation > 0){
+			solution.setValue(plane_instantation,runway_instantation,domain_instantation);
+			if (consistent(solution,airplanes,n_planes,n_runways)){
+				airplanes[plane_instantation].reset_domain();
+				return domain_instantation;
+			}
+			domain_instantation = airplanes[plane_instantation].get_best_landing_time();
+		}
+		airplanes[plane_instantation].reset_domain();
+	}
+	return -1;
+}
+
+int _selectValue(matrix solution, vector<Airplane> airplanes, int n_planes, int n_runways, int plane_instantation){
+	for (int i = airplanes[plane_instantation].get_bef(); i <= airplanes[plane_instantation].get_last(); i++){
+		for (int j=0; j < n_runways; j++){
+			int hattrick = airplanes[plane_instantation].get_best_landing_time();
+			solution.setValue(plane_instantation,j,hattrick);
+			if (consistent(solution,airplanes,n_planes,n_runways)){
+				airplanes[plane_instantation].set_landing_time(hattrick);
+				return 0;
+			}
+		}
+	}
+	return -1;
+}
+
+matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vector<int> parent, int n_planes, int n_runways){
 	matrix solution(n_planes,n_runways);
 	matrix best_solution(n_planes,n_runways);
 	float min_cost = 99999999999.9;
 	int i=0;
-	bool empty_domain = false;
 	
-	while (i < n_planes && trials > 0){
-		int runway_instantation = 0, domain_instantation = airplanes[i].get_min_landing_time();
-
-		solution.setValue(i,runway_instantation,domain_instantation);
-		airplanes[i].set_landing_time(domain_instantation);
-		airplanes[i].set_runway(runway_instantation);
-
-		while (!consistent(solution,airplanes,n_planes,n_runways) && domain_instantation <= airplanes[i].get_last()){
-			runway_instantation = 0;
-			while (!consistent(solution,airplanes,n_planes,n_runways) && runway_instantation < n_runways){
-				if (runway_instantation > 0){
-					//undo latest solution
-					solution.setValue(i,runway_instantation - 1,0);
-				}
-				solution.setValue(i,runway_instantation,domain_instantation);
-				airplanes[i].set_landing_time(domain_instantation);
-				airplanes[i].set_runway(runway_instantation);
-
-				runway_instantation++;
-			}
-
-			if (domain_instantation == airplanes[i].get_last() && i > 0){
-				// no consistent
-				i = parent[i];	// backjump
-			}
-			domain_instantation++;
+	while (i < n_planes){
+		
+		int domain_instantation = _selectValue(solution,airplanes,n_planes,n_runways,i);
+		
+		if (domain_instantation < 0 && i>0){
+			i = parent[i];
 		}
-
-		i++;
-		if (i==n_planes && trials > 0){
-			i = 0;
-			trials--;
-			float solution_cost = solutionCost(solution,airplanes,n_planes,n_runways);
-			if (solution_cost < min_cost){
-				min_cost = solution_cost;
-				best_solution = solution;
-			}
-
-			runway_instantation = 0;
-			domain_instantation = airplanes[0].increase_min_landing_time();
-			for (int l = 1 ; l < n_planes; l++)
-				airplanes[l].increase_min_landing_time();
+		else{
+			i++;
 		}
 	}
 
 	for (int l=0; l < n_planes; l++)
 		for (int m=0; m < n_runways ; m++)
-			cout << airplanes[l].get_id() << " " << best_solution.getValue(l,m) << endl;
+			cout << airplanes[l].get_id() << " " << solution.getValue(l,m) << endl;
 
-	cout << consistent(best_solution,airplanes,n_planes,n_runways) << true << endl;
-	cout << solutionCost(best_solution,airplanes,n_planes,n_runways) << endl;
+	cout << solutionCost(solution,airplanes,n_planes,n_runways) << endl;
+	cout << consistent(solution,airplanes,n_planes,n_runways) << endl;
 	return solution;
 }
 
@@ -127,13 +127,12 @@ int main(int argc, char* argv[]) {
 	char* filename;
 
 	// process input data
-	if (argc < 7) {
+	if (argc < 5) {
 		cout << "Usage: ALSP_GBJ -file airlandXX.txt -n_runways N" << endl << endl;;
 		return 0;
 	} else {
 		filename = argv[2];
 		n_runways = atoi(argv[4]);
-		trials = atoi(argv[6]);
 	}
 	airplanes = sortByTarget(populate(filename));
 
@@ -151,9 +150,7 @@ int main(int argc, char* argv[]) {
 			if (ancestors.getValue(i,j)==1)
 				parent[i] = j;
 
-	GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways,trials);
-
-	cout << airplanes[0].get_min_landing_time() << endl;
+	GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways);
 
 	return 0;
 }

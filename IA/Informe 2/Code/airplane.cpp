@@ -1,13 +1,16 @@
 #include <sstream>
 #include <fstream>
+#include <map>
 #include <stdlib.h>
 
 using namespace std;
 
 class Airplane {
-	int id, bef, target, last, landing_time, runway, min_landing_time;
+	int id, bef, target, last, landing_time, runway, min_landing_time, current_left, current_right;
 	float p_bef, p_last;
-	vector<int> sep, domain;
+	vector<int> sep;
+	map<int,bool> domain_blacklist;
+	bool left_blocked = false, right_blocked = false;
 	
 	public:
 		// setters
@@ -20,8 +23,9 @@ class Airplane {
 			this->p_last = p_last;
 			landing_time = -1;
 			runway = -1;
-			this->min_landing_time = bef;
-
+			min_landing_time = bef;
+			current_left = target;
+			current_right = target;
 		}
 		void push_sep(int value){
 			this->sep.push_back(value);
@@ -36,6 +40,15 @@ class Airplane {
 		void set_runway(int value){
 			this->runway = value;
 		}
+		int increase_min_landing_time(){
+			return this->min_landing_time >= this->last ? this->last : this->min_landing_time++;
+		}
+		void reset_domain(){
+			current_left = target;
+			current_right = target;
+			left_blocked = false;
+			right_blocked = false;
+		}
 
 		// getters
 		int get_id() {return id;}
@@ -47,6 +60,7 @@ class Airplane {
 		int get_sep(int i) {return sep[i];}
 		int get_min_landing_time() {return min_landing_time;}
 
+
 		// misc functions
 		bool verify_time(int suggested_time){
 			if(suggested_time >= this->bef && suggested_time <= this->last)
@@ -55,7 +69,7 @@ class Airplane {
 				return false;
 		}
 		bool check_collision(int suggested_time, int plane_id){
-			if(suggested_time >= this->landing_time && suggested_time <= this->landing_time + sep[plane_id])
+			if(suggested_time >= this->landing_time && suggested_time <= this->landing_time + sep[plane_id] && plane_id != this->id)
 				return true;
 			else
 				return false;
@@ -70,6 +84,97 @@ class Airplane {
 			else
 				return 0;
 
+		}
+
+		int get_best_landing_time(){
+			if(this->current_left==this->target && this->current_right==this->target){
+				this->current_left = this->target - 1;
+				this->current_right = this->target + 1;
+				return target;
+			}
+
+			if (right_blocked && left_blocked)
+				return -1;
+
+			
+			if (this->current_left == this->bef && !this->left_blocked){
+				float cost_left = (this->target - this->current_left)*p_bef;
+				float cost_right = (this->current_right - this->target)*p_last;
+
+				if (cost_left > cost_right){
+					int temp_value = this->current_right;
+					this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+					return temp_value;
+				}
+				else if (cost_right > cost_left){
+					this->left_blocked = true;
+					int temp_value = this->current_left;
+					this->current_left = this->current_left - 1 < this->bef ? this->bef : this->current_left - 1;
+					return temp_value;
+				}
+				else{
+					this->left_blocked = true;
+					int temp_value = this->current_left;
+					this->current_left = this->current_left - 1 < this->bef ? this->bef : this->current_left - 1;
+					return temp_value;
+				}
+			}
+			else if(this->left_blocked){
+				int temp_value = this->current_right;
+				this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+				return temp_value;
+			}
+			if (this->current_right == this->last && !this->right_blocked){
+				float cost_left = (this->target - this->current_left)*p_bef;
+				float cost_right = (this->current_right - this->target)*p_last;
+
+				if (cost_left > cost_right){
+					this->right_blocked = true;
+					int temp_value = this->current_right;
+					this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+					return temp_value;
+				}
+				else if (cost_right > cost_left){
+					int temp_value = this->current_left;
+					this->current_left = this->current_left - 1 < this->bef ? this->bef : this->current_left - 1;
+					return temp_value;
+				}
+				else{
+					this->right_blocked = true;
+					int temp_value = this->current_right;
+					this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+					return temp_value;
+				}
+			}
+			else if(this->right_blocked){
+				int temp_value = this->current_left;
+				this->current_left = this->current_left - 1 < this->bef ? this->bef : this->current_left - 1;
+				return temp_value;
+			}
+
+
+			float cost_left = (this->target - this->current_left)*p_bef;
+			float cost_right = (this->current_right - this->target)*p_last;
+
+			cout << cost_left << " " << cost_right << endl;
+
+			if (cost_left > cost_right){
+				int temp_value = this->current_right;
+				this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+				return temp_value;
+			}
+			else if (cost_right > cost_left){
+				int temp_value = this->current_left;
+				this->current_left = this->current_left - 1 < this->bef ? this->bef : this->current_left - 1;
+				return temp_value;
+			}
+			else{
+				int temp_value = this->current_right;
+				this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;
+				return temp_value;
+			}
+
+			
 		}
 };
 
