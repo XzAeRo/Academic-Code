@@ -156,8 +156,6 @@ class Airplane {
 			float cost_left = (this->target - this->current_left)*p_bef;
 			float cost_right = (this->current_right - this->target)*p_last;
 
-			cout << cost_left << " " << cost_right << endl;
-
 			if (cost_left > cost_right){
 				int temp_value = this->current_right;
 				this->current_right = this->current_right + 1 > this->last ? this->last : this->current_right + 1;

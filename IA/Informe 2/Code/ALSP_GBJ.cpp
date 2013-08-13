@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "matrix.cpp"
 #include "airplane.cpp"
 using namespace std;
@@ -52,20 +53,20 @@ bool consistent(matrix solution, vector<Airplane> airplanes, int n_planes, int n
 		for (int i = 1; i < n_planes; i++){
 			int landing_time_1 = solution.getValue(i-1,j);
 			int landing_time_2 = solution.getValue(i,j);
-			if (landing_time_1 != 0 && landing_time_2 != 0 && airplanes[i-1].check_collision(landing_time_2, airplanes[i].get_id()))
+			if (landing_time_2 != 0 && airplanes[i-1].check_collision(landing_time_2, airplanes[i].get_id()))
 				return false;
 		}
 	}
 	return true;
 }
 
-matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vector<int> parent, int n_planes, int n_runways, int trials){
+matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vector<int> parent, int n_planes, int n_runways){
 	matrix solution(n_planes,n_runways);
 	matrix best_solution(n_planes,n_runways);
 	float min_cost = 99999999999.9;
-	int i=0;
+	int i=0, current, trials = 1000;
 	bool empty_domain = false;
-	
+
 	while (i < n_planes && trials > 0){
 		int runway_instantation = 0, domain_instantation = airplanes[i].get_min_landing_time();
 
@@ -95,47 +96,29 @@ matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vec
 		}
 
 		i++;
-		if (i==n_planes && trials > 0){
-			i = 0;
-			trials--;
-			float solution_cost = solutionCost(solution,airplanes,n_planes,n_runways);
-			if (solution_cost < min_cost){
-				min_cost = solution_cost;
-				best_solution = solution;
-			}
 
-			runway_instantation = 0;
-			domain_instantation = airplanes[0].increase_min_landing_time();
-			for (int l = 1 ; l < n_planes; l++)
-				airplanes[l].increase_min_landing_time();
-		}
 	}
 
-	for (int l=0; l < n_planes; l++)
-		for (int m=0; m < n_runways ; m++)
-			cout << airplanes[l].get_id() << " " << best_solution.getValue(l,m) << endl;
+	
 
-	cout << consistent(best_solution,airplanes,n_planes,n_runways) << true << endl;
-	cout << solutionCost(best_solution,airplanes,n_planes,n_runways) << endl;
 	return solution;
 }
 
 
 int main(int argc, char* argv[]) {
-	int n_runways, n_planes, trials;
+	int n_runways, n_planes;
 	vector<Airplane> airplanes;
 	char* filename;
 
 	// process input data
-	if (argc < 7) {
+	if (argc < 5) {
 		cout << "Usage: ALSP_GBJ -file airlandXX.txt -n_runways N" << endl << endl;;
 		return 0;
 	} else {
 		filename = argv[2];
 		n_runways = atoi(argv[4]);
-		trials = atoi(argv[6]);
 	}
-	airplanes = sortByTarget(populate(filename));
+	airplanes = sortByBef(populate(filename));
 
 	// create and build GBJ network
 	n_planes = airplanes.size();
@@ -151,9 +134,11 @@ int main(int argc, char* argv[]) {
 			if (ancestors.getValue(i,j)==1)
 				parent[i] = j;
 
-	GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways,trials);
+	matrix solution = GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways);
 
-	cout << airplanes[0].get_min_landing_time() << endl;
+	for (int l=0; l < n_planes; l++)
+		for (int m=0; m < n_runways ; m++)
+			cout << airplanes[l].get_id() << " " << solution.getValue(l,m) << endl;
 
 	return 0;
 }
