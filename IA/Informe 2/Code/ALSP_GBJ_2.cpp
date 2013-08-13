@@ -17,9 +17,9 @@ void buildConstraintsGraph(matrix constraint, vector<Airplane> airplanes, int si
 			if(checkPossibleCollision(airplanes[i],airplanes[j]) && i != j)
 				constraint.setValue(i,j,1);
 		}
-		cout << "\rBuilding constraints graph... " << (((i+1)*100)/size) << "%";
+		//cout << "\rBuilding constraints graph... " << (((i+1)*100)/size) << "%";
 	}
-	cout << endl;
+	//cout << endl;
 }
 
 void buildAncestorsLists(matrix ancestors, matrix constraint, int size){
@@ -29,9 +29,9 @@ void buildAncestorsLists(matrix ancestors, matrix constraint, int size){
 				ancestors.setValue(i,j,1);
 			}
 		}
-		cout << "\rBuilding ancestors lists... " << (((i+1)*100)/size) << "%";
+		//cout << "\rBuilding ancestors lists... " << (((i+1)*100)/size) << "%";
 	}
-	cout << endl;
+	//cout << endl;
 }
 
 float solutionCost(matrix solution, vector<Airplane> airplanes, int n_planes, int n_runways){
@@ -66,7 +66,6 @@ int selectValue(matrix solution, vector<Airplane> airplanes, int n_planes, int n
 			if (consistent(solution,airplanes,n_planes,n_runways,plane_instantation,j,hattrick)){
 				airplanes[plane_instantation].set_landing_time(hattrick);
 				airplanes[plane_instantation].reset_domain();
-				cout << plane_instantation << " " << hattrick << endl;
 				return hattrick;
 			}
 		}
@@ -93,12 +92,6 @@ matrix GBJ(vector<Airplane> airplanes, matrix constraints, matrix ancestors, vec
 		}
 	}
 
-	for (int l=0; l < n_planes; l++)
-		for (int m=0; m < n_runways ; m++)
-			cout << airplanes[l].get_id() << " " << solution.getValue(l,m) << endl;
-
-	cout << solutionCost(solution,airplanes,n_planes,n_runways) << endl;
-	//cout << consistent(solution,airplanes,n_planes,n_runways) << endl;
 	return solution;
 }
 
@@ -132,7 +125,14 @@ int main(int argc, char* argv[]) {
 			if (ancestors.getValue(i,j)==1)
 				parent[i] = j;
 
-	GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways);
+	matrix solution = GBJ(airplanes,constraint,ancestors,parent,n_planes,n_runways);
+
+	cout << solutionCost(solution, airplanes, n_planes, n_runways) << endl;
+	for (int l=0; l < n_planes; l++)
+		for (int m=0; m < n_runways ; m++){
+			if(solution.getValue(l,m) != 0)
+			cout << airplanes[l].get_id() << " " << solution.getValue(l,m) << " " << m+1 << endl;
+		}
 
 	return 0;
 }

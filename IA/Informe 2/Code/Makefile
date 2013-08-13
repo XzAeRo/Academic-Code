@@ -1,5 +1,4 @@
-1:
+all:
 	g++ ALSP_GBJ.cpp -o ALSP_GBJ -std=c++11
-
-2:
+alternative:
 	g++ ALSP_GBJ_2.cpp -o ALSP_GBJ -std=c++11

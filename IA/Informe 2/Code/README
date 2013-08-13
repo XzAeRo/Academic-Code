@@ -1,0 +1,9 @@
+Para ejecutar correctamente usar la siguiente sintaxis:
+
+$ make
+o bien
+$ make alternative
+
+y luego
+
+$ ./ALSP_GBJ -file airlandXX.txt -n_runways R > XX.out

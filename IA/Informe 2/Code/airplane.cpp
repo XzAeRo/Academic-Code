@@ -217,10 +217,10 @@ vector<Airplane> populate(char* filename){
 		}
 		
 		airplanes.push_back(temp);
-		cout << "\rLoading airplanes data from file... " << (((i+1)*100)/plane_count) << "%";
+		//cout << "\rLoading airplanes data from file... " << (((i+1)*100)/plane_count) << "%";
 	}
 
-	cout << endl;
+	//cout << endl;
 	return airplanes;
 }
 
