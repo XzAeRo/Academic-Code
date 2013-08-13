@@ -1,0 +1,8 @@
+Para compilar:
+
+pdflatex PlantillaInformeI.tex
+bibtex PlantillaInformeI.aux
+bibtex PlantillaInformeI.aux
+pdflatex PlantillaInformeI.tex
+bibtex PlantillaInformeI.aux
+bibtex PlantillaInformeI.aux
