@@ -169,9 +169,29 @@ Luego, despejando desde (1) a $y(t)$, tenemos que:
 \begin{equation}y(t) = e^{9t}\left\{ 9cos(2t) - 2sin(2t) \right\}\end{equation}
 
 \section{Resultados Finales}
+A partir del sistema de ecuaciones diferenciales:
+\begin{center}
+	$\dfrac{dx}{dt} = 9 x + 2 y$ \\
+	$\dfrac{dy}{dt} = -2 x + 9 y$
+\end{center}
 
-\section{Comentarios y Conclusiones}
+Se ha encontrado la solución que satisface este sistema de ecuaciones, utilizando transformadas de Laplace como método de resolución de ecuaciones diferenciales, las cuales entregaron como resultado:
 
-\section{Comandos Utilizados}
+\begin{center}
+	$x(t) = e^{9t}\left(2cos(2t) + 9sin(2t)\right)$ \\
+	$y(t) = e^{9t}\left(9cos(2t) - 2sin(2t) \right)$
+\end{center}
+
+\section{Conclusiones}
+Las transformadas de Laplace son una herramienta que facilitan enormemente el trabajo de resolución de ecuaciones diferenciales, e incluso para casos donde se trata de sistemas de ecuaciones diferenciales.
+
+Los resultados fueron obtenidos apegandose a los teoremas básicos y las convenciones más utilizadas dentro del Cálculo, para así evitar pasos innecesarios o la introducción de nuevas definiciones y teoremas.
+
+\section{Comentarios}
+Si bien para resolver el problema se pudo hacer uso de la \textit{regla de Cramer} para encontrar soluciones al sistema de ecuaciones, esto se evitó para mantener la simplicidad del desarrollo, y no confundir con pasos extras o definiciones innecesarias.
+
+Todo el desarrollo se encuentra corroborado y verificado en el documento anexado, donde usando el software Mathematica se comprobó cada uno de los pasos.
+
+\includepdf[pages={1,2,3,4}]{informe_mathematica.pdf}
 
 \end{document}
