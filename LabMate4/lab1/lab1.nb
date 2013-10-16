@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[    217332,       4850]
-NotebookOptionsPosition[    216842,       4830]
-NotebookOutlinePosition[    217190,       4845]
-CellTagsIndexPosition[    217147,       4842]
+NotebookDataLength[    217381,       4850]
+NotebookOptionsPosition[    216888,       4830]
+NotebookOutlinePosition[    217239,       4845]
+CellTagsIndexPosition[    217196,       4842]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -163,7 +163,7 @@ Cell[BoxData[
    3.5909319522611356`*^9, 3.5909319567787113`*^9}, {3.590931987578638*^9, 
    3.59093202313017*^9}, {3.5909320867312775`*^9, 3.590932122065782*^9}, {
    3.5909321539388456`*^9, 3.5909321733783236`*^9}, {3.5909326324118395`*^9, 
-   3.5909326678053513`*^9}}],
+   3.5909326678053513`*^9}, {3.590933578555451*^9, 3.590933579538576*^9}}],
 
 Cell[BoxData["0.01577690285249601711824116525442057878`5."], "Output",
  CellChangeTimes->{
@@ -4829,7 +4829,7 @@ Cell[BoxData[""], "Input",
    3.590932600767806*^9}]
 },
 WindowSize->{1584, 773},
-WindowMargins->{{8, Automatic}, {Automatic, 352}},
+WindowMargins->{{-184, Automatic}, {Automatic, 324}},
 FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
 StyleDefinitions->"Estilo USM.nb"
 ]
@@ -4845,13 +4845,13 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[579, 22, 5681, 143, 366, "Input"],
-Cell[6263, 167, 1015, 14, 35, "Output"],
-Cell[7281, 183, 991, 14, 35, "Output"],
-Cell[8275, 199, 208305, 4620, 243, "Output"]
+Cell[579, 22, 5727, 143, 366, "Input"],
+Cell[6309, 167, 1015, 14, 35, "Output"],
+Cell[7327, 183, 991, 14, 35, "Output"],
+Cell[8321, 199, 208305, 4620, 243, "Output"]
 }, Open  ]],
-Cell[216595, 4822, 120, 2, 42, "Input"],
-Cell[216718, 4826, 120, 2, 42, "Input"]
+Cell[216641, 4822, 120, 2, 42, "Input"],
+Cell[216764, 4826, 120, 2, 42, "Input"]
 }
 ]
 *)
