@@ -1,0 +1,139 @@
+%% AMS-LaTeX Created by Wolfram Mathematica 9.0 : www.wolfram.com
+
+\documentclass{article}
+\usepackage{amsmath, amssymb, graphics, setspace}
+
+\newcommand{\mathsym}[1]{{}}
+\newcommand{\unicode}[1]{{}}
+
+\newcounter{mathematicapage}
+\begin{document}
+
+Ejercicio 1:
+
+\begin{doublespace}
+\noindent\(\pmb{ \text{Clear}[f,\text{alfa},\text{beta}, \text{real},\text{Riemann}];}\\
+\pmb{}\\
+\pmb{\text{(* Valores personales *)}}\\
+\pmb{\text{alfa} = 4; \text{(* Dia jueves *)}}\\
+\pmb{\text{beta} = 9;\text{  }\text{(*} \text{Rol} 2773029-9 \text{*)}}\\
+\pmb{}\\
+\pmb{\text{(* Funcion que se desea integrar *)}}\\
+\pmb{f[\text{x$\_$},\text{y$\_$}] = x*y*e^{-\text{alfa}\left(x^2+y^2\right)};}\\
+\pmb{}\\
+\pmb{\text{(* Region de integraci{\' o}n *)}}\\
+\pmb{\{\{a,b\},\{c,d\}\} = \{\{0,\text{beta}\},\{0,\text{beta}\}\};}\\
+\pmb{}\\
+\pmb{\text{(* La parte de la funci{\' o}n que se quiere integrar *)}}\\
+\pmb{\text{Plot3D}[f[x,y],\{x,0,1.5\},\{y,0,1.5\},\text{PlotRange}\to \text{Full},\text{AxesLabel}\to \text{Automatic}, \text{Mesh}\to \text{None},\text{MaxRecursion}\to
+10,\text{PlotPoints}\to 50,\text{ColorFunction}\to \text{Function}[\{x,y,z\},\text{Hue}[z]]]}\\
+\pmb{}\\
+\pmb{\text{(*} \text{Obtenemos} \text{el} \text{valor} \text{real} \text{de} \text{la} \text{integral}, \text{para} \text{poder} \text{comparar}
+\text{los} \text{resultados} \text{*)}}\\
+\pmb{\text{real} =N\left[\int _0^{\text{beta}}\int _0^{\text{beta}}f[x,y]dxdy\right];}\\
+\pmb{}\\
+\pmb{\text{(* Procedimiento de las Sumas de Riemann *)}}\\
+\pmb{\text{Riemann}[\text{n$\_$}]\text{:=}(}\\
+\pmb{\text{(* realizamos n particiones en el eje x e y *)}}\\
+\pmb{\text{$\triangle $x} =\frac{b-a}{n};}\\
+\pmb{\text{$\triangle $y}=\frac{d-c}{n};}\\
+\pmb{x[\text{i$\_$}]=a+i*\text{$\triangle $x}; }\\
+\pmb{\text{    }y[\text{j$\_$}]=c+j*\text{$\triangle $y};}\\
+\pmb{}\\
+\pmb{\text{(*} \text{Estimamos} \text{mediante} \text{Sumas} \text{de} \text{Riemann} \text{con} n \text{particiones}, \text{el} \text{valor} \text{de}
+\text{la} \text{integral} \text{*)}}\\
+\pmb{\text{estimado} =N\left[\sum _{i=1}^n \sum _{j=1}^n \left(f\left[\frac{x[i-1]+x[i]}{2},\frac{y[j-1]+y[j]}{2}\right]\text{$\triangle $x} \text{$\triangle
+$y}\right),5\right];}\\
+\pmb{\{n, \text{estimado},N[100*\text{Abs}[(\text{estimado}-\text{real})/\text{real}],3]\}}\\
+\pmb{)}\\
+\pmb{\text{(*} \text{Los} \text{resultados} \text{de} \text{las} \text{Sumas} \text{de} \text{Riemann} \text{para} \text{los} \text{casos} \text{donde}
+n = 10, 50, 75 \text{es}: \text{*)}}\\
+\pmb{\text{Grid}[\{\{\text{n},\text{{``}Valor Obtenido{''}},\text{{``}Error Porcentual{''}}\},\text{Riemann}[10] , \text{Riemann}[50], \text{Riemann}[75]\},\text{Frame}\to
+\text{All}]}\\
+\pmb{}\\
+\pmb{\text{(*} \text{El} \text{valor} \text{real} \text{de} \text{la} \text{integral} \text{es}: \text{*)}}\\
+\pmb{\text{Grid}[\{\{\text{{``}Valor Real:{''}},\text{real}\}\}]}\)
+\end{doublespace}
+
+\includegraphics{lab1_mat_gr1.eps}
+
+\begin{doublespace}
+\noindent\(\begin{array}{ccc}
+ \text{n} & \text{Valor Obtenido} & \text{Error Porcentual} \\
+ 10 & 0.032760 & 109.662 \\
+ 50 & 0.015972 & 2.22296 \\
+ 75 & 0.015777 & 0.972178 \\
+\end{array}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\begin{array}{cc}
+ \text{Valor Real:} & 0.015625 \\
+\end{array}\)
+\end{doublespace}
+
+Ejercicio 2
+
+\begin{doublespace}
+\noindent\(\pmb{\text{Clear}[f,g,\text{transf},\text{jac}];}\\
+\pmb{f[\text{x$\_$},\text{y$\_$}]=x^{2/5}+y^{2/5}-\text{alfa}^{2/5};}\\
+\pmb{g[\text{x$\_$},\text{y$\_$}]=y-x;}\\
+\pmb{}\\
+\pmb{\text{(* Definimos la regi{\' o}n de integraci{\' o}n $\Omega $ *)}}\\
+\pmb{\text{omega} = \text{RegionPlot}\left[x^{2/5}+y^{2/5}\leq  \text{alfa}^{2/5}\&\&0\leq y\leq x,\{x,0,4\},\{y,0,1\},\text{FrameLabel}\to \{x,y\},\text{RotateLabel}\to
+\text{False}\right];}\\
+\pmb{}\\
+\pmb{\text{(* Definimos la regi{\' o}n de integraci{\' o}n bajo la transformacion T *)}}\\
+\pmb{\text{transf} =\text{RegionPlot}\left[u^{2/5}\leq \text{alfa}^{2/5}\&\& v \geq 0 \&\& v \leq  2 \pi \&\& u*\text{Sin}[v]^5\geq 0\&\& u*\text{Cos}[v]^5\geq
+0 \&\& u*\text{Sin}[v]^5\leq u*\text{Cos}[v]^5,\right.}\\
+\pmb{\{u,0,\text{alfa}+0.2\},\{v,0,\pi /4+\pi /12\},\text{FrameLabel}\to \{u,v\},\text{RotateLabel}\to \text{False},\text{FrameTicks}\to \{\text{Automatic},\text{Range}[0,\pi
+/3,\pi /12],\text{None},\text{None}\}];}\\
+\pmb{}\\
+\pmb{\text{(* Graficamos las regiones *)}}\\
+\pmb{\text{Grid}[\{\{\text{{``}Dominio $\Omega ${''}},\text{{``}Imagen bajo T{''}}\},\{\text{omega},\text{transf}\}\}]}\\
+\pmb{}\\
+\pmb{\text{(* La matriz Jacobiana *)}}\\
+\pmb{\text{jac} =\text{Det}\left[\left(
+\begin{array}{cc}
+ \partial _u\left(u*\text{Cos}[v]^5\right) & \partial _u\left(u*\text{Sin}[v]^5\right) \\
+ \partial _v\left(u*\text{Cos}[v]^5\right) & \partial _v\left(u*\text{Sin}[v]^5\right) \\
+\end{array}
+\right)\right];}\\
+\pmb{\text{Grid}[\{\{\text{{``}El determinante del Jacobiano es:{''}},\text{jac}\}\}]}\\
+\pmb{}\\
+\pmb{\text{(*} \text{Calcular} \text{la} \text{integral} \text{sobre} \Omega , \text{es} \text{lo} \text{mismo} \text{que} \text{calcularla} \text{bajo}
+T \text{*)}}\\
+\pmb{\text{resb} =N\left[\int _0^4\int _0^{\pi /4}\left(\left(\text{alfa}^{2/5}-u^{2/5}\right)^2*\text{jac}\right)dvdu\right];}\\
+\pmb{\text{Grid}[\{\{\text{{``}El valor de la integral planteada es:{''}},\text{resb}\}\}]}\\
+\pmb{}\\
+\pmb{\text{(*} \text{Calcular} \text{el} \text{area} \text{de} \Omega , \text{pero} \text{lo} \text{hremos} \text{bajo} T \text{*)}}\\
+\pmb{\text{resc} =N\left[\int _0^4\int _0^{\pi /4}(\text{jac})dvdu\right];}\\
+\pmb{\text{Grid}[\{\{\text{{``}El valor del area de $\Omega $ es:{''}},\text{resc}\}\}]}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\begin{array}{cc}
+ \text{Dominio $\Omega $} & \text{Imagen bajo T} \\
+  &  \\
+\end{array}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\begin{array}{cc}
+ \text{El determinante del Jacobiano es:} & 5 u \text{Cos}[v]^6 \text{Sin}[v]^4+5 u \text{Cos}[v]^4 \text{Sin}[v]^6 \\
+\end{array}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\begin{array}{cc}
+ \text{El valor de la integral planteada es:} & 0.106289 \\
+\end{array}\)
+\end{doublespace}
+
+\begin{doublespace}
+\noindent\(\begin{array}{cc}
+ \text{El valor del area de $\Omega $ es:} & 0.736311 \\
+\end{array}\)
+\end{doublespace}
+
+\end{document}
