@@ -1,0 +1,100 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenx} %Codificacion del texto (ISO Latin1 encoding)
+
+\usepackage{fancyhdr} %Permite acomodar a tu gusto la parte de arriba y
+% abajo del documento
+\usepackage[spanish]{babel} %Permite definir el idioma del dcumento
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{url} %Tipo de fuente para correos y paginas
+\usepackage{pgf}
+\usepackage{fleqn}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{colortbl} %Permite colocar colores a las tablas
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{moreverb}
+\usepackage{rotating}
+\usepackage{lastpage}
+\usepackage[final]{pdfpages}
+%%%%%%%%%%
+%Margenes%
+%%%%%%%%%%
+\usepackage[top=3cm,bottom=3cm,left=3cm,right=3cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%
+%Estilo del documento%
+%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancyplain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Fancyheadings. Top y Bottom del documento%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recuerde que en este documento la portada del documento no posee
+% numeracion, pero de igual manera llamaremos a esa primera pagina la numero
+% 1, y la que viene la dos. Esto es para tener una idea de las que
+% llamaremos pares e impares
+\lhead{Laboratorio mat024} %Parte superior izquierda
+\rhead{\bf \it Preinforme 1} %Parte superior derecha
+\lfoot{\it Victor Gonzalez} %Parte inferior izquierda. \thepage indica
+% el numero de pagina
+\cfoot{\bf \thepage} %Parte inferior central
+\rfoot{página \thepage\ de \pageref{LastPage}} %Parte inferior derecha
+\renewcommand{\footrulewidth}{0.4pt} %Linea de separacion inferior
+
+\begin{document}
+\includepdf[pages={1}]{portada.pdf}
+
+\section{Desarrollo Analítico y Planteamiento}
+Para el resto del documento considerar $\alpha=4$ y $\beta=9$.
+\subsection{Pregunta 1}
+\subsubsection{Parte a}
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 2}
+\subsubsection{Parte a}
+
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 3}
+
+
+\section{Desarrollo Computacional}
+\subsection{Pregunta 1}
+\subsubsection{Parte a}
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 2}
+\subsubsection{Parte a}
+
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 3}
+
+
+\section{Resultados}
+\subsection{Pregunta 1}
+\subsubsection{Parte a}
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 2}
+\subsubsection{Parte a}
+
+
+\subsubsection{Parte b}
+
+\subsection{Pregunta 3}
+
+\section{Conclusiones}
+Las sumas de Riemann son útiles para estimar integrales de dificil cálculo, se limitan a realizar operaciones algebráicas básicas para resolver problemas que pueden ser complejos de entender a nivel de cálculo.
+Por otro lado, las transformaciónes de las regiones de integración facilitan enormemente el trabajo del cálculo de integrales en varias variables, y también el análisis de estas, lo cual es ideal.
+
+\includepdf[pages={1,2,3,4}]{lab1_mat.pdf}
+
+\end{document}
