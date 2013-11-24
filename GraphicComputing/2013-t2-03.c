@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
+float x_translation = 0.0;
+
+void init(){
+    glClearColor(1.0,1.0,1.0,1.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(-1.2,1.2,-1.2,1.2);
+}
+
 void dibujarFiguras(void) {
 
     glClear(GL_COLOR_BUFFER_BIT); 
-    glClearColor(1.0,1.0,1.0,1.0);
 
     //Triangulo
     printf("[dibujo] Dibujando triangulo... ");
@@ -55,14 +63,7 @@ void cambiarDimension(int w, int h) {
         h = 1;
     float ratio = 1.0* w / h;
 
-    // tamaño del lienzo
-    gluOrtho2D(-1.2,1.2,-1.2,1.2);
-
-    // usar matriz de proyeccion
-    glMatrixMode(GL_PROJECTION);
-
-    // resetear matriz (matriz identidad)
-    glLoadIdentity();
+    init();
 
     // fijar la visualizacion al porte de la ventana
     glViewport(0, 0, w, h);
@@ -76,6 +77,61 @@ void cambiarDimension(int w, int h) {
     printf("[display] Nueva dimension de ventana:\n\t\tAncho: %i px\n\t\tAlto: %i px\n",w,h);
 }
 
+int toTheRight = 1;
+void animarEscena(){
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+
+    glLoadIdentity();
+    // triangulo
+    glTranslatef(x_translation ,0.0f,0.0f);
+    glBegin(GL_POLYGON);
+        glColor3f(1.0,0.0,0.0);
+        glVertex2f(-0.5,0.0);
+
+        glVertex2f(-0.0,-1.0);
+
+        glVertex2f(-1.0,-1.0);
+    glEnd();
+    glLoadIdentity();
+
+    if (toTheRight == 1){    
+        x_translation += 0.01;
+        if (x_translation > 2.3)
+            toTheRight = 0;
+    } else {
+        x_translation -= 0.01;
+        if (x_translation < -1.3)
+            toTheRight = 1;
+    }
+    
+    //Cuadrado
+    glBegin(GL_POLYGON);
+        glColor3f(0.0,1.0,0.0); 
+        glVertex2f(0.1,-1.0);
+
+        glVertex2f(1.0,-1.0);
+
+        glVertex2f(1.0,0.0);
+
+        glVertex2f(0.1,0.0); 
+    glEnd();
+
+    //Rectangulo
+    glBegin(GL_POLYGON);                                                         
+        glColor3f(0.0,0.0,1.0);
+        glVertex2f(-1.0,0.1);
+                                        
+        glVertex2f(-1.0,1.0);
+                                           
+        glVertex2f(1.0,1.0);  
+                                          
+        glVertex2f(1.0,0.1);                                             
+    glEnd();
+
+    glutSwapBuffers();
+}
 
 
 int main(int argc, char **argv) {
@@ -89,6 +145,8 @@ int main(int argc, char **argv) {
     glutCreateWindow("Tarea 2 - Grupo 03");
     printf("Listo\n");
 
+    init();
+
     // callback de funcion que dibuja por pantalla
     printf("[display] Llamando a función de dibujo...\n");
     glutDisplayFunc(dibujarFiguras);
@@ -97,6 +155,9 @@ int main(int argc, char **argv) {
     printf("[display] Redimensionado de ventana... ");
     glutReshapeFunc(cambiarDimension);
     printf("Listo\n");
+
+    // callback
+    glutIdleFunc(animarEscena);
 
     // inicializar el pintor
     glutMainLoop();
