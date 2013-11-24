@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
-float x_translation = 0.0;
+float x_translation;
+int toTheRight
 
 void init(){
     glClearColor(1.0,1.0,1.0,1.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(-1.2,1.2,-1.2,1.2);
+    x_translation = 0.0;
+    toTheRight = 1;
 }
 
 void dibujarFiguras(void) {
@@ -77,7 +80,6 @@ void cambiarDimension(int w, int h) {
     printf("[display] Nueva dimension de ventana:\n\t\tAncho: %i px\n\t\tAlto: %i px\n",w,h);
 }
 
-int toTheRight = 1;
 void animarEscena(){
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -145,6 +147,7 @@ int main(int argc, char **argv) {
     glutCreateWindow("Tarea 2 - Grupo 03");
     printf("Listo\n");
 
+    // initialize data
     init();
 
     // callback de funcion que dibuja por pantalla
