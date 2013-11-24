@@ -119,7 +119,7 @@ void animarEscena(){
     inverso en el aparecen */
     glTranslatef(0.5f,-0.5f,0.0f); // 3.- devolvemos al sitio original
     glRotatef(rotate_x,0.0f,0.0f,1.0f); // 2.- hacemos rotar en torno al eje z
-    glTranslatef(-0.5f,0.5f,0.0f); // 1.- primero trasladamos al centr
+    glTranslatef(-0.5f,0.5f,0.0f); // 1.- primero trasladamos al centro
     glBegin(GL_POLYGON);
         glColor3f(0.0,1.0,0.0);
         glVertex2f(0.0,-1.0);
