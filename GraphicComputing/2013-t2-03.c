@@ -1,3 +1,19 @@
+/***
+
+Universidad Tecnica Federico Santa Maria
+Departamento de Informatica
+Segundo Semestre 2013
+
+[INF-342] Computacion Grafica
+Profesor: Hubert Hoffmann
+Tarea 2
+
+Autores (Grupo 3):
+- Patricia Fredes
+- Victor Gonzalez
+
+***/
+
 #include <stdio.h>
 #include <GL/glut.h>
 
@@ -24,9 +40,7 @@ void dibujarFiguras(void) {
     glBegin(GL_POLYGON);
         glColor3f(1.0,0.0,0.0);
         glVertex2f(-0.5,0.0);
-
         glVertex2f(-0.0,-1.0);
-
         glVertex2f(-1.0,-1.0);
     glEnd();
     printf("Listo\n");
@@ -36,11 +50,8 @@ void dibujarFiguras(void) {
     glBegin(GL_POLYGON);
         glColor3f(0.0,1.0,0.0); 
         glVertex2f(0.0,-1.0);
-
         glVertex2f(1.0,-1.0);
-
         glVertex2f(1.0,0.0);
-
         glVertex2f(0.0,0.0); 
     glEnd();
     printf("Listo\n");
@@ -49,12 +60,9 @@ void dibujarFiguras(void) {
     printf("[dibujo] Dibujando rectangulo... ");
     glBegin(GL_POLYGON);                                                         
         glColor3f(0.0,0.0,1.0);
-        glVertex2f(-1.0,0.1);
-                                        
-        glVertex2f(-1.0,1.0);
-                                           
-        glVertex2f(1.0,1.0);  
-                                          
+        glVertex2f(-1.0,0.1);                        
+        glVertex2f(-1.0,1.0);                             
+        glVertex2f(1.0,1.0);                                
         glVertex2f(1.0,0.1);                                             
     glEnd();
     printf("Listo\n\n");
@@ -90,9 +98,7 @@ void animarEscena(){
     glBegin(GL_POLYGON);
         glColor3f(1.0,0.0,0.0);
         glVertex2f(-0.5,0.0);
-
         glVertex2f(-0.0,-1.0);
-
         glVertex2f(-1.0,-1.0);
     glEnd();
     glLoadIdentity();
@@ -117,11 +123,8 @@ void animarEscena(){
     glBegin(GL_POLYGON);
         glColor3f(0.0,1.0,0.0);
         glVertex2f(0.0,-1.0);
-
         glVertex2f(1.0,-1.0);
-
         glVertex2f(1.0,0.0);
-
         glVertex2f(0.0,0.0);
     glEnd();
     glLoadIdentity();
@@ -131,12 +134,9 @@ void animarEscena(){
     //Rectangulo
     glBegin(GL_POLYGON);                                                         
         glColor3f(0.0,0.0,1.0);
-        glVertex2f(-1.0,0.1);
-                                        
-        glVertex2f(-1.0,1.0);
-                                           
-        glVertex2f(1.0,1.0);  
-                                          
+        glVertex2f(-1.0,0.1);                          
+        glVertex2f(-1.0,1.0);                            
+        glVertex2f(1.0,1.0);                             
         glVertex2f(1.0,0.1);                                             
     glEnd();
 
@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
     glutCreateWindow("Tarea 2 - Grupo 03");
     printf("Listo\n");
 
-    // initialize data
+    // inicialización de datos globales
     init();
 
     // callback de funcion que dibuja por pantalla
