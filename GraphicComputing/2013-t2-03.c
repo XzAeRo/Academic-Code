@@ -3,6 +3,7 @@
 
 float x_translation;
 int toTheRight;
+float rotate_x;
 
 void init(){
     glClearColor(1.0,1.0,1.0,1.0);
@@ -11,6 +12,7 @@ void init(){
     gluOrtho2D(-1.2,1.2,-1.2,1.2);
     x_translation = 0.0;
     toTheRight = 1;
+    rotate_x = 0.0;
 }
 
 void dibujarFiguras(void) {
@@ -33,13 +35,13 @@ void dibujarFiguras(void) {
     printf("[dibujo] Dibujando cuadrado... ");
     glBegin(GL_POLYGON);
         glColor3f(0.0,1.0,0.0); 
-        glVertex2f(0.1,-1.0);
+        glVertex2f(0.0,-1.0);
 
         glVertex2f(1.0,-1.0);
 
         glVertex2f(1.0,0.0);
 
-        glVertex2f(0.1,0.0); 
+        glVertex2f(0.0,0.0); 
     glEnd();
     printf("Listo\n");
 
@@ -83,11 +85,8 @@ void cambiarDimension(int w, int h) {
 void animarEscena(){
     glClear(GL_COLOR_BUFFER_BIT);
 
-
-
-    glLoadIdentity();
     // triangulo
-    glTranslatef(x_translation ,0.0f,0.0f);
+    glTranslatef(x_translation ,0.0f,0.0f); // trasladamos en el eje x
     glBegin(GL_POLYGON);
         glColor3f(1.0,0.0,0.0);
         glVertex2f(-0.5,0.0);
@@ -98,6 +97,7 @@ void animarEscena(){
     glEnd();
     glLoadIdentity();
 
+    /* Si el dibujo se sale de la pantalla, hacer que se devuelva */
     if (toTheRight == 1){    
         x_translation += 0.01;
         if (x_translation > 2.3)
@@ -109,16 +109,24 @@ void animarEscena(){
     }
     
     //Cuadrado
+    /* Notar que OpenGl aplica las transformaciones en el orden
+    inverso en el aparecen */
+    glTranslatef(0.5f,-0.5f,0.0f); // 3.- devolvemos al sitio original
+    glRotatef(rotate_x,0.0f,0.0f,1.0f); // 2.- hacemos rotar en torno al eje z
+    glTranslatef(-0.5f,0.5f,0.0f); // 1.- primero trasladamos al centr
     glBegin(GL_POLYGON);
-        glColor3f(0.0,1.0,0.0); 
-        glVertex2f(0.1,-1.0);
+        glColor3f(0.0,1.0,0.0);
+        glVertex2f(0.0,-1.0);
 
         glVertex2f(1.0,-1.0);
 
         glVertex2f(1.0,0.0);
 
-        glVertex2f(0.1,0.0); 
+        glVertex2f(0.0,0.0);
     glEnd();
+    glLoadIdentity();
+
+    rotate_x += 5;
 
     //Rectangulo
     glBegin(GL_POLYGON);                                                         
