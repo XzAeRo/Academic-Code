@@ -2,7 +2,7 @@
 #include <GL/glut.h>
 
 float x_translation;
-int toTheRight
+int toTheRight;
 
 void init(){
     glClearColor(1.0,1.0,1.0,1.0);
