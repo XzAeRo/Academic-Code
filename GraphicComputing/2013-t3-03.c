@@ -26,7 +26,7 @@ void init(){
 
 void dibujarFiguras(void) {
 
-    glClear(GL_COLOR_BUFFER_BIT); 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
     //Triangulo
     printf("[dibujo] Dibujando triangulo... ");
@@ -83,16 +83,32 @@ void cambiarDimension(int w, int h) {
     printf("[display] Nueva dimension de ventana:\n\t\tAncho: %i px\n\t\tAlto: %i px\n",w,h);
 }
 
+void processSpecialKeys(int key, int xx, int yy) {
+
+    float fraction = 0.1f;
+
+    switch (key) {
+        case GLUT_KEY_LEFT :
+            break;
+        case GLUT_KEY_RIGHT :
+            break;
+        case GLUT_KEY_UP :
+            break;
+        case GLUT_KEY_DOWN :
+            break;
+    }
+}
+
 
 int main(int argc, char **argv) {
 
     printf("[init] Inicializando paramtros de GLUT... ");
     // inicializacion de pantalla
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(500,500);
-    glutCreateWindow("Tarea 2 - Grupo 03");
+    glutCreateWindow("Tarea 3 - Grupo 03");
     printf("Listo\n");
 
     // inicialización de datos globales
@@ -106,6 +122,9 @@ int main(int argc, char **argv) {
     printf("[display] Redimensionado de ventana... ");
     glutReshapeFunc(cambiarDimension);
     printf("Listo\n");
+
+    glutSpecialFunc(processSpecialKeys);
+    glEnable( GL_DEPTH_TEST );
 
     // inicializar el pintor
     glutMainLoop();
