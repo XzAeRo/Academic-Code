@@ -19,14 +19,18 @@ Autores (Grupo 3):
 
 void init(){
     glClearColor(1.0,1.0,1.0,1.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-1.2,1.2,-1.2,1.2);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                                                                                        
+    glMatrixMode(GL_PROJECTION);                                                     
+    glLoadIdentity();                                                                
+    glFrustum(-1,1,-1,1,1.3,1000);
+    glMatrixMode(GL_MODELVIEW); 
+    glLoadIdentity();                                                                
+    glTranslatef(0,0,-1.5); 
 }
 
 void dibujarFiguras(void) {
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+	init();
 
     //Triangulo
     printf("[dibujo] Dibujando triangulo... ");
@@ -41,22 +45,22 @@ void dibujarFiguras(void) {
     //Cuadrado
     printf("[dibujo] Dibujando cuadrado... ");
     glBegin(GL_POLYGON);
-        glColor3f(0.0,1.0,0.0); 
+        glColor3f(0.0,1.0,0.0);
         glVertex2f(0.0,-1.0);
         glVertex2f(1.0,-1.0);
         glVertex2f(1.0,0.0);
-        glVertex2f(0.0,0.0); 
+        glVertex2f(0.0,0.0);
     glEnd();
     printf("Listo\n");
 
     //Rectangulo
     printf("[dibujo] Dibujando rectangulo... ");
-    glBegin(GL_POLYGON);                                                         
+    glBegin(GL_POLYGON);
         glColor3f(0.0,0.0,1.0);
-        glVertex2f(-1.0,0.1);                        
-        glVertex2f(-1.0,1.0);                             
-        glVertex2f(1.0,1.0);                                
-        glVertex2f(1.0,0.1);                                             
+        glVertex2f(-1.0,0.1);
+        glVertex2f(-1.0,1.0);
+        glVertex2f(1.0,1.0);
+        glVertex2f(1.0,0.1);
     glEnd();
     printf("Listo\n\n");
 
