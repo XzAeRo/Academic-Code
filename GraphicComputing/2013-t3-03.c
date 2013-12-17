@@ -17,117 +17,280 @@ Autores (Grupo 3):
 #include <stdio.h>
 #include <GL/glut.h>
 
-void init(){
-    glClearColor(1.0,1.0,1.0,1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                                                                                        
-    glMatrixMode(GL_PROJECTION);                                                     
-    glLoadIdentity();                                                                
-    glFrustum(-1,1,-1,1,1.3,1000);
-    glMatrixMode(GL_MODELVIEW); 
-    glLoadIdentity();                                                                
-    glTranslatef(0,0,-1.5); 
+// vertices de las figuras
+const float vertice_rectangulo[2][2][2][3] = {{{{-1.0, 0.1, -1.0}, {-1.0, 0.1, 0.0}},
+                                               {{-1.0, 1.0, -1.0}, {-1.0, 1.0, 0.0}}},
+                                              {{{ 1.0, 0.1, -1.0}, { 1.0, 0.1, 0.0}},
+                                               {{ 1.0, 1.0, -1.0}, { 1.0, 1.0, 0.0}}}};
+
+const float vertice_cuadrado[2][2][2][3] = {{{{ 0.0, -1.0, -1.0}, { 0.0, -1.0, 0.0}},
+                                             {{ 0.0,  0.0, -1.0}, { 0.0,  0.0, 0.0}}},
+                                            {{{ 1.0, -1.0, -1.0}, { 1.0, -1.0, 0.0}},
+                                             {{ 1.0,  0.0, -1.0}, { 1.0,  0.0, 0.0}}}};
+
+const float vertice_triangulo[2][2][2][3] = {{{{-1.0, -1.0, -1.0}, {-1.0, -1.0, 0.0}},
+                                              {{-0.5,  0.0, -1.0}, {-0.5,  0.0, 0.0}}},
+                                             {{{ 0.0, -1.0, -1.0}, { 0.0, -1.0, 0.0}},
+                                              {{-0.5,  0.0, -1.0}, {-0.5,  0.0, 0.0}}}};
+
+// estado inicial camara
+static float cam[]= {0.0, 0.0, 1.2};
+static float delta_cam = 0.1f;
+
+void cuadrado(){
+
+    glBegin(GL_POLYGON);
+    
+        glColor3f(0.0, 1.0, 0.0);
+
+        //frente
+        glVertex3fv(vertice_cuadrado[0][0][1]);
+        glVertex3fv(vertice_cuadrado[0][1][1]);
+        glVertex3fv(vertice_cuadrado[1][1][1]);
+        glVertex3fv(vertice_cuadrado[1][0][1]);
+
+        //fondo
+        glVertex3fv(vertice_cuadrado[0][0][0]);
+        glVertex3fv(vertice_cuadrado[0][1][0]);
+        glVertex3fv(vertice_cuadrado[1][1][0]);
+        glVertex3fv(vertice_cuadrado[1][0][0]);
+
+        //arriba
+        glVertex3fv(vertice_cuadrado[0][1][0]);
+        glVertex3fv(vertice_cuadrado[0][1][1]);
+        glVertex3fv(vertice_cuadrado[1][1][1]);
+        glVertex3fv(vertice_cuadrado[1][1][0]);
+
+        //abajo
+        glVertex3fv(vertice_cuadrado[0][0][0]);
+        glVertex3fv(vertice_cuadrado[0][0][1]);
+        glVertex3fv(vertice_cuadrado[1][0][1]);
+        glVertex3fv(vertice_cuadrado[1][0][0]);
+
+        //derecha
+        glVertex3fv(vertice_cuadrado[1][0][0]);
+        glVertex3fv(vertice_cuadrado[1][0][1]);
+        glVertex3fv(vertice_cuadrado[1][1][1]);
+        glVertex3fv(vertice_cuadrado[1][1][0]);
+
+        //izquierda
+        glVertex3fv(vertice_cuadrado[0][0][0]);
+        glVertex3fv(vertice_cuadrado[0][0][1]);
+        glVertex3fv(vertice_cuadrado[0][1][1]);
+        glVertex3fv(vertice_cuadrado[0][1][0]);
+
+  glEnd();
+
 }
 
-void dibujarFiguras(void) {
+void rectangulo(){
 
-	init();
-
-    //Triangulo
-    printf("[dibujo] Dibujando triangulo... ");
     glBegin(GL_POLYGON);
-        glColor3f(1.0,0.0,0.0);
-        glVertex2f(-0.5,0.0);
-        glVertex2f(-0.0,-1.0);
-        glVertex2f(-1.0,-1.0);
-    glEnd();
-    printf("Listo\n");
+    
+        glColor3f(0.0, 0.0, 1.0);
 
-    //Cuadrado
-    printf("[dibujo] Dibujando cuadrado... ");
-    glBegin(GL_POLYGON);
-        glColor3f(0.0,1.0,0.0);
-        glVertex2f(0.0,-1.0);
-        glVertex2f(1.0,-1.0);
-        glVertex2f(1.0,0.0);
-        glVertex2f(0.0,0.0);
-    glEnd();
-    printf("Listo\n");
+        //frente
+        glVertex3fv(vertice_rectangulo[0][0][1]);
+        glVertex3fv(vertice_rectangulo[0][1][1]);
+        glVertex3fv(vertice_rectangulo[1][1][1]);
+        glVertex3fv(vertice_rectangulo[1][0][1]);
 
-    //Rectangulo
-    printf("[dibujo] Dibujando rectangulo... ");
-    glBegin(GL_POLYGON);
-        glColor3f(0.0,0.0,1.0);
-        glVertex2f(-1.0,0.1);
-        glVertex2f(-1.0,1.0);
-        glVertex2f(1.0,1.0);
-        glVertex2f(1.0,0.1);
-    glEnd();
-    printf("Listo\n\n");
+        //fondo
+        glVertex3fv(vertice_rectangulo[0][0][0]);
+        glVertex3fv(vertice_rectangulo[0][1][0]);
+        glVertex3fv(vertice_rectangulo[1][1][0]);
+        glVertex3fv(vertice_rectangulo[1][0][0]);
 
+        //arriba
+        glVertex3fv(vertice_rectangulo[0][1][0]);
+        glVertex3fv(vertice_rectangulo[0][1][1]);
+        glVertex3fv(vertice_rectangulo[1][1][1]);
+        glVertex3fv(vertice_rectangulo[1][1][0]);
+
+        //abajo
+        glVertex3fv(vertice_rectangulo[0][0][0]);
+        glVertex3fv(vertice_rectangulo[0][0][1]);
+        glVertex3fv(vertice_rectangulo[1][0][1]);
+        glVertex3fv(vertice_rectangulo[1][0][0]);
+
+        //derecha
+        glVertex3fv(vertice_rectangulo[1][0][0]);
+        glVertex3fv(vertice_rectangulo[1][0][1]);
+        glVertex3fv(vertice_rectangulo[1][1][1]);
+        glVertex3fv(vertice_rectangulo[1][1][0]);
+
+        //izquierda
+        glVertex3fv(vertice_rectangulo[0][0][0]);
+        glVertex3fv(vertice_rectangulo[0][0][1]);
+        glVertex3fv(vertice_rectangulo[0][1][1]);
+        glVertex3fv(vertice_rectangulo[0][1][0]);
+
+  glEnd();
+
+}
+
+
+void triangulo()
+{
+  glBegin(GL_POLYGON);
+
+    glColor3f(1.0, 0.0, 0.0);
+    //frente
+    glVertex3fv(vertice_triangulo[0][0][1]);
+    glVertex3fv(vertice_triangulo[0][1][1]);
+    glVertex3fv(vertice_triangulo[1][0][1]);
+
+    //fondo
+    glVertex3fv(vertice_triangulo[0][0][0]);
+    glVertex3fv(vertice_triangulo[0][1][0]);
+    glVertex3fv(vertice_triangulo[1][0][0]);
+
+    //abajo
+    glVertex3fv(vertice_triangulo[0][0][0]);
+    glVertex3fv(vertice_triangulo[0][0][1]);
+    glVertex3fv(vertice_triangulo[1][0][1]);
+    glVertex3fv(vertice_triangulo[1][0][0]);
+
+    //derecha
+    glVertex3fv(vertice_triangulo[1][0][0]);
+    glVertex3fv(vertice_triangulo[1][0][1]);
+    glVertex3fv(vertice_triangulo[1][1][1]);
+    glVertex3fv(vertice_triangulo[1][1][0]);
+
+    //izquierda
+    glVertex3fv(vertice_triangulo[0][0][0]);
+    glVertex3fv(vertice_triangulo[0][0][1]);
+    glVertex3fv(vertice_triangulo[0][1][1]);
+    glVertex3fv(vertice_triangulo[0][1][0]);
+    
+  glEnd();
+}
+/*
+
+/***
+ * pantalla a visualizar, crea las figuras
+ */
+void dibujarFiguras(void)
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+    gluLookAt(cam[0], cam[1], cam[2], 0.0, 0.0, -5.0, 0.0, 1.0, 0.0);
+
+    rectangulo();
+
+        cuadrado();
+
+
+    triangulo();
+
+    glFlush();
     glutSwapBuffers();
 }
 
-void cambiarDimension(int w, int h) {
-    // prevenir division por cero
-    if(h == 0)
-        h = 1;
-    float ratio = 1.0* w / h;
-
-    init();
-
-    // fijar la visualizacion al porte de la ventana
-    glViewport(0, 0, w, h);
-
-    // fijar la perspectiva correcta
-    gluPerspective(0,ratio,0,1);
-
-    // retornar a la vista del modelo
-    glMatrixMode(GL_MODELVIEW);
-
-    printf("[display] Nueva dimension de ventana:\n\t\tAncho: %i px\n\t\tAlto: %i px\n",w,h);
+/***
+ * Cambia los parametros que generan rotacion y traslacion en las figuras.
+ */
+void animar()
+{
+  glutPostRedisplay();
 }
 
-void processSpecialKeys(int key, int xx, int yy) {
+/***
+ * acciones a realizar por el teclado
+ */
+void processSpecialKeys(unsigned char key, int x, int y)
+{
+  if(key == 'x')
+    cam[0] += delta_cam;
+  if(key == 'X')
+    cam[0] -= delta_cam;
+    
+  if(key == 'y')
+    cam[1] += delta_cam;
+  if(key == 'Y')
+    cam[1] -= delta_cam;
+    
+  if(key == 'z')
+    cam[2] += delta_cam;
+  if(key == 'Z')
+    cam[2] -= delta_cam;
 
-    float fraction = 0.1f;
 
-    switch (key) {
-        case GLUT_KEY_LEFT :
+switch (key) {
+        case 'x' :
+            cam[0] += delta_cam;
             break;
-        case GLUT_KEY_RIGHT :
+        case 'X' :
+            cam[0] -= delta_cam;
             break;
-        case GLUT_KEY_UP :
+        case 'y' :
+            cam[1] += delta_cam;
             break;
-        case GLUT_KEY_DOWN :
+        case 'Y' :
+            cam[1] -= delta_cam;
+            break;
+        case 'z' :
+            cam[2] += delta_cam;
+            break;
+        case 'Z' :
+            cam[2] -= delta_cam;
+            break;
+        case 'r' :
+            cam[0] = 0.0;
+            cam[1] = 0.0;
+            cam[2] = 1.2;
             break;
     }
+
 }
 
+/***
+ * parametros iniciales de forma
+ */
+void cambiarDimension(int w, int h)
+{
+  glClearColor(1.0, 1.0, 1.0, 1.0);
+  glViewport(-1, -1, w, h);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  
+  glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 200.0);
+
+  glMatrixMode(GL_MODELVIEW);
+}
 
 int main(int argc, char **argv) {
 
-    printf("[init] Inicializando paramtros de GLUT... ");
     // inicializacion de pantalla
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(500,500);
     glutCreateWindow("Tarea 3 - Grupo 03");
-    printf("Listo\n");
 
-    // inicialización de datos globales
-    init();
+    printf("Teclas disponibles:\n");
+    printf("\t'x': avanzar camara por el eje x.\n");
+    printf("\t'X': retroceder camara por el eje x.\n");
+    printf("\t'y': avanzar camara por el eje y.\n");
+    printf("\t'Y': retroceder camara por el eje y.\n");
+    printf("\t'z': avanzar camara por el eje z.\n");
+    printf("\t'Z': retroceder camara por el eje z.\n");
+    printf("\t'r': resetear camara al punto inicial.\n");
 
     // callback de funcion que dibuja por pantalla
-    printf("[display] Llamando a función de dibujo...\n");
     glutDisplayFunc(dibujarFiguras);
 
-    // callback re-dimension de ventana
-    printf("[display] Redimensionado de ventana... ");
-    glutReshapeFunc(cambiarDimension);
-    printf("Listo\n");
+    // callback de dibujo actualizado
+    glutIdleFunc(animar);
 
-    glutSpecialFunc(processSpecialKeys);
+    // callback re-dimension de ventana
+    glutReshapeFunc(cambiarDimension);
+
+    // callback de teclado
+    glutKeyboardFunc(processSpecialKeys);
+
     glEnable( GL_DEPTH_TEST );
 
     // inicializar el pintor
