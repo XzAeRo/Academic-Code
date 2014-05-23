@@ -1,16 +1,15 @@
 Para compilar:
 
-```
+
 pdflatex InformeI.tex
 bibtex InformeI.aux
 bibtex InformeI.aux
 pdflatex InformeI.tex
 bibtex InformeI.aux
 bibtex InformeI.aux
-```
+
 
 O simplemente:
-```
+
 make all
 make clean
-```
