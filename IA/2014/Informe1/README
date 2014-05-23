@@ -1,8 +1,16 @@
 Para compilar:
 
-pdflatex PlantillaInformeI.tex
-bibtex PlantillaInformeI.aux
-bibtex PlantillaInformeI.aux
-pdflatex PlantillaInformeI.tex
-bibtex PlantillaInformeI.aux
-bibtex PlantillaInformeI.aux
+```
+pdflatex InformeI.tex
+bibtex InformeI.aux
+bibtex InformeI.aux
+pdflatex InformeI.tex
+bibtex InformeI.aux
+bibtex InformeI.aux
+```
+
+O simplemente:
+```
+make all
+make clean
+```
