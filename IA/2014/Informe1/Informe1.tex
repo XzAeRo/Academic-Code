@@ -144,6 +144,11 @@ Al igual que otros algoritmos de búsqueda local, Simulated Annealing necesita u
 
 Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, una temperatura inicial y su respectiva función de decaimiento, y el número de iteraciones máximas para el algoritmo.
 
+\subsubsection{Metropolis}
+El algoritmo Metrópolis es una version simplificada del Simulated Annealing, donde su princincipal diferencia radica en que en vez de tener una función de decaimento para la temperatura, la temperatura se mantiene constante durante toda la ejecución.
+
+El algoritmo avanza buscando en su vecindario al azar, y luego acepta o no la solución dependiendo de una función probabilística. Es decir, igual que el funcionamiento de Simulated Annealing.
+
 \subsubsection{Tabu Search}
 Tabu Search es un algoritmo de búsqueda local, que busca explotar y explorar el espacio de búsqueda, de acuerdo a una estructura de memoria adaptativa y flexible.
 
@@ -152,50 +157,164 @@ Al igual que Simulated Annealing, Tabu Search necesita una solución inicial par
 Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, el tamaño de la lista tabú, y el número de iteraciones máximas para el algoritmo.
 
 \subsection{Heurísticas y Metaheurísticas}
-\cite{LocalSearch} heuristica Min-Conflict
+En los distintos articulos revisados, se pueden apreciar distintas técnicas de algoritmos de heurísticas, las cuales buscan ayudar el procesamiento de soluciones para el problema.
 
-\cite{PPPAsMIP} heuristica Time Staged
+En la formulación de Búsqueda Local \cite{LocalSearch, PseudoLocal}, se utilizan técnicas que buscan optimizar los movimientos realizados para explorar en el espacio de búsqueda. En el caso de la Búsqueda Local se utiliza la heurística \textit{Min-Conflict}\cite{LocalSearch}.
 
-\cite{FirstPublication} Ordenamiento
+En la heurística Min-Conflict, al tener un set de variables (que en el caso de la Búsqueda Local es el vecindario de una solución), se va a tratar de avanzar a la solución que tenga la menor cantidad de violaciones a las restricciones del problema\footnote{Recordar que técnicas como Tabú-Search y Simulated Annealing, pueden revisar espacios infactibles de soluciones, con el fin de salirse de óptimos locales.}, con el fin de priorizar la \textit{reparación} de las soluciones encontradas\cite{MinConflicts}.\\
+
+Para los artículos donde se utiliza Programación Lineal o Programación con Restricciones, las heurísticas no juegan un papel tan relevante, como lo es para la Búsqueda Local. Esto es debido a que la Programación Lineal trabaja con las variables definidas directamente.
+
+A pesar de esto, se menciona que para la publicación original \cite{FirstPublication}, se pre-procesa el problema mediante el software GAMS, para luego ser resuelto por el software CPLEX 7.0. Esto se hace para aplicar las heurísticas utilizadas en GAMS (las cuales se basan en los algoritmos branch-and-bound), y así simplificar la tarea que debe realizar CPLEX 7.0 para resolver el problema ``reducido''. Y para el caso de la Programación con Restricciones, simplemente se aplica un ordenamiento de acuerdo al dominio de las variables\footnote{Es importante recordar que para este artículo, el algoritmo más eficiente fue el utilizado en Programación con Restricciones}.\\
+
+En el artículo \cite{PPPAsMIP} se menciona el uso de una heurística específica para el problema, el cual se basa en ``etapas de tiempo''(Time-Stage), el cual básicamente hace un pre-procesamiento del problema para $t=1$. Con eso se pueden definir $h_i$ y $x_{i,j,1}$. Luego se resuelve para $t=1,2$, y se puede definir $x_{i,j,s}$, y así sucesivamente.
+
+
 \subsection{Resultados}
+Considerando los 3 enfoques mencionados en los artículos, se puede ver que claramente el mejor método utilizado es el de Búsqueda Local en cuanto a los tiempos de ejecución. Pero sus representaciones son mucho más elaboradas, refinadas y complicadas, debido a que se introducen restricciones con castigos, lo cual aumenta la eficiencia, pero destruye la semántica original del problema\footnote{Lo cual no es malo, pero su formulación se aleja mucho de lo original.}.\\
 
+A partir de lo que se ha recopilado, los artículos \cite{LocalSearch, PPPAsMIP} han hecho una buena recopilación de las diferencias al ejecutar los distintos métodos. Es por esto, que este documento utilizaremos la información referenciada en los artículos mencionados, con el fin de simplificar la entrega de los datos.\\
 
-\cite{LocalSearch}
-\begin{tabular}{|l||c|c|c|c|}
-\hline
-problem & ILP & CP1 & CP2 & LS \\ \hline
-$P_6$ & fail & 27 min. & a few sec. & $< 1$ s. \\ \hline
-$P_7$ & fail & 28 min. & a few sec. & $< 1$ s. \\ \hline
-$P_8$ & fail & fail & a few sec. & $1$ s. \\ \hline
-$P_9$ & fail & fail & hours & $4$ s. \\ \hline
-$P_10$ & fail & fail & fail & fail \\ \hline
-\end{tabular}
+En la publicación original \cite{FirstPublication}, se menciona que la Programación Lineal fue un total fracaso, y la única vez que sus modelos arrojaron un resultado, al corroborarlo el sistema no pudo lograrlo, ya que después de 189 horas, ya que el problema no se pudo corroborar. Además, la cantidad de variables y filas de ecuaciones generadas al ejecutar los algoritmos, estaban al borde de la capacidad de los computadores de la época utilizados en el estudio.
 
-\cite{PPPAsMIP}
-\begin{tabular}{|p{0.8cm}|l|l|p{2cm}|p{1.2cm}|p{0.7cm}|p{0.7cm}|}
-\hline
-time stage & nº equations & nº variables & nº non-zero elem. & discrete vars. & gen. time & sol. time \\ \hline
-1 & $38830$ & $2620$ & $114130$ & $1758$ & $0.73$ & $1.62$ \\ \hline
-... & ... & ... & ... & ... & ... & ... \\ \hline
-(7) & $245470$ & $77500$ & $322876$ & $1722$ & $3.42$ & $5.50$ \\ \hline
-\end{tabular}
+Sin embargo, los resultados fueron mas optimistas al utilizar Programación con Restricciones, ya que logró resolver en pocos segundos dos de los problemas que Programación Lineal no pudo resolver. Sin embargo, para instancias mas grandes, el método falló.\\
 
+En el artículo \cite{PPPAsMIP}, se logra aplicar una nueva representación al problema, y esta vez, con computadores más potentes y mejores pre-procesadores, se logró dar con soluciones optimas al cabo de pocos segundos, pero instancias superiores no puedieron ser corroboradas debido a la heurística utilizada.
 
-original sin resultados para el problema completo
+En la tabla a continuación se puede ver tabulada los resultados al resolver el programa con Programación Entera Mixta (MIP):\\
 
-+Metodos utilizados hasta el momento
-+Mejores algoritmos utilizados
-+Que representaciones han tenido mejores resultados
-+Tendencia actual
-+Tipos ed movimientos
-+heuristicas
-+Metodos completos
-+Graficos comparativos o explicativos
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|p{0.8cm}|l|l|p{2cm}|p{1.2cm}|p{0.7cm}|p{0.7cm}|}
+	\hline
+	time stage & nº equations & nº variables & nº non-zero elem. & discrete vars. & gen. time & sol. time \\ \hline
+	1 & $38830$ & $2620$ & $114130$ & $1758$ & $0.73$ & $1.62$ \\ \hline
+	... & ... & ... & ... & ... & ... & ... \\ \hline
+	(7) & $245470$ & $77500$ & $322876$ & $1722$ & $3.42$ & $5.50$ \\ \hline
+	\end{tabular}
+  \end{center}
+  \caption{Resultado simplificado usando la heurística Time-Stage}
+\end{table}
+
+En la tabla podemos ver que a la séptima iteración se logró hallar una solución óptima. Pero debido al funcionamiento de la heurística (la cual fue explicada anteriormente), el método no puede seguir comprobando para $t > 7, \forall t \in [1,T]$, lo cual es un inconveniente si se quiere establecer un numero fijo de botes anfitriones. \\
+
+Para el caso de la Búsqueda Local, el artículo \cite{LocalSearch} de una buena comparación de todos los métodos utilizados.
+
+En el artículo se compara la Programación Lineal y la Programación con Restricciones usada en \cite{FirstPublication}, incluyendo la segunda formulación postulada para la Programación con Restricciones propuesta en el mismo artículo. Los resultados podemos observarlos tabulados a continuación:\\
+
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|l||c|c|c|c|}
+	\hline
+	problem & ILP & CP1 & CP2 & LS \\ \hline
+	$P_6$ & fail & 27 min. & a few sec. & $< 1$ s. \\ \hline
+	$P_7$ & fail & 28 min. & a few sec. & $< 1$ s. \\ \hline
+	$P_8$ & fail & fail & a few sec. & $1$ s. \\ \hline
+	$P_9$ & fail & fail & hours & $4$ s. \\ \hline
+	$P_10$ & fail & fail & fail & fail \\ \hline
+	\end{tabular}
+  \end{center}
+  \caption{Resultado de las ejecuciones de los distintos métodos}
+\end{table}
+
+$P_i$ indica que el problema está instanciado para $i$ períodos de tiempo.\\
+
+Podemos observar que los resultados son consecuentes con lo presentado en \cite{FirstPublication}, dado que la Programación Entera falla en todas las instancias, mientras que la Programación con Restricciones lo resuelve para instancias pequeñas. Lo interesante de este resultado es que la Búsqueda Local puede encontrar resultados para instancias mucho mas grandes en tiempos muy pequeños comparado con las demás técnicas.
+
+A pesar de esto, el método falla cuando se le instancia con 10 períodos de tiempo, lo cual no concluye si es que el método logró encontrar solución para esa instancia o no.\\
+
+Podemos afirmar con seguridad, que métodos de Búsqueda Local son considerablemente mejores que métodos que buscan en los espacios de búsqueda completos, como lo hacen la Programación Lineal (aunque se desconocen sus métodos).
 
 \section{Modelo Matemático}
 Existen varias formas de plantar este modelo, pero se busca preservar la simplicidad y semántica que respeten la originalidad del problema.
 
-Es por eso que las representaciones y restricciones aquí definidas, están basadas en la publicación original del Progressive Party Problem \cite{FirstPublication}, complementada con la información disponible en \cite{CustomizingSearch}, y respaldada por la publicación \cite{PPPAsMIP}.
+Es por eso que las representaciones y restricciones aquí definidas, están basadas en la publicación original del Progressive Party Problem \cite{FirstPublication}, complementada con la información disponible en \cite{CustomizingSearch}, y respaldada por la publicación \cite{PPPAsMIP}.\\
+
+
+
+\subsection{Datos y Constantes}
+\begin{itemize}
+\item $T =$ intervalos de tiempo definidos para el problema.
+\item $n =$ cantidad de botes que participarán de la fiesta.
+\item $w_i =$ tamaño de la tripulación del bote $i$.
+\item $p_i =$ cantidad máxima de personas que soporta el bote $i$.
+\item $g_i := max\{p_i-w_i,0\}$ cantidad máxima de invitados que puede recibir el bote anfitrión $i$.
+\end{itemize}
+
+\subsection{Variables}
+Las variables definidas a continuación son variables que se pueden encontrar a lo largo de todos las publicaciones, y se pueden considerar un modelo matemático base para el PPP.
+
+\begin{equation}
+x_{i,j,t} = \left\{
+\begin{array}{c l}      
+	1 & \text{si la tripulación $j$ visita el bote $i$ en el instante $t$,} \\
+	0 & \text{si no lo hace.}
+\end{array}\right.
+\end{equation}
+\begin{equation}
+h_i = \left\{
+\begin{array}{c l}      
+	1 & \text{si el bote $i$ es un bote anfitrión,} \\
+	0 & \text{si no lo es.}
+\end{array}\right.
+\end{equation}
+
+A continuación se define una variable introducida en el articulo \cite{PPPAsMIP}, debido a que esta formulación de la variable permite una semántica mucho mas cercana a la propuesta por la publicación original, ademas de evitar lo inconveniente de agregar variables con castigo, como se hace en el artículo donde se utiliza Búsqueda Local \cite{LocalSearch}. Esto se puede corroborar al mirar que otro autor que utiliza la Búsqueda Local, prefiere la representación sin variables con castigos \cite{PseudoLocal}.
+
+\begin{equation}
+m_{j,j',t} = \left\{
+\begin{array}{c l}      
+	1 & \text{si la tripulación $j$ y $j'$ se encuentran en el mismo bote en el instante $t$,} \\
+	0 & \text{si no lo hacen.}
+\end{array}\right.
+\end{equation}
+
+\subsection{Función Objetivo}
+La función objetivo de este problema es minimizar la cantidad de botes anfitriones. A pesar de esto, en la literatura se puede apreciar que este valor (la cantidad de botes anfitriones), se define de manera fija como una constante \cite{PPPAsMIP,FirstPublication,PseudoLocal,LocalSearch}, con el fin de reducir la complejidad del problema, y así convertir a la función objetivo en una restricción más.
+\begin{eqnarray}
+\text{min} z = \sum h_i & \forall i \in [1,n] , i \neq j
+\end{eqnarray}
+
+\subsection{Restricciones}
+Como se ha mencionado anteriormente, las restricciones acá representadas buscan mostrar la mayor cantidad de semántica fiel al artículo original.
+
+La primera restricción es que un bote puede ser visitado solo si el bote visitado es un bote anfitrión:
+
+\begin{eqnarray}
+x_{i,j,t} \leq h_i & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+La otra restricción utilizada en el modelo, es la restricción de que no se puede superar la capacidad máxima de pasajeros invitados en un bote. Esta se define como:
+
+\begin{eqnarray}
+\sum_{j|j\neq i} w_jx_{i,j,t} \leq g_i & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+La siguiente restricción permite asegurar que la tripulación de un bote anfitrión no puede abandonar su yate, ya que ellos son los anfitriones. Esto se define de la siguiente manera:
+
+\begin{eqnarray}
+h_i + \sum_{i|i\neq j}x_{i,j,t} = 1 & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+Existe otra restricción relacionada con los movimientos que pueden realizar las tripulaciones. Se requiere que una tripulación invitada no visite un mismo bote más de una vez durante la fiesta, aunque no se requiere que visite todos los botes de las fiesta. Esto se puede leer como:
+
+\begin{eqnarray}
+\sum_tx_{i,j,t} \leq 1 & , \forall i,j \in [1,n], i \neq j & \forall t \in [1,T]
+\end{eqnarray}
+
+Las siguientes restricciones buscan modelar las interacciones que tienen las tripulaciones visitantes durante la fiesta.
+
+Se mencionó anteriormente, que el modelo que se representa acá es el que se puede ver en \cite{PPPAsMIP}. En este modelo se introduce la variable binaria $m_{j,j',t}$ del encuentro de la tripulación $j$ con la tripulación $j'$ en el tiempo $t$. La restricción que define esta variable indica que si dos tripulaciones se han encontrado en el mismo lugar al mismo tiempo, es porque estuvieron en el mismo bote al mismo tiempo:
+
+\begin{eqnarray}
+m_{j,j',t} \geq x_{i,j,t} + x_{i,j',t} - 1 & , \forall(j,j',t)|j<j'& \forall t \in [1,T]
+\end{eqnarray}
+
+Ahora que la variable $m_{j,j',t}$ se encuentra debidamente definida bajo la restricción antes mencionada, podemos modelar la restricción que nos pide que las tripulaciones visitantes no se puede encontrar más de una vez con otras tripulaciones visitantes durante la fiesta. Esto se puede ver como:
+
+\begin{eqnarray}
+\sum_t m_{j,j',t} \leq 1 & , \forall j<j'& \forall t \in [1,T]
+\end{eqnarray}
 
 \section{Conclusiones}
 Conclusiones RELEVANTES del estudio realizado.
