@@ -125,7 +125,7 @@ De ahí en adelante, la literatura sobre el tema decayó, pero distintas impleme
 \subsection{Métodos Utilizados Para Resolverlo}
 Para resolver el PPP, se menciona repetidamente en varios de los articulos que se utiliza Programación Entera o Mixta, para los cuales se utiliza el software GAMS\footnote{\url{http://www.gams.com/}}, o tambien se menciona el uso de Programación con Restricciones\cite{FirstPublication}. Pero en los articulos más recientes, se hace uso explícito de métodos de búsqueda local, como Tabu Search y Simulated Annealing.
 
-\subsubsection{Programación Entera o Mixta}
+\subsubsection{Programación Lineal Entera o Mixta}
 Es un modelo de programación que contiene restricciones y una función objetivo. En el caso de la Programación Entera, todas las variables deben ser enteras, en cambio para la Programación Mixta, las variables pueden tomar valores enteros como tambien binarios.
 
 Este modelo de programación resulta bastante útil en especial para los problemas de tipo Timetabling, ya que las restricciones y la función objetivo de este tipo de problemas tienden a ser altamente representables mediante formulas matemáticas sencillas.
@@ -317,7 +317,17 @@ Ahora que la variable $m_{j,j',t}$ se encuentra debidamente definida bajo la res
 \end{eqnarray}
 
 \section{Conclusiones}
-Conclusiones RELEVANTES del estudio realizado.
+\begin{itemize}
+\item El Progressive Party Problem describe un problema del tipo Time Tabling que fue planteado casi fortuitamente por P. M. Hubbard, donde los resultados fueron desconcertantes inicialmente, debido a que los métodos para resolver ese tipo de problemas no arrojó los resultados esperados. De esto último se desprende que la Programación Lineal no es el método más óptimo para resolver el Progressive Party Problem.
+
+\item Entre los métodos para resolver el Progressive Party Problem que se vieron en este documento, como por Programación Lineal, Programación con Restricciones y Búsqueda Local, se logró comprobar que el enfoque de Búsqueda Local es el más eficiente en general para las distintas instancias del problema.
+
+\item Las variantes encontradas para el problema, no son de mayor incumbencia, ya que los objetivos no se alejan de los originales, pero sus representaciones sí. Esto último se ve reflejado negativamente en la semántica de las restricciones para los distintos métodos que usan los autores. Y es más, en una representación utilizada en la Programación Lineal, elimina las restricciones cargadas de una semántica alejada de la original.
+
+\item El modelo matemático utilizado para representar el problema es el más sencillo y el más simple en términos semánticos, lo cual facilita la lectura.
+
+\item Finalmente, se puede concluir que el Progressive Party Problem es un problema combinatorio altamente complejo, el cual tiene una inclinación a resolverse más facilmente mediante técnicas incompletas por sobre las completas. Su representación sencilla es engañadora, ya que su complejidad tiende a ser alta, pero distintas heurísticas ayudan a facilitar el proceso de encontrar soluciones. Es por esto último que adaptar distintas heurísticas a este problema es algo necesario, ya que el único límite parece ser el ingenio humano.
+\end{itemize}
 
 \section{Bibliografía}
 \bibliographystyle{plain}
