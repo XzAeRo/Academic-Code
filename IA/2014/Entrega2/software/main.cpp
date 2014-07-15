@@ -9,6 +9,13 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
+    cout << "================================================================= \n"
+            "Entrega 2 - Inteligencia Artificial 2014-1\n"
+            "'Progressive Party Problem' - Implementacion en Backtracking + GBJ\n"
+            "Autor: Victor Gonzalez (victor.gonzalezro@alumnos.usm.cl)\n"
+            "Codigo Fuente y Material extra en https://github.com/XzAeRo/Academic-Code/tree/master/IA/2014/\n"
+            "================================================================= \n\n";
+
     Utilidades utils;
     int n_instancia = 1;
 
@@ -19,7 +26,6 @@ int main(int argc, char **argv)
     // Si el usuario no define la instancia por parametros, se le pregunta directamente.
     if (argc == 1)
     {
-        string input;
         cout << "Por favor ingrese el numero de la instancia que desea utilizar: ";
         cin >> n_instancia;
     }
@@ -50,10 +56,20 @@ int main(int argc, char **argv)
     /****************************************************************/
     int T = TMIN;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
-    int visitas[n][n][T];       // visitas[i][j][t]: 1 si la tripulacion j visita el bote i en el instante t
-    int mismo_bote[n][n][T];    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
-    vector<int> solucion(T);
-    vector<int> mejor_solucion(T);
+    Array2D visitas(n,n,0);       // visitas[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
+    Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
+    Array2D mejor_solucion(n,n,0);
+
+
+    int i,j,t;
+
+    for (i=0 ; i<n ; i++)
+    {
+        for (j=0 ; j<n ; j++)
+        {
+            visitas(i,j) = 1;
+        }
+    }
 
 
     return 0;
