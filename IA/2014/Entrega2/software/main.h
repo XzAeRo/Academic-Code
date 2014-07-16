@@ -5,5 +5,6 @@
 #include "utilidades.h"
 #include "array3d.h"
 #include "array2d.h"
+#include "node.h"
 
 #endif // MAIN_H

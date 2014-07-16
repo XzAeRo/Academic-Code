@@ -2,9 +2,15 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <stack>
 #include "main.h"
 
 using namespace std;
+
+vector< vector<int> > botes;
+vector<int> instancia;
+Array2D solucion;
+
 
 
 int main(int argc, char **argv)
@@ -40,8 +46,9 @@ int main(int argc, char **argv)
     }
 
     // cargar datos desde los archivos
-    vector< vector<int> > botes = utils.get_boats();
-    vector<int> instancia = utils.get_instance(n_instancia);
+    botes = utils.get_boats();
+    instancia = utils.get_instance(n_instancia);
+
 
     // verificar si la informacion proporcionada por los archivos coincide
     if (botes.size() != instancia.size())
@@ -56,21 +63,14 @@ int main(int argc, char **argv)
     /****************************************************************/
     int T = TMIN;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
-    Array2D visitas(n,n,0);       // visitas[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
+    Array2D solucion_temp(n,n,0);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
-    Array2D mejor_solucion(n,n,0);
+    stack<node> auxiliar;
 
-
-    int i,j,t;
-
-    for (i=0 ; i<n ; i++)
-    {
-        for (j=0 ; j<n ; j++)
-        {
-            visitas(i,j) = 1;
-        }
-    }
+    solucion = solucion_temp;
 
 
     return 0;
 }
+
+

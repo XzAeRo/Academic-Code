@@ -1,19 +1,31 @@
 \documentclass[letter, 10pt]{article}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage[dvips]{graphicx}
-\usepackage{url}
+\usepackage{graphicx} %Permite exportar imagenes en formato eps
+\usepackage{url} %Tipo de fuente para correos y paginas
+\usepackage{pgf}
+\usepackage{fleqn}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyvrb}
+\usepackage{makeidx}
+\usepackage{colortbl} %Permite colocar colores a las tablas
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{moreverb}
+\usepackage{rotating}
+\usepackage{hyperref}
+\usepackage[final]{pdfpages}
 \usepackage[top=3cm,bottom=3cm,left=3.5cm,right=3.5cm,footskip=1.5cm,headheight=1.5cm,headsep=.5cm,textheight=3cm]{geometry}
-
 
 \begin{document}
 \title{Inteligencia Artificial \\ \begin{Large}Informe Final: Progressive Party Problem\end{Large}}
-\author{[Nombre autor]}
+\author{Victor Andres Roberto Gonzalez Rodriguez}
 \date{\today}
 \maketitle
-
 
 %--------------------No borrar esta secci\'on--------------------------------%
 \section*{Evaluaci\'on}
@@ -33,30 +45,279 @@ Bibliograf\'ia (5 \%): & \underline{\hspace{2cm}}\\
 %---------------------------------------------------------------------------%
 
 \begin{abstract}
-Resumen del informe en no m\'as de 10 l\'ineas.
+El Progressive Party Problem (PPP), es un complejo problema de optimización combinatorial sujeto a restricciones propuesto en el año 1995. El objetivo del problema consiste en una fiesta de yates, donde los invitados deben ser capaces de recorrer todos los yates anfitriones, cambiandose de yate cada cierto tiempo y cumpliendo ciertas restricciones. Hasta el momento, se han utilizado tres métodos para tratar de resolver el problema: mediante Programación Lineal Entera o Mixta, mediante Programación con Restricciones, y mediante Búsqueda Local (esta última con distintas variaciones). Los resultados al tratar de resolver este problema muestran que la Programación Lineal Entera o Mixta tiene un mal desempeño comparado con la Programación con Restricciones o con Busqueda Local. Finalmente, se presenta un modelo matemático que describe el problema de manera estandar.
 \end{abstract}
 
-\section{Introducci\'on}
-Una explicaci\'on breve del contenido del informe. Es decir, detalla: Prop\'osito, Estructura del Documento, Descripci\'on (muy breve) del Problema y Motivaci\'on.
+\section{Introducción}
+En el presente documento se analizará en detalle el Problema de la Fiesta Progresiva, o Progressive Party Problem (PPP), su historia, el estado del arte y como han evolucionado los métodos resolutivos para este problema.
 
-\section{Definici\'on del Problema}
-Explicaci\'on del problema que se va a estudiar, en que consiste, cuales son sus variables, restricciones y objetivos de manera general. Variantes m\'as conocidas que existen.
+Antes de continuar, es necesario detallar qué es el Progressive Party Problem. El problema consiste basicamente en lo siguiente: se tiene una fiesta de yates donde cada anfitrión (entiendase el dueño del bote), dispone de su bote de manera que cada asistente a la fiesta pueda pasar por todos los botes, y además, los asistentes van cambiandose de yate cada cierto tiempo (normalmente cada 30 minutos). Todo esto se debe lograr sin superar la capacidad máxima de pasajeros, y sin visitar el mismo bote más de una vez.
+
+En esencia, en esa dinámica se modela el Progressive Party Problem, la cual es un problema combinatorio muy complejo.\\
+
+En este documento se detallará a cabalidad los detalles del problema, tales como sus variables, las restricciones y el objetivo, de manera que se pueda apreciar de manera estandarizada el problema más allá de las modificaciones que proponen distintos autores. Además, veremos en qué posición se encuentra la ciencia de la computación en la actualidad para resolver este problema. Finalmente, se presentará un modelo matemático que representará todas sus variables, restricciones y cualquier función que se estime necesaria.
+
+Con este documento el lector podrá quedar completamente interiorizado y actualizado del Progressive Party Problem.
+
+\section{Definición del Problema}
+
+El Progressive Party Problem se formula de la siguiente manera: considérese una fiesta durante una reunión de yates. Existen $n$ botes y sus tripulaciones. Un número de determinado de botes es escogido para ser bote anfitrión: estos serán los botes donde se realizará la fiesta, donde otras tripulaciones visitarán al bote en intervalos de tiempo $t=1..T$ de media hora cada uno. El número total de periodos $T$ viene dado. Las \textit{tripulaciones visitantes} se mueven de un bote anfitrión a otro, y no pueden visitar un bote más de una vez. Los botes tienen una cierta capacidad limitada de tripulación a bordo, la cual no debe ser superada: esta es la capacidad de visitas de un bote anfitrión. Además, las \textit{tripulaciones visitantes} no pueden encontrarse más de una vez con la misma \textit{tripulación visitante}.
+
+Lo que se busca es una calendarización que minimice la cantidad de botes anfitriones. A partir de lo recopilado en \cite{FirstPublication,PPPAsMIP,WalserThesis,LocalSearch}, el problema se define\footnote{En ningun lado existe un modelo estándar de PPP, pero en todas las publicaciones se respeta la formulación hecha por la publicación original \cite{FirstPublication}, la cual es respetada en la definición utilizada en este documento.} como: \\
+
+\subsection{Parámetros}
+\begin{itemize}
+\item $T$ (numero de periodos), el cual define cuantos intervalos de tiempos se manejarán en el problema.
+\item $n$ (cantidad de botes), el cual dice cuantos botes existen disponibles para realizar la fiesta.\footnote{Recordar que se busca minimizar la cantidad de botes que se utilizarán finalmente, por lo que es posible que no se utilizen todos los botes disponibles como anfitriones.}
+\item $w_i$ (tamaño de la tripulación del bote), el cual indica cuantos tripulantes quedan fijos en el bote $i$.
+\item $p_i$ (capacidad de tripulación del bote), el cual define la capacidad máxima de personas que puede soportar un bote $i$ sin hundirse.
+\end{itemize}
+
+\subsection{Objetivos}
+\begin{itemize}
+\item Todas las tripulaciones visitantes deben visitar todos los yates.
+\item Promover que los visitantes tengan la mayor cantidad de interacción social.
+\item \textbf{Minimizar la cantidad de botes anfitriones.}
+\item Satisfacer las necesidades y restricciones de la fiesta.
+\end{itemize}
+
+Todos estos objetivos serán pulidos y ajustados a un listado de requerimientos
+que buscan que la fiesta se produzca sin accidentes (respetar limites de capacidad), que se mantenga socialmente activa (evitando que las tripulaciones visitantes se encuentren más de una vez), entre otros requerimientos.
+
+\subsection{Restricciones}
+Las restricciones generales de este problema son bastante simples y directas. Pero más adelante se podrá ver que existen varias representaciones para estas restricciones, aunque todas buscan cubrir los mismos requerimientos.
+
+\begin{itemize}
+\item Las fiestas solo se pueden realizar en los botes anfitriones.
+\item La capacidad de un bote no puede ser excedida.
+\item Las tripulaciones no pueden estar sin hacer nada: o estan visitando botes anfitriones, o bien ellos mismos son anfitriones.
+\item Las tripulaciones no pueden visitar el mismo bote mas de una vez.
+\item Las tripulaciones visitantes no pueden cruzarse mas de una vez.
+\end{itemize}
+
+\subsection{Problemas Similares}
+El Progressive Party Problem es considerado un problema particular de Timetabling (programación de horarios), por lo que problemas que buscan calendarizar eventos y optimizarlos bajo algun criterio, son considerados problemas similares.
+
+\subsection{Variantes}
+En el articulo \cite{FirstPublication} y \cite{PPPAsMIP} se muestran algunas variantes que buscan reducir el numero de ecuaciones (y por ende el espacio de búsqueda), del problema. Algunas de esos cambios son:
+
+\begin{itemize}
+\item Se introduce una variable binaria adicional que indica si una tripulación $j$ y $j'$ visitan a un bote $i$ en el mismo intervalo de tiempo determinado.
+\item Se introduce una variable entera que indica si un bote fue visitado por una tripulación en un instante determinado (variable con penalizaciones).
+\end{itemize}
 
 \section{Estado del Arte}
-Lo m\'as importante que se ha hecho hasta ahora con relaci\'on al problema. Deber\'ia responder preguntas como las siguientes ?`cuando surge?, ?`qu\'e m\'etodos se han usado para resolverlo?, ?`cuales son los mejores algoritmos que se han creado hasta la fecha?, ?`qu\'e representaciones han tenido los mejores resultados?, ?`cu\'al es la tendencia actual?, tipos de movimientos, heur\'isticas, m\'etodos completos, tendencias, etc... Puede incluir gr\'aficos comparativos, o explicativos.\\
-La informaci\'on que describen en este punto se basa en los estudios realizados con antelaci\'on respecto al tema. Dichos estudios se citan de manera que quien lea su estudio pueda tambi\'en
- acceder a las referencias que usted revis\'o. Las citas se realizan mediante el comando \verb+\cite{ }+.
-Por ejemplo, para hacer referencia al art\'iculo de algoritmos h\'ibridos para problemas de satisfacci\'on 
- de restricciones que ley\'o para el primer certamen~\cite{Prosser93Hybrid}.
+El \textit{``Progressive Party Problem''} (PPP) fue postulado por primera vez y resuelto heurísticamente por Peter Hubbard, el cual es miembro del \textit{``Sea Wych Owners Association''} y del Departamento de Matemáticas de la Universidad de Southhapton. Peter Hubbard era el organizador de una reunión de yates, donde debía, entre muchas otras cosas, organizar una fiesta para los participantes de los yates sobre los yates. \cite{ProblemDescription}
 
-\section{Modelo Matem\'atico}
-Uno o m\'as modelos matem\'aticos para el problema, idealmente indicando el espacio de b\'usqueda para cada uno.
+P. Hubbard logró dar con la solución al problema heurísticamente (buscando manualmente), pero pensó que sería interesante ver si es que se podría encontrar una mejor solución y más optima. Le sugirió este problema a H. Paul Williams, el cual formuló el problema bajo \textit{Programación Entera Mixta}, mientras que su colega Sally Brailsford trataba de resolver el problema con software comercial de Programación Entera Mixta. Por otro lado, Barbara Smith usó técnicas de \textit{Programación con Restricciones} (es decir, se formuló como CSP). Estos dos enfoques dieron paso al primer articulo publicado sobre el Progressive Party Problem. \cite{FirstPublication}\\
 
-\section{Representaci\'on}
+La publicación de P. Hubbard y sus colegas en 1995 \cite{FirstPublication} (la cual fue incluida posteriormente en otra publicacion en 1996), se enfocó principalmente en detallar las diferencias empíricas que se obtuvieron al desarrollar la solución del PPP en Programación Entera (PE) y en Programación con Restricciones (PR). El resultado fue desastrozo para la PE, debido a que este tipo de problemas de Timetabling eran problemas comunmente resueltos bajo ese paradigma de programación, pero que sin embargo fue bastante alentador para la PR. Esta situación fue lo que inició la interesante ``guerra'' entre la Programación Entera y la Programación con Restricciones en torno al PPP.
+
+En 1997-1998, un nuevo autor \cite{PseudoLocal,WalserThesis}, postula que las nuevas técnicas implementadas en la Programación Entera Mixta (MIP) son mucho mejores, por lo que utiliza MIP's para  resolver el problema del PPP, lo cual antes había sido desastrozo.
+
+Ya recién en 1999 se utilizó un nuevo acercamiento al PPP, esta vez utilizando Local Search (Tabu Search, Simulated Annealing), las cuales eran eficientes, pero no siempre óptimas\footnote{Este es un problema común al utilizar estos métodos}.
+
+De ahí en adelante, la literatura sobre el tema decayó, pero distintas implementaciones en distintos programas, metodos y representaciónes han tenido publicaciones. \cite{CustomizingSearch,ProgressOnThePartyProblem}
+
+\subsection{Métodos Utilizados Para Resolverlo}
+Para resolver el PPP, se menciona repetidamente en varios de los articulos que se utiliza Programación Entera o Mixta, para los cuales se utiliza el software GAMS\footnote{\url{http://www.gams.com/}}, o tambien se menciona el uso de Programación con Restricciones\cite{FirstPublication}. Pero en los articulos más recientes, se hace uso explícito de métodos de búsqueda local, como Tabu Search y Simulated Annealing.
+
+\subsubsection{Programación Lineal Entera o Mixta}
+Es un modelo de programación que contiene restricciones y una función objetivo. En el caso de la Programación Entera, todas las variables deben ser enteras, en cambio para la Programación Mixta, las variables pueden tomar valores enteros como tambien binarios.
+
+Este modelo de programación resulta bastante útil en especial para los problemas de tipo Timetabling, ya que las restricciones y la función objetivo de este tipo de problemas tienden a ser altamente representables mediante formulas matemáticas sencillas.
+
+Software como GAMS, son altamente utilizados en la resolución de este tipo de problemas.
+
+\subsubsection{Programación con Restricciones}
+La programación con restricciones, es otro modelo de programación donde las variables se representan mediante las restricciones que las relacionan. En este tipo de paradigma, las restricciones de los modelos difieren de los modelos tradicionales de programación, ya que en vez de ejecutarse pasos o procedimientos, la Programación con Restricciones especifica las propiedades de las posibles soluciones. Este enfoque hace que la Programación con Restricciones sea parte del mundo de la Programación Declarativa.
+
+Un software bastante conocido en el mundo académico que utiliza este modelo de programación es Prolog, pero en los estudios del PPP se menciona CHIP.
+
+\subsubsection{Simulated Annealing}
+Simulated Annealing es un procedimiento de búsqueda local para explorar el espacio de soluciones más allá del óptimo local, el cual busca reducir el problema de los algoritmos de búsqueda local, aceptando soluciones de ``peor calidad''.
+
+Al igual que otros algoritmos de búsqueda local, Simulated Annealing necesita una solución inicial, y comienza explorando por el vecindario de todos los optimos locales. A medida que el tiempo pasa, una función de temperatura va disminuyendo, lo cual obliga al algoritmo a explotar más a los óptimos locales en vez de explorar.
+
+Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, una temperatura inicial y su respectiva función de decaimiento, y el número de iteraciones máximas para el algoritmo.
+
+\subsubsection{Metropolis}
+El algoritmo Metrópolis es una version simplificada del Simulated Annealing, donde su princincipal diferencia radica en que en vez de tener una función de decaimento para la temperatura, la temperatura se mantiene constante durante toda la ejecución.
+
+El algoritmo avanza buscando en su vecindario al azar, y luego acepta o no la solución dependiendo de una función probabilística. Es decir, igual que el funcionamiento de Simulated Annealing.
+
+\subsubsection{Tabu Search}
+Tabu Search es un algoritmo de búsqueda local, que busca explotar y explorar el espacio de búsqueda, de acuerdo a una estructura de memoria adaptativa y flexible.
+
+Al igual que Simulated Annealing, Tabu Search necesita una solución inicial para comenzar a explorar, y va almacenando en memoria la lista tabú, para evitar que se produzcan ciclos, y además, puede aceptar soluciones peores a la actual, pero siempre mantiene en memoria a la mejor solución.
+
+Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, el tamaño de la lista tabú, y el número de iteraciones máximas para el algoritmo.
+
+\subsection{Heurísticas y Metaheurísticas}
+En los distintos articulos revisados, se pueden apreciar distintas técnicas de algoritmos de heurísticas, las cuales buscan ayudar el procesamiento de soluciones para el problema.
+
+En la formulación de Búsqueda Local \cite{LocalSearch, PseudoLocal}, se utilizan técnicas que buscan optimizar los movimientos realizados para explorar en el espacio de búsqueda. En el caso de la Búsqueda Local se utiliza la heurística \textit{Min-Conflict}\cite{LocalSearch}.
+
+En la heurística Min-Conflict, al tener un set de variables (que en el caso de la Búsqueda Local es el vecindario de una solución), se va a tratar de avanzar a la solución que tenga la menor cantidad de violaciones a las restricciones del problema\footnote{Recordar que técnicas como Tabú-Search y Simulated Annealing, pueden revisar espacios infactibles de soluciones, con el fin de salirse de óptimos locales.}, con el fin de priorizar la \textit{reparación} de las soluciones encontradas\cite{MinConflicts}.\\
+
+Para los artículos donde se utiliza Programación Lineal o Programación con Restricciones, las heurísticas no juegan un papel tan relevante, como lo es para la Búsqueda Local. Esto es debido a que la Programación Lineal trabaja con las variables definidas directamente.
+
+A pesar de esto, se menciona que para la publicación original \cite{FirstPublication}, se pre-procesa el problema mediante el software GAMS, para luego ser resuelto por el software CPLEX 7.0. Esto se hace para aplicar las heurísticas utilizadas en GAMS (las cuales se basan en los algoritmos branch-and-bound), y así simplificar la tarea que debe realizar CPLEX 7.0 para resolver el problema ``reducido''. Y para el caso de la Programación con Restricciones, simplemente se aplica un ordenamiento de acuerdo al dominio de las variables\footnote{Es importante recordar que para este artículo, el algoritmo más eficiente fue el utilizado en Programación con Restricciones}.\\
+
+En el artículo \cite{PPPAsMIP} se menciona el uso de una heurística específica para el problema, el cual se basa en ``etapas de tiempo''(Time-Stage), el cual básicamente hace un pre-procesamiento del problema para $t=1$. Con eso se pueden definir $h_i$ y $x_{i,j,1}$. Luego se resuelve para $t=1,2$, y se puede definir $x_{i,j,s}$, y así sucesivamente.
+
+
+\subsection{Resultados}
+Considerando los 3 enfoques mencionados en los artículos, se puede ver que claramente el mejor método utilizado es el de Búsqueda Local en cuanto a los tiempos de ejecución. Pero sus representaciones son mucho más elaboradas, refinadas y complicadas, debido a que se introducen restricciones con castigos, lo cual aumenta la eficiencia, pero destruye la semántica original del problema\footnote{Lo cual no es malo, pero su formulación se aleja mucho de lo original.}.\\
+
+A partir de lo que se ha recopilado, los artículos \cite{LocalSearch, PPPAsMIP} han hecho una buena recopilación de las diferencias al ejecutar los distintos métodos. Es por esto, que este documento utilizaremos la información referenciada en los artículos mencionados, con el fin de simplificar la entrega de los datos.\\
+
+En la publicación original \cite{FirstPublication}, se menciona que la Programación Lineal fue un total fracaso, y la única vez que sus modelos arrojaron un resultado, al corroborarlo el sistema no pudo lograrlo, ya que después de 189 horas, ya que el problema no se pudo corroborar. Además, la cantidad de variables y filas de ecuaciones generadas al ejecutar los algoritmos, estaban al borde de la capacidad de los computadores de la época utilizados en el estudio.
+
+Sin embargo, los resultados fueron mas optimistas al utilizar Programación con Restricciones, ya que logró resolver en pocos segundos dos de los problemas que Programación Lineal no pudo resolver. Sin embargo, para instancias mas grandes, el método falló.\\
+
+En el artículo \cite{PPPAsMIP}, se logra aplicar una nueva representación al problema, y esta vez, con computadores más potentes y mejores pre-procesadores, se logró dar con soluciones optimas al cabo de pocos segundos, pero instancias superiores no puedieron ser corroboradas debido a la heurística utilizada.
+
+En la tabla a continuación se puede ver tabulada los resultados al resolver el programa con Programación Entera Mixta (MIP):\\
+
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|p{0.8cm}|l|l|p{2cm}|p{1.2cm}|p{0.7cm}|p{0.7cm}|}
+	\hline
+	time stage & nº equations & nº variables & nº non-zero elem. & discrete vars. & gen. time & sol. time \\ \hline
+	1 & $38830$ & $2620$ & $114130$ & $1758$ & $0.73$ & $1.62$ \\ \hline
+	... & ... & ... & ... & ... & ... & ... \\ \hline
+	(7) & $245470$ & $77500$ & $322876$ & $1722$ & $3.42$ & $5.50$ \\ \hline
+	\end{tabular}
+  \end{center}
+  \caption{Resultado simplificado usando la heurística Time-Stage}
+\end{table}
+
+En la tabla podemos ver que a la séptima iteración se logró hallar una solución óptima. Pero debido al funcionamiento de la heurística (la cual fue explicada anteriormente), el método no puede seguir comprobando para $t > 7, \forall t \in [1,T]$, lo cual es un inconveniente si se quiere establecer un numero fijo de botes anfitriones. \\
+
+Para el caso de la Búsqueda Local, el artículo \cite{LocalSearch} de una buena comparación de todos los métodos utilizados.
+
+En el artículo se compara la Programación Lineal y la Programación con Restricciones usada en \cite{FirstPublication}, incluyendo la segunda formulación postulada para la Programación con Restricciones propuesta en el mismo artículo. Los resultados podemos observarlos tabulados a continuación:\\
+
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|l||c|c|c|c|}
+	\hline
+	problem & ILP & CP1 & CP2 & LS \\ \hline
+	$P_6$ & fail & 27 min. & a few sec. & $< 1$ s. \\ \hline
+	$P_7$ & fail & 28 min. & a few sec. & $< 1$ s. \\ \hline
+	$P_8$ & fail & fail & a few sec. & $1$ s. \\ \hline
+	$P_9$ & fail & fail & hours & $4$ s. \\ \hline
+	$P_10$ & fail & fail & fail & fail \\ \hline
+	\end{tabular}
+  \end{center}
+  \caption{Resultado de las ejecuciones de los distintos métodos}
+\end{table}
+
+$P_i$ indica que el problema está instanciado para $i$ períodos de tiempo.\\
+
+Podemos observar que los resultados son consecuentes con lo presentado en \cite{FirstPublication}, dado que la Programación Entera falla en todas las instancias, mientras que la Programación con Restricciones lo resuelve para instancias pequeñas. Lo interesante de este resultado es que la Búsqueda Local puede encontrar resultados para instancias mucho mas grandes en tiempos muy pequeños comparado con las demás técnicas.
+
+A pesar de esto, el método falla cuando se le instancia con 10 períodos de tiempo, lo cual no concluye si es que el método logró encontrar solución para esa instancia o no.\\
+
+Podemos afirmar con seguridad, que métodos de Búsqueda Local son considerablemente mejores que métodos que buscan en los espacios de búsqueda completos, como lo hacen la Programación Lineal (aunque se desconocen sus métodos).
+
+\section{Modelo Matemático}
+Existen varias formas de plantar este modelo, pero se busca preservar la simplicidad y semántica que respeten la originalidad del problema.
+
+Es por eso que las representaciones y restricciones aquí definidas, están basadas en la publicación original del Progressive Party Problem \cite{FirstPublication}, complementada con la información disponible en \cite{CustomizingSearch}, y respaldada por la publicación \cite{PPPAsMIP}.\\
+
+
+
+\subsection{Datos y Constantes}
+\begin{itemize}
+\item $T =$ intervalos de tiempo definidos para el problema.
+\item $n =$ cantidad de botes que participarán de la fiesta.
+\item $w_i =$ tamaño de la tripulación del bote $i$.
+\item $p_i =$ cantidad máxima de personas que soporta el bote $i$.
+\item $g_i := max\{p_i-w_i,0\}$ cantidad máxima de invitados que puede recibir el bote anfitrión $i$.
+\end{itemize}
+
+\subsection{Variables}
+Las variables definidas a continuación son variables que se pueden encontrar a lo largo de todos las publicaciones, y se pueden considerar un modelo matemático base para el PPP.
+
+\begin{equation}
+x_{i,j,t} = \left\{
+\begin{array}{c l}      
+	1 & \text{si la tripulación $j$ visita el bote $i$ en el instante $t$,} \\
+	0 & \text{si no lo hace.}
+\end{array}\right.
+\end{equation}
+\begin{equation}
+h_i = \left\{
+\begin{array}{c l}      
+	1 & \text{si el bote $i$ es un bote anfitrión,} \\
+	0 & \text{si no lo es.}
+\end{array}\right.
+\end{equation}
+
+A continuación se define una variable introducida en el articulo \cite{PPPAsMIP}, debido a que esta formulación de la variable permite una semántica mucho mas cercana a la propuesta por la publicación original, ademas de evitar lo inconveniente de agregar variables con castigo, como se hace en el artículo donde se utiliza Búsqueda Local \cite{LocalSearch}. Esto se puede corroborar al mirar que otro autor que utiliza la Búsqueda Local, prefiere la representación sin variables con castigos \cite{PseudoLocal}.
+
+\begin{equation}
+m_{j,j',t} = \left\{
+\begin{array}{c l}      
+	1 & \text{si la tripulación $j$ y $j'$ se encuentran en el mismo bote en el instante $t$,} \\
+	0 & \text{si no lo hacen.}
+\end{array}\right.
+\end{equation}
+
+\subsection{Función Objetivo}
+La función objetivo de este problema es minimizar la cantidad de botes anfitriones. A pesar de esto, en la literatura se puede apreciar que este valor (la cantidad de botes anfitriones), se define de manera fija como una constante \cite{PPPAsMIP,FirstPublication,PseudoLocal,LocalSearch}, con el fin de reducir la complejidad del problema, y así convertir a la función objetivo en una restricción más.
+\begin{eqnarray}
+\text{min} z = \sum h_i & \forall i \in [1,n] , i \neq j
+\end{eqnarray}
+
+\subsection{Restricciones}
+Como se ha mencionado anteriormente, las restricciones acá representadas buscan mostrar la mayor cantidad de semántica fiel al artículo original.
+
+La primera restricción es que un bote puede ser visitado solo si el bote visitado es un bote anfitrión:
+
+\begin{eqnarray}
+x_{i,j,t} \leq h_i & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+La otra restricción utilizada en el modelo, es la restricción de que no se puede superar la capacidad máxima de pasajeros invitados en un bote. Esta se define como:
+
+\begin{eqnarray}
+\sum_{j|j\neq i} w_jx_{i,j,t} \leq g_i & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+La siguiente restricción permite asegurar que la tripulación de un bote anfitrión no puede abandonar su yate, ya que ellos son los anfitriones. Esto se define de la siguiente manera:
+
+\begin{eqnarray}
+h_i + \sum_{i|i\neq j}x_{i,j,t} = 1 & , \forall i,j \in [1,n] & \forall t \in [1,T]
+\end{eqnarray}
+
+Existe otra restricción relacionada con los movimientos que pueden realizar las tripulaciones. Se requiere que una tripulación invitada no visite un mismo bote más de una vez durante la fiesta, aunque no se requiere que visite todos los botes de las fiesta. Esto se puede leer como:
+
+\begin{eqnarray}
+\sum_tx_{i,j,t} \leq 1 & , \forall i,j \in [1,n], i \neq j & \forall t \in [1,T]
+\end{eqnarray}
+
+Las siguientes restricciones buscan modelar las interacciones que tienen las tripulaciones visitantes durante la fiesta.
+
+Se mencionó anteriormente, que el modelo que se representa acá es el que se puede ver en \cite{PPPAsMIP}. En este modelo se introduce la variable binaria $m_{j,j',t}$ del encuentro de la tripulación $j$ con la tripulación $j'$ en el tiempo $t$. La restricción que define esta variable indica que si dos tripulaciones se han encontrado en el mismo lugar al mismo tiempo, es porque estuvieron en el mismo bote al mismo tiempo:
+
+\begin{eqnarray}
+m_{j,j',t} \geq x_{i,j,t} + x_{i,j',t} - 1 & , \forall(j,j',t)|j<j'& \forall t \in [1,T]
+\end{eqnarray}
+
+Ahora que la variable $m_{j,j',t}$ se encuentra debidamente definida bajo la restricción antes mencionada, podemos modelar la restricción que nos pide que las tripulaciones visitantes no se puede encontrar más de una vez con otras tripulaciones visitantes durante la fiesta. Esto se puede ver como:
+
+\begin{eqnarray}
+\sum_t m_{j,j',t} \leq 1 & , \forall j<j'& \forall t \in [1,T]
+\end{eqnarray}
+
+\section{Representación}
 Representaci\'on matem\'atica y estructura de datos que se usa (arreglos, matrices, etc.), por qu\'e se usa, la relaci\'on entre la 
 representaci\'on matem\'atica y la estructura.
 
-\section{Descripci\'on del algoritmo}
+\section{Descripción del algoritmo}
 C\'omo fue implementando, interesa la implementaci\'on m\'as que el algoritmo gen\'erico, es decir,
 si se tiene que implementar SA, lo que se espera es que se explique en pseudo c\'odigo la estructura
 general y en p\'arrafo explicativo cada parte como fue implementada para su caso particular, si
@@ -76,8 +337,9 @@ posible, lo m\'as explicativo posible.
 De acuerdo a la introducci\'on que se hizo, entregar afirmaciones RELEVANTES basadas en los experimentos
 y sus resultados.
 
-\section{Bibliograf\'ia} 
-Indicando toda la informaci\'on necesaria de acuerdo al tipo de documento revisado. Las referencias deben ser citadas en el documento.
+\section{Bibliografía}
 \bibliographystyle{plain}
 \bibliography{Referencias}
+
+
 \end{document} 

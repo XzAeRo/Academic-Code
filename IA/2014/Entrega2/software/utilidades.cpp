@@ -38,7 +38,7 @@ vector<int> Utilidades::get_instance(int instancia)
 
         while ( file >> barco)
         {
-            output.push_back(barco);
+            output.push_back((int) barco);
         }
 
         file.close();

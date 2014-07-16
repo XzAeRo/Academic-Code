@@ -49,12 +49,14 @@ SOURCES       = main.cpp \
 		utilidades.cpp \
 		barco.cpp \
 		array3d.cpp \
-		array2d.cpp 
+		array2d.cpp \
+		node.cpp 
 OBJECTS       = main.o \
 		utilidades.o \
 		barco.o \
 		array3d.o \
-		array2d.o
+		array2d.o \
+		node.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -281,7 +283,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/software1.0.0 || mkdir -p .tmp/software1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/software1.0.0/ && $(COPY_FILE) --parents main.h constantes.h utilidades.h barco.h array3d.h array2d.h .tmp/software1.0.0/ && $(COPY_FILE) --parents main.cpp utilidades.cpp barco.cpp array3d.cpp array2d.cpp .tmp/software1.0.0/ && (cd `dirname .tmp/software1.0.0` && $(TAR) software1.0.0.tar software1.0.0 && $(COMPRESS) software1.0.0.tar) && $(MOVE) `dirname .tmp/software1.0.0`/software1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/software1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/software1.0.0/ && $(COPY_FILE) --parents main.h constantes.h utilidades.h array3d.h array2d.h node.h .tmp/software1.0.0/ && $(COPY_FILE) --parents main.cpp utilidades.cpp barco.cpp array3d.cpp array2d.cpp node.cpp .tmp/software1.0.0/ && (cd `dirname .tmp/software1.0.0` && $(TAR) software1.0.0.tar software1.0.0 && $(COMPRESS) software1.0.0.tar) && $(MOVE) `dirname .tmp/software1.0.0`/software1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/software1.0.0
 
 
 clean:compiler_clean 
@@ -322,13 +324,14 @@ main.o: main.cpp main.h \
 		constantes.h \
 		utilidades.h \
 		array3d.h \
-		array2d.h
+		array2d.h \
+		node.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 utilidades.o: utilidades.cpp utilidades.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utilidades.o utilidades.cpp
 
-barco.o: barco.cpp barco.h
+barco.o: barco.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o barco.o barco.cpp
 
 array3d.o: array3d.cpp array3d.h
@@ -336,6 +339,9 @@ array3d.o: array3d.cpp array3d.h
 
 array2d.o: array2d.cpp array2d.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o array2d.o array2d.cpp
+
+node.o: node.cpp node.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o node.cpp
 
 ####### Install
 
