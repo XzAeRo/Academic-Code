@@ -9,9 +9,21 @@ using namespace std;
 
 vector< vector<int> > botes;
 vector<int> instancia;
-Array2D solucion;
 
 
+
+bool consistente(Array2D solucion, int i, int j, int T)
+{
+    // solo hosts puede recibir visitas
+    // tripulacion i visita bote j
+    if (solucion(i,j)>0 && instancia[j]==1)
+        return true;
+    else if (solucion(i,j)>0 && instancia[j]==0)
+        return false;
+    else if (solucion(i,j)==0)
+        return true;
+
+}
 
 int main(int argc, char **argv)
 {
@@ -63,11 +75,157 @@ int main(int argc, char **argv)
     /****************************************************************/
     int T = TMIN;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
-    Array2D solucion_temp(n,n,0);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
+    Array2D solucion(n,n,0);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
     stack<node> auxiliar;
 
-    solucion = solucion_temp;
+    int i = 0;
+    int j = 0;
+    int t = 0;
+
+    while (i < n)
+    {
+        while (j < n)
+        {
+            solucion(i,j) = t;
+            cout << i << " " << j << " " << solucion(i,j) << endl;
+
+            if(i==n-1 && j==n-1)
+            {
+                // estamos en la ultima hoja
+                if (consistente(solucion,i,j,T))
+                {
+                    // si es consistente, encontramos una solucion posible
+                    cout << "Solucion posible en: " << i << " " << j << " " << t << endl;
+
+                    if (solucion(i,j)==T)
+                    {
+                        // si es el ultimo valor del dominio de la ultima variable, hacemos BT si es posible
+                        if (!auxiliar.empty())
+                        {
+                            solucion(i,j) = 0; //unset variable
+                            node jump = auxiliar.top();
+                            auxiliar.pop();
+                            i = jump.i;
+                            j = jump.j;
+                            t = jump.t + 1;
+
+                            while (t>=T)
+                            {
+                                solucion(i,j) = 0; //unset variable
+                                node jump = auxiliar.top();
+                                auxiliar.pop();
+                                i = jump.i;
+                                j = jump.j;
+                                t = jump.t + 1;
+
+                                cout << "popping!" << endl;
+                            }
+                        }
+                        else
+                        {
+                            cout << "no hay mas instanciaciones posibles: " << i << " " << j << " " << t << endl;
+                        }
+                    }
+                    else
+                    {
+                        // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        ++t;
+                    }
+                }
+                else
+                {
+                    // si no es consistente
+                    if (solucion(i,j)==T)
+                    {
+                        // si es el ultimo valor del dominio de la variable, hacemos BT si es posible
+                        if (!auxiliar.empty())
+                        {
+                            solucion(i,j) = 0; //unset variable
+                            node jump = auxiliar.top();
+                            auxiliar.pop();
+                            i = jump.i;
+                            j = jump.j;
+                            t = jump.t + 1;
+
+                            while (t>=T)
+                            {
+                                solucion(i,j) = 0; //unset variable
+                                node jump = auxiliar.top();
+                                auxiliar.pop();
+                                i = jump.i;
+                                j = jump.j;
+                                t = jump.t + 1;
+                                cout << "popping!" << endl;
+                            }
+                        }
+                        else
+                        {
+                            cout << "no deberia ocurrir esto :P " << i << " " << j << " " << t << endl;
+                        }
+                    }
+                    else
+                    {
+                        // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        ++t;
+                    }
+                }
+            }
+            else
+            {
+                // estamos en un nodo intermedio
+                if (consistente(solucion,i,j,T))
+                {
+                    //si es consistente, debemos avanzar a la siguiente variable y recordar este paso!
+                    node step(i,j,t);
+                    auxiliar.push(step);
+
+                    ++j;
+                    if (j==n){j=0; ++i;}
+                }
+                else
+                {
+                    // si no es consistente
+                    if (solucion(i,j)==T)
+                    {
+                        // si es el ultimo valor del dominio de la variable, hacemos BT si es posible
+                        if (!auxiliar.empty())
+                        {
+                            solucion(i,j) = 0; // unset variable
+                            node jump = auxiliar.top();
+                            auxiliar.pop();
+                            i = jump.i;
+                            j = jump.j;
+                            t = jump.t + 1;
+
+                            cout << "popped " << i << " " << j << " " << t << endl;
+
+                            while (t>=T)
+                            {
+                                solucion(i,j) = 0; //unset variable
+                                node jump = auxiliar.top();
+                                auxiliar.pop();
+                                i = jump.i;
+                                j = jump.j;
+                                t = jump.t + 1;
+                                cout << "popping!" << endl;
+                            }
+                        }
+                        else
+                        {
+                            cout << "no deberia ocurrir esto! :P " << i << " " << j << " " << t << endl;
+                        }
+                    }
+                    else
+                    {
+                        // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        ++t;
+                    }
+                }
+            }
+        }
+    }
+
 
 
     return 0;
