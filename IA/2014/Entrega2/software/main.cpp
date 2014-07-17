@@ -11,6 +11,15 @@ vector< vector<int> > botes;
 vector<int> instancia;
 
 
+Array2D reset_from(Array2D solucion,int from_i, int from_j, int n)
+{
+    for (int i=from_i ; i<n ; i++)
+        for (int j=from_j ; j<n ; j++)
+            solucion(i,j) = 0;
+
+    return solucion;
+}
+
 
 bool consistente(Array2D solucion, int i, int j, int T)
 {
@@ -22,6 +31,9 @@ bool consistente(Array2D solucion, int i, int j, int T)
         return false;
     else if (solucion(i,j)==0)
         return true;
+
+
+    // la capacidad de un bote no puede ser superada
 
 }
 
@@ -73,7 +85,7 @@ int main(int argc, char **argv)
     /****************************************************************/
     /******* Busqueda de solucion mediante Backtracking (GBJ) *******/
     /****************************************************************/
-    int T = TMIN;               // intervalos de tiempo
+    int T = TMIN + 1;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
     Array2D solucion(n,n,0);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
@@ -82,13 +94,15 @@ int main(int argc, char **argv)
     int i = 0;
     int j = 0;
     int t = 0;
+    int soluciones = 0;
+
+    int input;
 
     while (i < n)
     {
         while (j < n)
         {
             solucion(i,j) = t;
-            cout << i << " " << j << " " << solucion(i,j) << endl;
 
             if(i==n-1 && j==n-1)
             {
@@ -96,7 +110,8 @@ int main(int argc, char **argv)
                 if (consistente(solucion,i,j,T))
                 {
                     // si es consistente, encontramos una solucion posible
-                    cout << "Solucion posible en: " << i << " " << j << " " << t << endl;
+                    ++soluciones;
+                    utils.print_solution_to_file(solucion,n,soluciones);
 
                     if (solucion(i,j)==T)
                     {
@@ -118,13 +133,12 @@ int main(int argc, char **argv)
                                 i = jump.i;
                                 j = jump.j;
                                 t = jump.t + 1;
-
-                                cout << "popping!" << endl;
                             }
                         }
                         else
                         {
                             cout << "no hay mas instanciaciones posibles: " << i << " " << j << " " << t << endl;
+                            return 0;
                         }
                     }
                     else
@@ -148,6 +162,7 @@ int main(int argc, char **argv)
                             j = jump.j;
                             t = jump.t + 1;
 
+
                             while (t>=T)
                             {
                                 solucion(i,j) = 0; //unset variable
@@ -156,7 +171,6 @@ int main(int argc, char **argv)
                                 i = jump.i;
                                 j = jump.j;
                                 t = jump.t + 1;
-                                cout << "popping!" << endl;
                             }
                         }
                         else
@@ -182,6 +196,9 @@ int main(int argc, char **argv)
 
                     ++j;
                     if (j==n){j=0; ++i;}
+                    t=0;
+                    solucion = reset_from(solucion,i,j,n);
+
                 }
                 else
                 {
@@ -198,8 +215,6 @@ int main(int argc, char **argv)
                             j = jump.j;
                             t = jump.t + 1;
 
-                            cout << "popped " << i << " " << j << " " << t << endl;
-
                             while (t>=T)
                             {
                                 solucion(i,j) = 0; //unset variable
@@ -208,7 +223,6 @@ int main(int argc, char **argv)
                                 i = jump.i;
                                 j = jump.j;
                                 t = jump.t + 1;
-                                cout << "popping!" << endl;
                             }
                         }
                         else
@@ -223,10 +237,11 @@ int main(int argc, char **argv)
                     }
                 }
             }
+
         }
     }
 
-
+    cout << "gola?" << endl;
 
     return 0;
 }

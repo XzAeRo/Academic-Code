@@ -75,3 +75,29 @@ vector< vector<int> > Utilidades::get_boats()
     return output;
 }
 
+void Utilidades::print_solution_to_file(Array2D solution, int n, int id)
+{
+    if (id < 100){
+        ofstream file;
+        ostringstream t_filename;
+        t_filename << "solutions/" << id << ".sol";
+        string filename = t_filename.str();
+
+        file.open(filename.c_str());
+
+        if (file.is_open())
+        {
+            for(int i=0 ; i<n ; i++)
+            {
+                for(int j=0 ; j<n ; j++)
+                {
+                    file << solution(i,j) << " ";
+                }
+                file << endl;
+            }
+        }
+
+        file.close();
+    }
+}
+
