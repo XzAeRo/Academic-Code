@@ -67,6 +67,8 @@ bool restriccion_3(int host, int visita)
     return true;
 }
 
+
+// una tripulacion invitada no puede visitar el mimo bote anfitrion mas de una vez
 bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
 {
     if (host >= 0)
@@ -78,6 +80,12 @@ bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
         }
     }
     return true;
+}
+
+// cualquier par de invitados debe encontrarse a lo mas una vez
+bool restriccion_5(int host, int visita)
+{
+
 }
 
 
