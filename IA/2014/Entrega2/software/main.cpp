@@ -85,7 +85,10 @@ bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
 // cualquier par de invitados debe encontrarse a lo mas una vez
 bool restriccion_5(int host, int visita)
 {
-
+    if (host >= 0)
+    {
+        // la visita no puede estar con otra que haya estado en el mismo host
+    }
 }
 
 
