@@ -66,6 +66,7 @@ vector< vector<int> > Utilidades::get_boats()
             vector<int> row;
             row.push_back(capacidad);
             row.push_back(tripulacion);
+            row.push_back((int) capacidad - (int) tripulacion);
             output.push_back(row);
         }
 
@@ -75,7 +76,7 @@ vector< vector<int> > Utilidades::get_boats()
     return output;
 }
 
-void Utilidades::print_solution_to_file(Array2D solution, int n, int id)
+void Utilidades::print_solution_to_file(Array2D solution, int n, int T, int id)
 {
     if (id < 100){
         ofstream file;
@@ -89,9 +90,9 @@ void Utilidades::print_solution_to_file(Array2D solution, int n, int id)
         {
             for(int i=0 ; i<n ; i++)
             {
-                for(int j=0 ; j<n ; j++)
+                for(int j=0 ; j<T ; j++)
                 {
-                    file << solution(i,j) << " ";
+                    file << solution(i,j) + 1 << "\t";
                 }
                 file << endl;
             }

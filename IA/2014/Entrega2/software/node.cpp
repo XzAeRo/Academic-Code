@@ -1,6 +1,6 @@
 #include "node.h"
 
-node::node(int i, int j, int t)
+node::node(int i, int j, int b)
 {
-    this->i = i; this->j = j; this->t = t;
+    this->i = i; this->j = j; this->b = b;
 }

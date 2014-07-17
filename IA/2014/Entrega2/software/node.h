@@ -4,8 +4,8 @@
 class node
 {
 public:
-    node(int i, int j, int t);
-    int i, j, t;
+    node(int i, int j, int b);
+    int i, j, b;
 };
 
 #endif // NODE_H

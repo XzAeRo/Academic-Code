@@ -13,7 +13,7 @@ public:
     void print_usage();
     vector<int> get_instance(int instance);
     vector< vector<int> > get_boats();
-    void print_solution_to_file(Array2D solution, int n, int id);
+    void print_solution_to_file(Array2D solution, int n, int T, int id);
 };
 
 #endif // UTILIDADES_H
