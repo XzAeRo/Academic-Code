@@ -45,23 +45,25 @@ Bibliograf\'ia (5 \%): & \underline{\hspace{2cm}}\\
 %---------------------------------------------------------------------------%
 
 \begin{abstract}
-El Progressive Party Problem (PPP), es un complejo problema de optimización combinatorial sujeto a restricciones propuesto en el año 1995. El objetivo del problema consiste en una fiesta de yates, donde los invitados deben ser capaces de recorrer todos los yates anfitriones, cambiandose de yate cada cierto tiempo y cumpliendo ciertas restricciones. Hasta el momento, se han utilizado tres métodos para tratar de resolver el problema: mediante Programación Lineal Entera o Mixta, mediante Programación con Restricciones, y mediante Búsqueda Local (esta última con distintas variaciones). Los resultados al tratar de resolver este problema muestran que la Programación Lineal Entera o Mixta tiene un mal desempeño comparado con la Programación con Restricciones o con Busqueda Local. Finalmente, se presenta un modelo matemático que describe el problema de manera estandar.
+El \textit{Progressive Party Problem} (PPP), es un complejo problema de optimización combinatorial sujeto a restricciones propuesto en el año 1995. El objetivo del problema consiste en una fiesta de yates, donde los invitados deben ser capaces de recorrer todos los yates anfitriones, cambiandose de yate cada cierto tiempo y cumpliendo ciertas restricciones. Hasta el momento, se han utilizado tres métodos para tratar de resolver el problema: mediante Programación Lineal Entera o Mixta, mediante Programación con Restricciones, y mediante Búsqueda Local (esta última con distintas variaciones). En el presente documento se presenta el estado del arte de este problema, y se complementa con la implementación en C++ del problema, resolviéndolo mediante \textit{Backtracking} con \textit{Graph-based Backjumping} (GBJ), lo cual muestra que para este problema el GBJ es poco útil.
 \end{abstract}
 
 \section{Introducción}
-En el presente documento se analizará en detalle el Problema de la Fiesta Progresiva, o Progressive Party Problem (PPP), su historia, el estado del arte y como han evolucionado los métodos resolutivos para este problema.
+En el presente documento se analizará en detalle el Problema de la Fiesta Progresiva, o \textit{Progressive Party Problem} (PPP), su historia, el estado del arte, como han evolucionado los métodos resolutivos para este problema, y la completa definición de este problema mediante el método resolutivo \textit{Backtracking} con \textit{Graph-based Backjumping}, junto a lo cual se entrega algunos resultados de experimentos utilizando este método.
 
-Antes de continuar, es necesario detallar qué es el Progressive Party Problem. El problema consiste basicamente en lo siguiente: se tiene una fiesta de yates donde cada anfitrión (entiendase el dueño del bote), dispone de su bote de manera que cada asistente a la fiesta pueda pasar por todos los botes, y además, los asistentes van cambiandose de yate cada cierto tiempo (normalmente cada 30 minutos). Todo esto se debe lograr sin superar la capacidad máxima de pasajeros, y sin visitar el mismo bote más de una vez.
+Antes de continuar, es necesario detallar qué es el \textit{Progressive Party Problem}. El problema consiste basicamente en lo siguiente: se tiene una fiesta de yates donde cada anfitrión (entiendase el dueño del bote), dispone de su bote de manera que cada asistente a la fiesta pueda pasar por todos los botes, y además, los asistentes van cambiándose de yate cada cierto tiempo (normalmente cada 30 minutos). Todo ésto se debe lograr sin superar la capacidad máxima de pasajeros, y sin visitar el mismo bote más de una vez.
 
-En esencia, en esa dinámica se modela el Progressive Party Problem, la cual es un problema combinatorio muy complejo.\\
+En esencia, en esa dinámica se modela el \textit{Progressive Party Problem}, el cual es un problema combinatorio muy complejo.\\
 
-En este documento se detallará a cabalidad los detalles del problema, tales como sus variables, las restricciones y el objetivo, de manera que se pueda apreciar de manera estandarizada el problema más allá de las modificaciones que proponen distintos autores. Además, veremos en qué posición se encuentra la ciencia de la computación en la actualidad para resolver este problema. Finalmente, se presentará un modelo matemático que representará todas sus variables, restricciones y cualquier función que se estime necesaria.
+En este documento se detallará a cabalidad los detalles del problema, tales como sus variables, las restricciones y el objetivo, de manera que se pueda apreciar de manera estandarizada el problema más allá de las modificaciones que proponen distintos autores. Además, veremos en qué posición se encuentra la ciencia de la computación en la actualidad para resolver éste problema. Finalmente, se presentará un modelo matemático que representará todas sus variables, restricciones y cualquier función que se estime necesaria.
 
-Con este documento el lector podrá quedar completamente interiorizado y actualizado del Progressive Party Problem.
+Con este documento el lector podrá quedar completamente interiorizado y actualizado del \textit{Progressive Party Problem}.\\
+
+Este documento tiene el fin de entregarle al lector una completa produndización sobre el \textit{Progressive Party Problem}, ademas de proponer una implementación en C++ utilizando el método de \textit{Backtracking} con \textit{Graph-based Backjumping} (BT + GBJ).
 
 \section{Definición del Problema}
 
-El Progressive Party Problem se formula de la siguiente manera: considérese una fiesta durante una reunión de yates. Existen $n$ botes y sus tripulaciones. Un número de determinado de botes es escogido para ser bote anfitrión: estos serán los botes donde se realizará la fiesta, donde otras tripulaciones visitarán al bote en intervalos de tiempo $t=1..T$ de media hora cada uno. El número total de periodos $T$ viene dado. Las \textit{tripulaciones visitantes} se mueven de un bote anfitrión a otro, y no pueden visitar un bote más de una vez. Los botes tienen una cierta capacidad limitada de tripulación a bordo, la cual no debe ser superada: esta es la capacidad de visitas de un bote anfitrión. Además, las \textit{tripulaciones visitantes} no pueden encontrarse más de una vez con la misma \textit{tripulación visitante}.
+El \textit{Progressive Party Problem} se formula de la siguiente manera: considérese una fiesta durante una reunión de yates. Existen $n$ botes y sus tripulaciones. Un número  determinado de botes es escogido para ser bote anfitrión: éstos serán los botes donde se realizará la fiesta, donde otras tripulaciones visitarán al bote en intervalos de tiempo $t=1..T$ de media hora cada uno. El número total de periodos $T$ viene dado. Las \textit{tripulaciones visitantes} se mueven de un bote anfitrión a otro, y no pueden visitar un bote más de una vez. Los botes tienen una cierta capacidad limitada de tripulación a bordo, la cual no debe ser superada: esta es la capacidad de visitas de un bote anfitrión. Además, las \textit{tripulaciones visitantes} no pueden encontrarse más de una vez con la misma \textit{tripulación visitante}.
 
 Lo que se busca es una calendarización que minimice la cantidad de botes anfitriones. A partir de lo recopilado en \cite{FirstPublication,PPPAsMIP,WalserThesis,LocalSearch}, el problema se define\footnote{En ningun lado existe un modelo estándar de PPP, pero en todas las publicaciones se respeta la formulación hecha por la publicación original \cite{FirstPublication}, la cual es respetada en la definición utilizada en este documento.} como: \\
 
@@ -75,7 +77,7 @@ Lo que se busca es una calendarización que minimice la cantidad de botes anfitr
 
 \subsection{Objetivos}
 \begin{itemize}
-\item Todas las tripulaciones visitantes deben visitar todos los yates.
+\item Todas las tripulaciones visitantes deben visitar todos los yates anfitriones.
 \item Promover que los visitantes tengan la mayor cantidad de interacción social.
 \item \textbf{Minimizar la cantidad de botes anfitriones.}
 \item Satisfacer las necesidades y restricciones de la fiesta.
@@ -91,12 +93,12 @@ Las restricciones generales de este problema son bastante simples y directas. Pe
 \item Las fiestas solo se pueden realizar en los botes anfitriones.
 \item La capacidad de un bote no puede ser excedida.
 \item Las tripulaciones no pueden estar sin hacer nada: o estan visitando botes anfitriones, o bien ellos mismos son anfitriones.
-\item Las tripulaciones no pueden visitar el mismo bote mas de una vez.
-\item Las tripulaciones visitantes no pueden cruzarse mas de una vez.
+\item Las tripulaciones no pueden visitar el mismo bote más de una vez.
+\item Las tripulaciones visitantes no pueden cruzarse más de una vez.
 \end{itemize}
 
 \subsection{Problemas Similares}
-El Progressive Party Problem es considerado un problema particular de Timetabling (programación de horarios), por lo que problemas que buscan calendarizar eventos y optimizarlos bajo algun criterio, son considerados problemas similares.
+El \textit{Progressive Party Problem} es considerado un problema particular de \textit{Timetabling} (programación de horarios), por lo que problemas que buscan calendarizar eventos y optimizarlos bajo algun criterio, son considerados problemas similares.
 
 \subsection{Variantes}
 En el articulo \cite{FirstPublication} y \cite{PPPAsMIP} se muestran algunas variantes que buscan reducir el numero de ecuaciones (y por ende el espacio de búsqueda), del problema. Algunas de esos cambios son:
@@ -109,23 +111,23 @@ En el articulo \cite{FirstPublication} y \cite{PPPAsMIP} se muestran algunas var
 \section{Estado del Arte}
 El \textit{``Progressive Party Problem''} (PPP) fue postulado por primera vez y resuelto heurísticamente por Peter Hubbard, el cual es miembro del \textit{``Sea Wych Owners Association''} y del Departamento de Matemáticas de la Universidad de Southhapton. Peter Hubbard era el organizador de una reunión de yates, donde debía, entre muchas otras cosas, organizar una fiesta para los participantes de los yates sobre los yates. \cite{ProblemDescription}
 
-P. Hubbard logró dar con la solución al problema heurísticamente (buscando manualmente), pero pensó que sería interesante ver si es que se podría encontrar una mejor solución y más optima. Le sugirió este problema a H. Paul Williams, el cual formuló el problema bajo \textit{Programación Entera Mixta}, mientras que su colega Sally Brailsford trataba de resolver el problema con software comercial de Programación Entera Mixta. Por otro lado, Barbara Smith usó técnicas de \textit{Programación con Restricciones} (es decir, se formuló como CSP). Estos dos enfoques dieron paso al primer articulo publicado sobre el Progressive Party Problem. \cite{FirstPublication}\\
+P. Hubbard logró dar con la solución al problema heurísticamente (buscando manualmente), pero pensó que sería interesante ver si es que se podría encontrar una mejor solución y más optima. Le sugirió este problema a H. Paul Williams, el cual formuló el problema bajo \textit{Programación Entera Mixta}, mientras que su colega Sally Brailsford trataba de resolver el problema con software comercial de Programación Entera Mixta. Por otro lado, Barbara Smith usó técnicas de \textit{Programación con Restricciones} (es decir, se formuló como CSP). Estos dos enfoques dieron paso al primer articulo publicado sobre el \textit{Progressive Party Problem}. \cite{FirstPublication}\\
 
-La publicación de P. Hubbard y sus colegas en 1995 \cite{FirstPublication} (la cual fue incluida posteriormente en otra publicacion en 1996), se enfocó principalmente en detallar las diferencias empíricas que se obtuvieron al desarrollar la solución del PPP en Programación Entera (PE) y en Programación con Restricciones (PR). El resultado fue desastrozo para la PE, debido a que este tipo de problemas de Timetabling eran problemas comunmente resueltos bajo ese paradigma de programación, pero que sin embargo fue bastante alentador para la PR. Esta situación fue lo que inició la interesante ``guerra'' entre la Programación Entera y la Programación con Restricciones en torno al PPP.
+La publicación de P. Hubbard y sus colegas en 1995 \cite{FirstPublication} (la cual fue incluida posteriormente en otra publicación en 1996), se enfocó principalmente en detallar las diferencias empíricas que se obtuvieron al desarrollar la solución del PPP en Programación Entera (PE) y en Programación con Restricciones (PR). El resultado fue desastrozo para la PE, debido a que este tipo de problemas de \textit{Timetabling} eran problemas comunmente resueltos bajo ese paradigma de programación, pero que sin embargo fue bastante alentador para la PR. Esta situación fue lo que inició la interesante ``guerra'' entre la Programación Entera y la Programación con Restricciones en torno al PPP.
 
 En 1997-1998, un nuevo autor \cite{PseudoLocal,WalserThesis}, postula que las nuevas técnicas implementadas en la Programación Entera Mixta (MIP) son mucho mejores, por lo que utiliza MIP's para  resolver el problema del PPP, lo cual antes había sido desastrozo.
 
-Ya recién en 1999 se utilizó un nuevo acercamiento al PPP, esta vez utilizando Local Search (Tabu Search, Simulated Annealing), las cuales eran eficientes, pero no siempre óptimas\footnote{Este es un problema común al utilizar estos métodos}.
+Ya recién en 1999 se utilizó un nuevo acercamiento al PPP, esta vez utilizando \textit{Local Search} (\textit{Tabu Search, Simulated Annealing}), las cuales eran eficientes, pero no siempre óptimas\footnote{Este es un problema común al utilizar estos métodos}.
 
-De ahí en adelante, la literatura sobre el tema decayó, pero distintas implementaciones en distintos programas, metodos y representaciónes han tenido publicaciones. \cite{CustomizingSearch,ProgressOnThePartyProblem}
+De ahí en adelante, la literatura sobre el tema decayó, pero distintas implementaciones en distintos programas, métodos y representaciones han tenido publicaciones. \cite{CustomizingSearch,ProgressOnThePartyProblem}
 
 \subsection{Métodos Utilizados Para Resolverlo}
-Para resolver el PPP, se menciona repetidamente en varios de los articulos que se utiliza Programación Entera o Mixta, para los cuales se utiliza el software GAMS\footnote{\url{http://www.gams.com/}}, o tambien se menciona el uso de Programación con Restricciones\cite{FirstPublication}. Pero en los articulos más recientes, se hace uso explícito de métodos de búsqueda local, como Tabu Search y Simulated Annealing.
+Para resolver el PPP, se menciona repetidamente en varios de los artículos que se utiliza Programación Entera o Mixta, para los cuales se utiliza el software GAMS\footnote{\url{http://www.gams.com/}}, o también se menciona el uso de Programación con Restricciones\cite{FirstPublication}. Pero en los articulos más recientes, se hace uso explícito de métodos de búsqueda local, como \textit{Tabu Search} y \textit{Simulated Annealing}.
 
 \subsubsection{Programación Lineal Entera o Mixta}
 Es un modelo de programación que contiene restricciones y una función objetivo. En el caso de la Programación Entera, todas las variables deben ser enteras, en cambio para la Programación Mixta, las variables pueden tomar valores enteros como tambien binarios.
 
-Este modelo de programación resulta bastante útil en especial para los problemas de tipo Timetabling, ya que las restricciones y la función objetivo de este tipo de problemas tienden a ser altamente representables mediante formulas matemáticas sencillas.
+Este modelo de programación resulta bastante útil en especial para los problemas de tipo \textit{Timetabling}, ya que las restricciones y la función objetivo de este tipo de problemas tienden a ser altamente representables mediante formulas matemáticas sencillas.
 
 Software como GAMS, son altamente utilizados en la resolución de este tipo de problemas.
 
@@ -134,22 +136,22 @@ La programación con restricciones, es otro modelo de programación donde las va
 
 Un software bastante conocido en el mundo académico que utiliza este modelo de programación es Prolog, pero en los estudios del PPP se menciona CHIP.
 
-\subsubsection{Simulated Annealing}
-Simulated Annealing es un procedimiento de búsqueda local para explorar el espacio de soluciones más allá del óptimo local, el cual busca reducir el problema de los algoritmos de búsqueda local, aceptando soluciones de ``peor calidad''.
+\subsubsection{\textit{Simulated Annealing}}
+\textit{Simulated Annealing} es un procedimiento de búsqueda local para explorar el espacio de soluciones más allá del óptimo local, el cual busca reducir el problema de los algoritmos de búsqueda local, aceptando soluciones de ``peor calidad''.
 
-Al igual que otros algoritmos de búsqueda local, Simulated Annealing necesita una solución inicial, y comienza explorando por el vecindario de todos los optimos locales. A medida que el tiempo pasa, una función de temperatura va disminuyendo, lo cual obliga al algoritmo a explotar más a los óptimos locales en vez de explorar.
+Al igual que otros algoritmos de búsqueda local, \textit{Simulated Annealing} necesita una solución inicial, y comienza explorando por el vecindario de todos los optimos locales. A medida que el tiempo pasa, una función de temperatura va disminuyendo, lo cual obliga al algoritmo a explotar más a los óptimos locales en vez de explorar.
 
 Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, una temperatura inicial y su respectiva función de decaimiento, y el número de iteraciones máximas para el algoritmo.
 
 \subsubsection{Metropolis}
-El algoritmo Metrópolis es una version simplificada del Simulated Annealing, donde su princincipal diferencia radica en que en vez de tener una función de decaimento para la temperatura, la temperatura se mantiene constante durante toda la ejecución.
+El algoritmo Metrópolis es una version simplificada del \textit{Simulated Annealing}, donde su princincipal diferencia radica en que en vez de tener una función de decaimento para la temperatura, la temperatura se mantiene constante durante toda la ejecución.
 
-El algoritmo avanza buscando en su vecindario al azar, y luego acepta o no la solución dependiendo de una función probabilística. Es decir, igual que el funcionamiento de Simulated Annealing.
+El algoritmo avanza buscando en su vecindario al azar, y luego acepta o no la solución dependiendo de una función probabilística. Es decir, igual que el funcionamiento de \textit{Simulated Annealing}.
 
-\subsubsection{Tabu Search}
-Tabu Search es un algoritmo de búsqueda local, que busca explotar y explorar el espacio de búsqueda, de acuerdo a una estructura de memoria adaptativa y flexible.
+\subsubsection{\textit{Tabu Search}}
+\textit{Tabu Search} es un algoritmo de búsqueda local, que busca explotar y explorar el espacio de búsqueda, de acuerdo a una estructura de memoria adaptativa y flexible.
 
-Al igual que Simulated Annealing, Tabu Search necesita una solución inicial para comenzar a explorar, y va almacenando en memoria la lista tabú, para evitar que se produzcan ciclos, y además, puede aceptar soluciones peores a la actual, pero siempre mantiene en memoria a la mejor solución.
+Al igual que \textit{Simulated Annealing, Tabu Search} necesita una solución inicial para comenzar a explorar, y va almacenando en memoria la lista tabú, para evitar que se produzcan ciclos, y además, puede aceptar soluciones peores a la actual, pero siempre mantiene en memoria a la mejor solución.
 
 Este método necesita definir una representación de los datos, un movimiento para explotar, una función de evaluación que indica que tan buena es una solución, el tamaño de la lista tabú, y el número de iteraciones máximas para el algoritmo.
 
@@ -158,21 +160,21 @@ En los distintos articulos revisados, se pueden apreciar distintas técnicas de 
 
 En la formulación de Búsqueda Local \cite{LocalSearch, PseudoLocal}, se utilizan técnicas que buscan optimizar los movimientos realizados para explorar en el espacio de búsqueda. En el caso de la Búsqueda Local se utiliza la heurística \textit{Min-Conflict}\cite{LocalSearch}.
 
-En la heurística Min-Conflict, al tener un set de variables (que en el caso de la Búsqueda Local es el vecindario de una solución), se va a tratar de avanzar a la solución que tenga la menor cantidad de violaciones a las restricciones del problema\footnote{Recordar que técnicas como Tabú-Search y Simulated Annealing, pueden revisar espacios infactibles de soluciones, con el fin de salirse de óptimos locales.}, con el fin de priorizar la \textit{reparación} de las soluciones encontradas\cite{MinConflicts}.\\
+En la heurística \textit{Min-Conflict}, al tener un set de variables (que en el caso de la Búsqueda Local es el vecindario de una solución), se va a tratar de avanzar a la solución que tenga la menor cantidad de violaciones a las restricciones del problema\footnote{Recordar que técnicas como \textit{Tabú-Search} y \textit{Simulated Annealing}, pueden revisar espacios infactibles de soluciones, con el fin de salirse de óptimos locales.}, con el fin de priorizar la ``reparación'' de las soluciones encontradas\cite{MinConflicts}.\\
 
 Para los artículos donde se utiliza Programación Lineal o Programación con Restricciones, las heurísticas no juegan un papel tan relevante, como lo es para la Búsqueda Local. Esto es debido a que la Programación Lineal trabaja con las variables definidas directamente.
 
-A pesar de esto, se menciona que para la publicación original \cite{FirstPublication}, se pre-procesa el problema mediante el software GAMS, para luego ser resuelto por el software CPLEX 7.0. Esto se hace para aplicar las heurísticas utilizadas en GAMS (las cuales se basan en los algoritmos branch-and-bound), y así simplificar la tarea que debe realizar CPLEX 7.0 para resolver el problema ``reducido''. Y para el caso de la Programación con Restricciones, simplemente se aplica un ordenamiento de acuerdo al dominio de las variables\footnote{Es importante recordar que para este artículo, el algoritmo más eficiente fue el utilizado en Programación con Restricciones}.\\
+A pesar de esto, se menciona que para la publicación original \cite{FirstPublication}, se pre-procesa el problema mediante el software GAMS, para luego ser resuelto por el software CPLEX 7.0. Esto se hace para aplicar las heurísticas utilizadas en GAMS (las cuales se basan en los algoritmos \textit{branch-and-bound}), y así simplificar la tarea que debe realizar CPLEX 7.0 para resolver el problema ``reducido''. Y para el caso de la Programación con Restricciones, simplemente se aplica un ordenamiento de acuerdo al dominio de las variables\footnote{Es importante recordar que para este artículo, el algoritmo más eficiente fue el utilizado en Programación con Restricciones}.\\
 
-En el artículo \cite{PPPAsMIP} se menciona el uso de una heurística específica para el problema, el cual se basa en ``etapas de tiempo''(Time-Stage), el cual básicamente hace un pre-procesamiento del problema para $t=1$. Con eso se pueden definir $h_i$ y $x_{i,j,1}$. Luego se resuelve para $t=1,2$, y se puede definir $x_{i,j,s}$, y así sucesivamente.
+En el artículo \cite{PPPAsMIP} se menciona el uso de una heurística específica para el problema, el cual se basa en ``etapas de tiempo''(\textit{Time-Stage}), el cual básicamente hace un pre-procesamiento del problema para el primer periodo de tiempo, para luego reutilizar esa información en los siguientes periodos de tiempo, generando asi una solucion inicial.
 
 
 \subsection{Resultados}
 Considerando los 3 enfoques mencionados en los artículos, se puede ver que claramente el mejor método utilizado es el de Búsqueda Local en cuanto a los tiempos de ejecución. Pero sus representaciones son mucho más elaboradas, refinadas y complicadas, debido a que se introducen restricciones con castigos, lo cual aumenta la eficiencia, pero destruye la semántica original del problema\footnote{Lo cual no es malo, pero su formulación se aleja mucho de lo original.}.\\
 
-A partir de lo que se ha recopilado, los artículos \cite{LocalSearch, PPPAsMIP} han hecho una buena recopilación de las diferencias al ejecutar los distintos métodos. Es por esto, que este documento utilizaremos la información referenciada en los artículos mencionados, con el fin de simplificar la entrega de los datos.\\
+A partir de lo que se ha recopilado, los artículos \cite{LocalSearch, PPPAsMIP} han hecho una buena recopilación de las diferencias al ejecutar los distintos métodos. Es por esto, que en este documento utilizaremos la información referenciada en los artículos mencionados, con el fin de simplificar la entrega de los datos.\\
 
-En la publicación original \cite{FirstPublication}, se menciona que la Programación Lineal fue un total fracaso, y la única vez que sus modelos arrojaron un resultado, al corroborarlo el sistema no pudo lograrlo, ya que después de 189 horas, ya que el problema no se pudo corroborar. Además, la cantidad de variables y filas de ecuaciones generadas al ejecutar los algoritmos, estaban al borde de la capacidad de los computadores de la época utilizados en el estudio.
+En la publicación original \cite{FirstPublication}, se menciona que la Programación Lineal fue un total fracaso, y la única vez que sus modelos arrojaron un resultado, al corroborarlo el sistema no pudo lograrlo, ya que después de 189 horas ejecutándose, el programa no logró converger a un resultado satisfactorio. Además, la cantidad de variables y filas de ecuaciones generadas al ejecutar los algoritmos, estaban al borde de la capacidad de los computadores de la época utilizados en el estudio.
 
 Sin embargo, los resultados fueron mas optimistas al utilizar Programación con Restricciones, ya que logró resolver en pocos segundos dos de los problemas que Programación Lineal no pudo resolver. Sin embargo, para instancias mas grandes, el método falló.\\
 
@@ -182,15 +184,16 @@ En la tabla a continuación se puede ver tabulada los resultados al resolver el 
 
 \begin{table}[h!]
   \begin{center}
-	\begin{tabular}{|p{0.8cm}|l|l|p{2cm}|p{1.2cm}|p{0.7cm}|p{0.7cm}|}
+	\begin{tabular}{|p{1.1cm}|l|l|p{1.5cm}|p{1.2cm}|p{1cm}|p{1
+	cm}|}
 	\hline
-	time stage & nº equations & nº variables & nº non-zero elem. & discrete vars. & gen. time & sol. time \\ \hline
+	etapa de tiempo & nº ecuaciones & nº variables & nº elem. no nulos & var. discretas & tiempo generación & tiempo solución \\ \hline
 	1 & $38830$ & $2620$ & $114130$ & $1758$ & $0.73$ & $1.62$ \\ \hline
 	... & ... & ... & ... & ... & ... & ... \\ \hline
 	(7) & $245470$ & $77500$ & $322876$ & $1722$ & $3.42$ & $5.50$ \\ \hline
 	\end{tabular}
   \end{center}
-  \caption{Resultado simplificado usando la heurística Time-Stage}
+  \caption{Resultado simplificado usando la heurística \textit{Time-Stage}}
 \end{table}
 
 En la tabla podemos ver que a la séptima iteración se logró hallar una solución óptima. Pero debido al funcionamiento de la heurística (la cual fue explicada anteriormente), el método no puede seguir comprobando para $t > 7, \forall t \in [1,T]$, lo cual es un inconveniente si se quiere establecer un numero fijo de botes anfitriones. \\
@@ -203,12 +206,12 @@ En el artículo se compara la Programación Lineal y la Programación con Restri
   \begin{center}
 	\begin{tabular}{|l||c|c|c|c|}
 	\hline
-	problem & ILP & CP1 & CP2 & LS \\ \hline
-	$P_6$ & fail & 27 min. & a few sec. & $< 1$ s. \\ \hline
-	$P_7$ & fail & 28 min. & a few sec. & $< 1$ s. \\ \hline
-	$P_8$ & fail & fail & a few sec. & $1$ s. \\ \hline
-	$P_9$ & fail & fail & hours & $4$ s. \\ \hline
-	$P_10$ & fail & fail & fail & fail \\ \hline
+	problema & ILP & CP1 & CP2 & LS \\ \hline
+	$P_6$ & fallo & 27 min. & pocos seg. & $< 1$ s. \\ \hline
+	$P_7$ & fallo & 28 min. & pocos seg. & $< 1$ s. \\ \hline
+	$P_8$ & fallo & fallo & pocos seg. & $1$ s. \\ \hline
+	$P_9$ & fallo & fallo & horas & $4$ s. \\ \hline
+	$P_10$ & fallo & fallo & fallo & fallo \\ \hline
 	\end{tabular}
   \end{center}
   \caption{Resultado de las ejecuciones de los distintos métodos}
@@ -223,9 +226,9 @@ A pesar de esto, el método falla cuando se le instancia con 10 períodos de tie
 Podemos afirmar con seguridad, que métodos de Búsqueda Local son considerablemente mejores que métodos que buscan en los espacios de búsqueda completos, como lo hacen la Programación Lineal (aunque se desconocen sus métodos).
 
 \section{Modelo Matemático}
-Existen varias formas de plantar este modelo, pero se busca preservar la simplicidad y semántica que respeten la originalidad del problema.
+Existen varias formas de plantear este modelo, pero se busca preservar la simplicidad y semántica que respeten la originalidad del problema.
 
-Es por eso que las representaciones y restricciones aquí definidas, están basadas en la publicación original del Progressive Party Problem \cite{FirstPublication}, complementada con la información disponible en \cite{CustomizingSearch}, y respaldada por la publicación \cite{PPPAsMIP}.\\
+Es por eso que las representaciones y restricciones aquí definidas, están basadas en la publicación original del \textit{Progressive Party Problem} \cite{FirstPublication}, complementada con la información disponible en \cite{CustomizingSearch}, y respaldada por la publicación \cite{PPPAsMIP}.\\
 
 
 
@@ -299,7 +302,7 @@ Existe otra restricción relacionada con los movimientos que pueden realizar las
 \sum_tx_{i,j,t} \leq 1 & , \forall i,j \in [1,n], i \neq j & \forall t \in [1,T]
 \end{eqnarray}
 
-Las siguientes restricciones buscan modelar las interacciones que tienen las tripulaciones visitantes durante la fiesta.
+La siguiente restricciones buscan modelar las interacciones que tienen las tripulaciones visitantes durante la fiesta.
 
 Se mencionó anteriormente, que el modelo que se representa acá es el que se puede ver en \cite{PPPAsMIP}. En este modelo se introduce la variable binaria $m_{j,j',t}$ del encuentro de la tripulación $j$ con la tripulación $j'$ en el tiempo $t$. La restricción que define esta variable indica que si dos tripulaciones se han encontrado en el mismo lugar al mismo tiempo, es porque estuvieron en el mismo bote al mismo tiempo:
 
@@ -334,8 +337,17 @@ Que fue lo que se logr\'o con la experimentaci\'on, incluir tablas y par\'ametro
 posible, lo m\'as explicativo posible.
 
 \section{Conclusiones}
-De acuerdo a la introducci\'on que se hizo, entregar afirmaciones RELEVANTES basadas en los experimentos
-y sus resultados.
+\begin{itemize}
+\item El \textit{Progressive Party Problem} describe un problema del tipo \textit{Time Tabling} que fue planteado casi fortuitamente por P. M. Hubbard, donde los resultados fueron desconcertantes inicialmente, debido a que los métodos para resolver ese tipo de problemas no arrojó los resultados esperados. De esto último se desprende que la Programación Lineal no es el método más óptimo para resolver el \textit{Progressive Party Problem}.
+
+\item Entre los métodos para resolver el \textit{Progressive Party Problem} que se vieron en este documento, como por Programación Lineal, Programación con Restricciones y Búsqueda Local, se logró comprobar que el enfoque de Búsqueda Local es el más eficiente en general para las distintas instancias del problema.
+
+\item Las variantes encontradas para el problema, no son de mayor incumbencia, ya que los objetivos no se alejan de los originales, pero sus representaciones sí. Esto último se ve reflejado negativamente en la semántica de las restricciones para los distintos métodos que usan los autores. Y es más, en una representación utilizada en la Programación Lineal, elimina las restricciones cargadas de una semántica alejada de la original.
+
+\item El modelo matemático utilizado para representar el problema es el más sencillo y el más simple en términos semánticos, lo cual facilita la lectura.
+
+\item Finalmente, se puede concluir que el \textit{Progressive Party Problem} es un problema combinatorio altamente complejo, el cual tiene una inclinación a resolverse más facilmente mediante técnicas incompletas por sobre las completas. Su representación sencilla es engañadora, ya que su complejidad tiende a ser alta, pero distintas heurísticas ayudan a facilitar el proceso de encontrar soluciones. Es por esto último que adaptar distintas heurísticas a este problema es algo necesario, ya que el único límite parece ser el ingenio humano.
+\end{itemize}
 
 \section{Bibliografía}
 \bibliographystyle{plain}
