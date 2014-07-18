@@ -1,0 +1,19 @@
+Para compilar:
+- Ingresar mediante el terminal a la carpeta actual.
+- Ejecutar make
+- Opcional: ejecutar make clean
+- Ejecutar el programa con ./software
+
+Para ejecutar con parametros mediante linea de comandos:
+./software -instancia [1..6] -periodos [6..8]
+
+Para ejecutar con parametros mediante interacción manual:
+./software
+
+
+
+¡¡Si se compila en computador de 32 bits!!
+En el makefile, eliminar el flag -m64
+
+
+Si se tiene Qt Creator, se recomienda utilizar el archivo software.pro

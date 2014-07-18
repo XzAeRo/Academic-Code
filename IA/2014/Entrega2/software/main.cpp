@@ -177,21 +177,19 @@ int main(int argc, char **argv)
     /****************************************************************/
     /******* Busqueda de solucion mediante Backtracking (GBJ) *******/
     /****************************************************************/
-    int n = botes.size();       // cantidad de botes en la fiesta
+    int n = botes.size();           // cantidad de botes en la fiesta
     Array2D solucion(n,T,-1);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
-    stack<node> auxiliar;
+    stack<node> auxiliar;           // stack para el backtracking
 
     int i = 0;
     int j = 0;
     int b = -1;
-    int soluciones = 0;
-    int iteraciones = 0;
-    int backtracks = 0;
-    int fails = 0;
-    int success = 0;
-
-    int input;
+    long soluciones = 0;
+    long iteraciones = 0;
+    long backtracks = 0;
+    long fails = 0;
+    long success = 0;
 
     cout << endl << "Iteraciones\tConsistentes\tNo Consistentes\tBacktracks\tSoluciones" << endl;
 
@@ -202,7 +200,6 @@ int main(int argc, char **argv)
             cout << "\r" << iteraciones << "\t\t" << success << "\t\t" << fails << "\t\t" << backtracks << "\t\t" << soluciones;
 
             solucion(i,j) = b;
-            utils.print_solution_to_file(solucion,n,T,0);
             //utils.print_to_screen(solucion,n,T);
             //cout << i << " " << j << " " << b << endl;
 
@@ -216,7 +213,7 @@ int main(int argc, char **argv)
                     //cout << "solucion posible" << endl;
                     ++soluciones;
                     ++success;
-                    utils.print_solution_to_file(solucion,n,T,soluciones);
+                    utils.print_solution_to_file(solucion,n,T,n_instancia);
 
                     if (solucion(i,j)==n-1)
                     {
@@ -248,7 +245,7 @@ int main(int argc, char **argv)
                         }
                         else
                         {
-                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
+                            cout << endl << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
                             return 0;
                         }
                     }
@@ -293,7 +290,7 @@ int main(int argc, char **argv)
                         }
                         else
                         {
-                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
+                            cout << endl << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
                             return 0;
                         }
                     }
@@ -357,7 +354,7 @@ int main(int argc, char **argv)
                         }
                         else
                         {
-                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
+                            cout << endl << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
                             return 0;
                         }
                     }

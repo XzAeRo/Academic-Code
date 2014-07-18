@@ -343,15 +343,184 @@ Esto fue utilizado así debido a la forma en que funciona \textit{Backtracking},
 \end{itemize}
 
 \section{Descripción del algoritmo}
-\textit{Backtracking} (BT) es un algoritmo de búsqueda completa, el cual se utiliza para resolver problemas de satisfacción de restricciones (CSP). En el trabajo realizado, el desarrollo realizado es mediante una variante de la misma, llamada \textit{Graph-based Backjumping} (GBJ).
+\textit{Backtracking} (BT) es un algoritmo de búsqueda completa, el cual se utiliza para resolver problemas de satisfacción de restricciones (CSP). En el trabajo realizado, el desarrollo realizado es mediante una variante de la misma, llamada \textit{Graph-based Backjumping} (GBJ).\\
+
+BT con GBJ \cite{btgbj}, es un algoritmo de búsqueda completa del tipo ``\textit{look back}'', pero que en vez de hacer saltos hacia atrás de manera cronológica, lo hace de manera ``inteligente''. Estos saltos los hace identificando la variable más arriba en el arbol de BT, que está generando conflicto con la actual instanciación; luego se hace un \textit{back jump} a esa variable culpable. 
+
+La gran diferencia al juntar GBJ con BT respecto al BT puro, es que GBJ busca evitar el \textit{trashing}, el cual consta de estar constantemente buscando en sectores que se sabe que serán infactibles. Pero GBJ falla cuando tenemos un grafo de restricciones fuertemente conexo, ya que al estar gran parte de las variables con conflicto, el \textit{back jump} siempre será a la variable anterior, por lo cual el BT con GBJ se transforma en BT puro practicamente. Esto se puede ver corroborado en el estudio realizado en \cite{btgbj}.\\
+
+En la formulación del problema se exige que el objetivo del problema se enfoque en ``maximizar la cantidad de bloques de duración de la fiesta comenzando desde $T = 6$''. Pero este objetivo está cubierto bajo la restricción ``Cada tripulación invitada debe siempre tener un anfitrión asociado'', dado que la representación elegida para el problema asegurará que siempre se maximizará la cantidad de bloques de duración de la fiesta.\\
+
+\begin{figure}[h!]
+\centering
+Inicio $\to$ Leer Archivos $\to$ Algoritmo BT+GBJ $\to$ Salvar/Mostrar Información $\to$ Fin
+\caption{Esquema general del programa.}
+\end{figure}
+
+De acuerdo a lo planteado, se plantea el esquema general del programa en la figura 1. La lectura de archivos se hace en base a los datos de las instancias proporcionadas por Camila Diaz (\textit{input} del algoritmo), gracias a lo cual podemos definir las capacidades, tripulaciones y los anfitriones entre todos los participantes del problema. Esta información se obtiene desde 2 archivos distintos:
+
+\begin{itemize}
+\item \textbf{ppp.cap}: contiene los datos de todos los botes que participarán en el problema. Por cada linea se tienen 2 números; cada linea representa un barco y los numeros representan la capacidad y la tripulación a bordo respectivamente.
+
+\item \textbf{ppp\_x.hst}: archivo donde se definen que barcos serán anfitriones, y cuales serán vistantes. Cada linea del archivo representa un barco, y cada linea contiene un ``1'' o ``0'' representando si es anfitrión o no respectivamente. Pero existen distintas instancias, y en este caso, tenemos hasta 6 instancias (ppp\_1.hst, ppp\_2.hst, etc...).
+\end{itemize}
+
+Dado que se debe definir qué instancia utilizar, y cuantos períodos se utilizarán, el programa logra distinguir si es que los parametros son enviados por linea de comandos, y si no lo están, se le pide explicitamente al usuario ingresar manualmente la instancia y los períodos.
+
+Una vez que se hace define la instancia y los períodos, se procede a guardar los datos en 2 variables. Una matriz de $nx2$, y un vector de largo $n$ (donde $n$ es la cantidad de barcos en el problema):
+
+\begin{verbatim}
+vector< vector<int> > botes;
+vector<int> instancia;
+[...]
+
+int main(int argc, char **argv)
+{
+    [...]
+    botes = utils.get_boats();
+    instancia = utils.get_instance(n_instancia);
+    [...]
+\end{verbatim}
+
+Estas variables son utilizadas para comprobar las distintas restricciones dentro del problema, tales como identificar si un barco es anfitrión o no.\\
+
+Una vez que esto queda definido, pasamos a ejecutar el algoritmo de BT con GBJ. Para ello, se implementó BT con el método iterativo por sobre el recursivo. La razón de esto es que debido a la gran cantidad de variables que se tienen en juego, las ramificaciones del algoritmo recursivo genera un gran consumo de memoria RAM (en ciertas ocaciones por sobre los 4 GB), y debido a que el computador de desarrollo tiene solo 4 GB, se optó por seguir la implementación iterativa del BT, debido a que el consumo de memoria es mínimo, debido a que el \textit{stack} de variables se maneja manualmente y de manera lineal. De esta manera se evitan efectos indeseados de rendimiento al agotarse la RAM.\\
+
+\begin{verbatim}
+Array2D solucion(n,T,-1); // matriz de nxT inicializado con valores -1
+Array3D mismo_bote(n,n,T,0); // matriz de nxnxT inicializado con valores 0
+stack<node> auxiliar;
+\end{verbatim}
+
+Las primeras dos variables definidas aquí son las variables más importantes, ya que definirán las soluciones del problema y servirán como columna vertebral para el backtracking, en especial la variable ``solucion'', ya que ``mismo\_bote'' es una variable auxiliar.
+
+La variable ``auxiliar'', es el stack que se utilizará para hacer \textit{backtracking}. En ella se almacenarán los nodos del árbol del \textit{backtracking}.\\
+
+Para explicar la parte central del algoritmo que viene a continuación, se utilizará seudocódigo, para facilitar la comprensión:
+
+\begin{itemize}
+\item \textbf{i}: variable que representa la tripulación del bote que va a salir donde un anfitrión.
+\item \textbf{j}: variable que representa un instante de tiempo.
+\item \textbf{b}: variable que representa el anfitrión que recibirá a ``i''.
+\end{itemize}
+
+\begin{verbatim}
+mientras (i < n) y (j < T):
+    instanciamos solucion(i,j) = b
+    
+    si estamos en una hoja:
+        si la instanciación es consistente:
+            se encontró una solución
+            
+            si es el último valor del dominio:
+                hacemos backtrack
+                
+                si no se puede hacer backtrack:
+                    finalizar
+            si no:
+                b = b + 1
+
+        si no es consistente:
+            si es el último valor del dominio:
+                hacemos backtrack
+                
+                si no se puede hacer backtrack:
+                    finalizar
+            si no:
+                b = b + 1
+                
+    si estamos en un nodo intermedio:
+       si la instanciación es consistente:
+           avanzamos a la siguiente variable, y recordamos el paso en el stack
+           
+       si no es consistente:
+           si es el último valor del dominio:
+                hacemos backtrack
+                
+                si no se puede hacer backtrack:
+                    finalizar
+            si no:
+                b = b + 1
+            
+\end{verbatim}
+
+
+Durante toda la ejecución del BT con GBJ, se muestran por pantalla datos releventes, como las iteraciones, conflictos, soluciones, etc. Y cada vez que se encuentra una solución, esta se escribe a un archivo el cual simplemente se va sobre-escribiendo. El archivo tendrá $n$ lineas que representan cada uno de los botes, y cada linea tendrá $T$ columnas, con las calendarizaciones de la fiesta.
+
+Es importante también explicar que es lo que hace la función de consistencia. Básicamente revisa si se cumplen todas las restricciones, y si no se cumple alguna, acusa a la variable culpable de fallar.\footnote{Esto fue cambiado más adelante en un intento de mejorar el rendimiento del programa.}
+
+Las restricciones del problema se separaron en 5 funciones, para así tener un control claro de lo que se está tratando y qué se está tratando:
+
+\begin{itemize}
+\item \textbf{restriccion\_1}: función que se se encarga de verificar que solo los botes anfitriones pueden recibir visitas, además de asegurarse que los tripulantes del bote anfitrión no salgan de su bote.
+
+\item \textbf{restriccion\_2}: función que se encarga de comprobar que las capacidades de tripulación de un bote para un instante determinado, no se vean sobrepasadas.
+
+\item \textbf{restriccion\_3}: función que se encarga de verificar que todos los invitados tengan un anfitrión al cual asistir.
+
+\item \textbf{restriccion\_4}: función que se preocupa de evitar que una tripulación invitada vuelva más de una vez a un mismo bote anfitrión.
+
+\item \textbf{restriccion\_5}: función que verifica que cualquier pareja de tripulantes esté a lo más una vez junta sobre un anfitrión cualquiera.
+\end{itemize}
 
 \section{Experimentos}
-Se necesita saber como experimentaron, como definieron par\'ametros, como los fueron modificando, cuales 
-problemas se trataron, instancias, por que ocuparon esos problemas.
+El código fue ejecutado en un computador con las siguientes características:
+
+\begin{itemize}
+\item Procesador: Intel Core 2 Duo E7500 3.2GHz
+\item Memoria RAM: 4 GB
+\item Disco Duro: Partición exclusiva de 80 GB
+\item Sistema Operativo: Ubuntu 14.04 x64
+\item IDE: Qt Creator
+\end{itemize}
+
+El primer experimento consistió en comparar una implementación de BT con GBJ y una con BT puro, para determinar cual era más eficiente en términos de tiempo neto. Debido a la falta de experiencia, no se registraron los datos de iteraciones, chequeos de restricciones, backtracks ni nada de eso\footnote{Repetir el experimento estaba fuera de las opciones debido al alto tiempo que se demoraron los programas en encontrar soluciones}, y solo se logró verificar que debido a la fuerte conexión entre las variables debido a las restricciones, el BT con GBJ se comporta de manera casi idéntica, pero como BT con GBJ tiene más funciones preocupadas de hacer saltos inteligentes, este último terminaba siendo más lento que el BT puro.\\
+
+Otro experimento realizado consistió en generar instancias más pequeñas que las proporcionadas por Camila Diaz. Estas instancias fueron de solo 7 a 15 botes, con distintas configuraciones de botes anfitriones. Esto se realizó con el fin de definir de manera rápida y efectiva, los comportamientos que tenía el programa para distintas configuraciones de anfitriones.\\
+
+Finalmente, en las etapas inciales del desarrollo del programa final\footnote{al cual lamentablemente olvidé añadir un contador de iteraciones, y que además generó unas soluciones erroneas debido a una mala programación de la restricción 5}, se ejecutó el algoritmo para poder verificar que la solución de referencia entregada por Camila Diaz estaba siendo generada por el algoritmo.
 
 \section{Resultados}
-Que fue lo que se logr\'o con la experimentaci\'on, incluir tablas y par\'ametros, gr\'aficos si fuera
-posible, lo m\'as explicativo posible.
+Para el primer experimento, donde se comparó la implementación de BT puro versus BT con GBJ, pero no se registraron las iteraciones ni nigún indicador similar, debido a la falta de experiencia por parte del programador, pero si se logró comparar la velocidad en tiempo real entre las dos implementaciones.
+
+Para el caso del BT puro, el problema se terminó de ejecutar 14 minutos antes que el de BT con GBJ, aunque se ignora la cantidad de iteraciones que hizo cada uno. Aún así se puede concluir que debido a que el grafo de restricciones del \textit{Progressive Party Problem}, es altamente conexo, el BT con GBJ tiende a comportarse como BT puro, y como la implementación de BT con GBJ tiene que hacer comprobaciones extras para determinar a cual variable hacer el salto inteligente, se asume que esos calculos extras impactaron negativamente en el problema.
+
+De todas maneras, se adjunta el código de las dos implementaciones.\\
+
+Para los otros experimentos, se utilizaron instancias semi-triviales, para verificar diferencias de comportamiento para el algoritmo. A continuación se presenta una tabla con algunos de las instancias y los resultados obtenidos:
+
+
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+	nº botes & anfitriones & iteraciones & nodos consist. & nodos no consist. & \textit{Backtracks} & nº sols. \\ \hline
+	
+	7 & 1-6 & 10183 & 1992 & 8191 & 1272 & 720 (*)\\ \hline
+	7 & 2-7 & 217253 & - & - & - & fallo\\ \hline
+	7 & 1-4 & 711 & 88 & 623 & 88 & 0 \\ \hline
+	10 & 1-4 & 978 & 88 & 890 & 88 & 0 \\ \hline
+	42 & 1-12 & - & - & - & - & 11 (**)\\ \hline
+	
+	\end{tabular}
+  \end{center}
+  \caption{Instancias de prueba}
+\end{table}
+
+(*) Esto es un caso ``trivial'', donde se espera que la cantidad de soluciones sean exactamente $6! = 720$, que corresponden a la cantidad de permutaciones posibles entre los anfitriones disponibles.
+
+(**) Esta version del algoritmo se ejecutó con un error en la restricción 5, la cual pudo haber generado soluciones adicionales.\\
+
+Gracias a estos experimentos y a otros similares, se descubrió que el mínimo de anfitriones en una instancia debe ser de al menos la cantidad de periodos de tiempo, es decir, $\sum_{i=0}^{n} h_i \geq T$, lo cual es interesante, considerando que en ningun momento se supone ese dato, ni se menciona en ninguna publicación.
+
+Esa información podría ser valiosa para buscar soluciones para instancias generalizadas, donde $T$ también es una incógnita, y no como en este caso, donde $T$ viene dado.\\
+
+La otra información rescatable, es que al poner los anfitriones agrupados hacia al final de la lista (como se muestra en la fila 2 del cuadro), se generan muchisimas más iteraciones que en el caso homólogo de la fila 1. Esto se produce debido a que el BT intenta asignar como host siempre a la primera variable, generandose muchos más conflictos, lo cual al parecer, agotó el stack del BT y emite un \textit{Segmentation Fault}.\\
+
+
+Finalmente, para la ejecución del experimento para verificar que la solución de referencia era generada por la aplicación, después de largas horas, se identificó un error en una de las restricciones, y que la linea que muestra los resultados, estaba comentada, por lo que se perdió información valiosa y el tiempo de ejecución se extendió muchisimo más debido a la cantidad de soluciones adicionales que se tuvieron que comprobar (cerca de 17 soluciones generadas). Pero finalmente, esto fue comprobado, y la solucioón de referencia estaba contenida dentro de las soluciones generadas por el algoritmo.
+
+
 
 \section{Conclusiones}
 \begin{itemize}
@@ -363,7 +532,13 @@ posible, lo m\'as explicativo posible.
 
 \item El modelo matemático utilizado para representar el problema es el más sencillo y el más simple en términos semánticos, lo cual facilita la lectura.
 
+\item Aplicar el método de \textit{Backtracking} con \textit{Graph-based Backjumping}, al \textit{Progressive Party Problem}, entrega soluciones muy satisfactorias, las cuales se resuelven en tiempos considerablemente aceptables (en el rango de horas).
+
+\item Se demostró que el \textit{Progressive Party Problem}, es un problema fuertemente conexo a nivel del grafo de restricciones, lo cual lo hace inmune a la mejora propuesta por el \textit{Graph-based backjumping}.
+
 \item Finalmente, se puede concluir que el \textit{Progressive Party Problem} es un problema combinatorio altamente complejo, el cual tiene una inclinación a resolverse más facilmente mediante técnicas incompletas por sobre las completas. Su representación sencilla es engañadora, ya que su complejidad tiende a ser alta, pero distintas heurísticas ayudan a facilitar el proceso de encontrar soluciones. Es por esto último que adaptar distintas heurísticas a este problema es algo necesario, ya que el único límite parece ser el ingenio humano.
+
+
 \end{itemize}
 
 \section{Bibliografía}
