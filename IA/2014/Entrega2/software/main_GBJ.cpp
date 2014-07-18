@@ -9,6 +9,8 @@ using namespace std;
 
 vector< vector<int> > botes;
 vector<int> instancia;
+vector<node> culprits;
+
 
 // solo hosts puede recibir visitas (hosts no pueden salir tampoco)
 bool restriccion_1(int host, int visita)
@@ -29,25 +31,24 @@ bool restriccion_1(int host, int visita)
 }
 
 // la tripulacion + invitados no pueden superar la capacidad del bote
-bool restriccion_2(Array2D solucion, int host, int visita, int tiempo, int n)
+bool restriccion_2(Array2D solucion, int host, int visita, int tiempo, int T, int n)
 {
     if(host>=0) // si es que efectivamente tenemos un host
     {
-        if ( botes[visita][TRIPULANTES] > botes[host][LIBRE]) // verificar que visita + tripulacion < capacidad
-            return false;
-        else
+        int suma = 0;
+        for (int i=0 ; i<n ; i++)
         {
-            int suma = 0;
-            for (int i=0 ; i<n ; i++)
+            if (solucion(i,tiempo) == host) // el host ya esta siendo usado en el instante de tiempo por otra visita
             {
-                if (solucion(i,tiempo) == host) // el host ya esta siendo usado en el instante de tiempo por otra visita
+                suma += botes[i][TRIPULANTES];
+                if (i < visita) {node culprit(i,tiempo,host);}
+                if (suma > botes[host][LIBRE] && visita == i)
                 {
-                    suma += botes[i][TRIPULANTES];
-                    if (suma > botes[host][LIBRE])
-                        return false;
+                    culprits.push_back(culprit);
                 }
             }
         }
+
     }
 
     return true;
@@ -71,7 +72,8 @@ bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
         {
             if (solucion(visita,tiempo) == host && tiempo < instante)
             {
-                return false;
+                node culprit(visita,tiempo,host);
+                culprits.push_back(culprit);
             }
         }
     }
@@ -79,19 +81,20 @@ bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
 }
 
 // cualquier par de invitados debe encontrarse a lo mas una vez
-bool restriccion_5(Array2D solucion, int host, int visita, int instante, int n)
+bool restriccion_5(Array2D solucion, int host, int visita, int instante, int T, int n)
 {
-    if (host >= 0 && instante > 0)
+    if (host >= 0)
     {
         for (int i=0; i<n ; i++)
         {
-            if (solucion(i,instante) == host && i != visita)
+            if (solucion(i,instante) == host)
             {
                 for (int t=0 ; t<instante ; t++)
                 {
                     if (solucion(i,t) == solucion(visita,t))
                     {
-                        return false;
+                        node culprit(i,t,solucion(i,t));
+                        culprits.push_back(culprit);
                     }
                 }
             }
@@ -102,26 +105,47 @@ bool restriccion_5(Array2D solucion, int host, int visita, int instante, int n)
 }
 
 
-bool consistente(Array2D solucion, Array3D mismo_bote, int visita, int tiempo, int T, int n)
+node consistente(Array2D solucion, Array3D mismo_bote, int visita, int tiempo, int T, int n)
 {
     int host = solucion(visita,tiempo);
+    int i = -5;
+    int t = -1;
 
-    if (!restriccion_1(host,visita))
-        return false;
+    if (!restriccion_1(host,visita)) // restricion unaria
+    {
+        node culprit(visita,tiempo,host);
+        culprits.push_back(culprit);
+    }
 
-    if (!restriccion_2(solucion,host,visita,tiempo,n))
-        return false;
+    restriccion_2(solucion,host,visita,tiempo,T,n);
 
-    if (!restriccion_3(host,visita))
-        return false;
+    if (!restriccion_3(host,visita)) // restriccion unaria
+    {
+        node culprit(visita,tiempo,host);
+        culprits.push_back(culprit);
+    }
 
-    if (!restriccion_4(solucion,host,visita,tiempo,T))
-        return false;
+    restriccion_4(solucion,host,visita,tiempo,T);
 
-    if (!restriccion_5(solucion,host,visita,tiempo,n))
-        return false;
+    restriccion_5(solucion,host,visita,tiempo,T,n);
 
-    return true;
+
+    for (int it=0 ; it < culprits.size() ; it++)
+    {
+        node culprit = culprits[it];
+        if (culprit.i > i)
+        {
+            if (culprit.j > t)
+            {
+                t = culprit.j;
+                i = culprit.i;
+            }
+        }
+    }
+
+
+    node culprit(i,t,-5);
+    return culprit;
 
 }
 
@@ -173,7 +197,7 @@ int main(int argc, char **argv)
     /****************************************************************/
     /******* Busqueda de solucion mediante Backtracking (GBJ) *******/
     /****************************************************************/
-    int T = 6;               // intervalos de tiempo
+    int T = 13;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
     Array2D solucion(n,T,-1);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t

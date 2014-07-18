@@ -317,16 +317,33 @@ Ahora que la variable $m_{j,j',t}$ se encuentra debidamente definida bajo la res
 \end{eqnarray}
 
 \section{Representación}
-Representaci\'on matem\'atica y estructura de datos que se usa (arreglos, matrices, etc.), por qu\'e se usa, la relaci\'on entre la 
-representaci\'on matem\'atica y la estructura.
+De acuerdo a la interpretación que se ha realizado del problema, en conjunto con la implementación de un algoritmo de \textit{Backtracking}, el problema se representa en base a la siguientes estructuras de datos:
+
+\begin{itemize}
+\item \textit{\textbf{solucion(i,t):}} matriz de $nxT$ nodos, donde cada nodo representa el barco donde se encuentra la tripulación del barco $i \in [1,n]$ en el periodo $t \in [1,T]$. En el modelo matemático presentado anteriormente, se utiliza una representación binaria de esta estructura de la forma ``\textit{solucion(i,j,t)}", la cual tiene un espacio de búsqueda extremadamente grande ($2^{nxnxT}$), mientras que la representación propuesta tiene un espacio de búsqueda de solo $n^{Txn}$\footnote{Particularmente, las instancias propuestas tienen valores de $n=42$ y $T\in[6,8]$, por lo que el E.B. de la representación original es del orden de $10^{3186}$, mientras que la nueva representación es de solo del orden de $10^{477}$.}. Esta representación permite, además, analizar el comportamiento de los botes de manera mucho más gráfica. Por ejemplo, para T=6:
+
+\begin{table}[h!]
+  \begin{center}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+	\hline
+	i (bote visitante) & Período 1 & Período 2 & Período 3 & Período 4 & Período 5 & Período 6 \\ \hline \hline
+	1 & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} \\ \hline
+	... & ... & ... & ... & ... & ... & ... \\ \hline
+	n & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} & bote \text{host} \\ \hline
+
+	\end{tabular}
+  \end{center}
+  \caption{Representación de la estrucutra de datos de \textit{solucion(i,t)}.}
+\end{table}
+\newpage
+\item \textit{\textbf{mismo\_bote(i,j,t):}} matriz binaria de $nxnxT$, donde cada nodo indica si un barco $i$ visitó al bote $j$ en el instante $t$. Esta estructura hace referencia a la restricción expresada en la ecuación (10), se utiliza como una estructura adicional para ``facilitar" el cómputo de esa restricción. Técnicamente, esta representación es lo mismo que la representación anterior, pero sus usos son distintos, y el algoritmo implementado para resolver el problema, está optimizado para la representación anterior. Gráficamente, es complicado mostrar cómo es esta estructura de datos, dado que es una estructura con 3 dimensiones, y por lo mismo se omitirá su representación gráfica, y se apelará a la capacidad comprensiva del lector.
+
+Esto fue utilizado así debido a la forma en que funciona \textit{Backtracking}, y para optimizar la ejecución de éste al realizar las comprobaciones de consistencia, las cuales deben evitar ser lentas o computacionalmente costosas.
+
+\end{itemize}
 
 \section{Descripción del algoritmo}
-C\'omo fue implementando, interesa la implementaci\'on m\'as que el algoritmo gen\'erico, es decir,
-si se tiene que implementar SA, lo que se espera es que se explique en pseudo c\'odigo la estructura
-general y en p\'arrafo explicativo cada parte como fue implementada para su caso particular, si
-se utilizan operadores se debe explicar por que se utiliz\'o ese operador, si fuera el caso de una
-t\'ecnica completa, si se utiliza recursi\'on o no, etc. En este punto no se espera que se incluya
-c\'odigo, eso va aparte.
+\textit{Backtracking} (BT) es un algoritmo de búsqueda completa, el cual se utiliza para resolver problemas de satisfacción de restricciones (CSP). En el trabajo realizado, el desarrollo realizado es mediante una variante de la misma, llamada \textit{Graph-based Backjumping} (GBJ).
 
 \section{Experimentos}
 Se necesita saber como experimentaron, como definieron par\'ametros, como los fueron modificando, cuales 
