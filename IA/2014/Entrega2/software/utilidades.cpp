@@ -81,7 +81,7 @@ void Utilidades::print_solution_to_file(Array2D solution, int n, int T, int id)
     if (id < 100){
         ofstream file;
         ostringstream t_filename;
-        t_filename << "solutions/" << id << ".sol";
+        t_filename << "solutions/" << id << "_T" << T << ".sol";
         string filename = t_filename.str();
 
         file.open(filename.c_str());
@@ -100,5 +100,21 @@ void Utilidades::print_solution_to_file(Array2D solution, int n, int T, int id)
 
         file.close();
     }
+}
+
+void Utilidades::print_to_screen(Array2D solution, int n, int T)
+{
+
+    for(int i=0 ; i<n ; i++)
+    {
+        for(int j=0 ; j<T ; j++)
+        {
+            cout << solution(i,j) + 1 << "\t";
+        }
+        cout << endl;
+    }
+
+    cout << endl;
+
 }
 

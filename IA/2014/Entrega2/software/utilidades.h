@@ -14,6 +14,7 @@ public:
     vector<int> get_instance(int instance);
     vector< vector<int> > get_boats();
     void print_solution_to_file(Array2D solution, int n, int T, int id);
+    void print_to_screen(Array2D solution, int n, int T);
 };
 
 #endif // UTILIDADES_H

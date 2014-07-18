@@ -37,6 +37,7 @@ bool restriccion_1(int host, int visita)
 // la tripulacion + invitados no pueden superar la capacidad del bote
 bool restriccion_2(Array2D solucion, int host, int visita, int tiempo, int T, int n)
 {
+    node culprit(-2,-2,-2);
     if(host>=0) // si es que efectivamente tenemos un host
     {
         if ( botes[visita][TRIPULANTES] > botes[host][LIBRE]) // verificar que visita + tripulacion < capacidad
@@ -76,27 +77,35 @@ bool restriccion_4(Array2D solucion, int host,int visita, int instante, int T)
         for (int tiempo=0 ; tiempo<T ; tiempo++)
         {
             if (solucion(visita,tiempo) == host && tiempo != instante)
+            {
                 return false;
+            }
         }
     }
     return true;
 }
 
 // cualquier par de invitados debe encontrarse a lo mas una vez
-bool restriccion_5(int host, int visita)
+bool restriccion_5(Array3D mismo_bote, int host, int visita, int instante, int T)
 {
     if (host >= 0)
     {
-        // la visita no puede estar con otra que haya estado en el mismo host
+        for (int i=0; i<T ; i++)
+        {
+            if (i != instante && mismo_bote(visita,host,i)==1)
+                return false;
+        }
+
     }
+    return true;
 }
 
 
-bool consistente(Array2D solucion, int visita, int tiempo, int T, int n)
+bool consistente(Array2D solucion, Array3D mismo_bote, int visita, int tiempo, int T, int n)
 {
     int host = solucion(visita,tiempo);
 
-    if (!restriccion_1(host,visita))
+    if (!restriccion_1(host,visita)) // restricion unaria
         return false;
 
     if (!restriccion_2(solucion,host,visita,tiempo,T,n))
@@ -106,6 +115,9 @@ bool consistente(Array2D solucion, int visita, int tiempo, int T, int n)
         return false;
 
     if (!restriccion_4(solucion,host,visita,tiempo,T))
+        return false;
+
+    if (!restriccion_5(mismo_bote,host,visita,tiempo,T))
         return false;
 
     return true;
@@ -170,6 +182,10 @@ int main(int argc, char **argv)
     int j = 0;
     int b = -1;
     int soluciones = 0;
+    int iteraciones = 0;
+    int backtracks = 0;
+    int fails = 0;
+    int success = 0;
 
     int input;
 
@@ -178,23 +194,29 @@ int main(int argc, char **argv)
         while (j < T)
         {
             solucion(i,j) = b;
+            utils.print_solution_to_file(solucion,n,T,0);
+            //utils.print_to_screen(solucion,n,T);
             //cout << i << " " << j << " " << b << endl;
 
             if(i==n-1 && j==T-1)
             {
                 // estamos en la ultima hoja
-                if (consistente(solucion,i,j,T,n))
+                //cout << "ultima hoja" << endl;
+                if (consistente(solucion,mismo_bote,i,j,T,n))
                 {
                     // si es consistente, encontramos una solucion posible
+                    //cout << "solucion posible" << endl;
                     ++soluciones;
                     utils.print_solution_to_file(solucion,n,T,soluciones);
 
                     if (solucion(i,j)==n-1)
                     {
                         // si es el ultimo valor del dominio de la ultima variable, hacemos BT si es posible
+                        cout << "ultimo valor del dominio" << endl;
                         if (!auxiliar.empty())
                         {
                             solucion(i,j) = -1; //unset variable
+                            if(b >= 0) mismo_bote(i,b,j) = 0;
                             node jump = auxiliar.top();
                             auxiliar.pop();
                             i = jump.i;
@@ -210,28 +232,33 @@ int main(int argc, char **argv)
                                 j = jump.j;
                                 b = jump.b + 1;
                             }
+
+                            //cout << "backtrack a " << i << " " << j << " " << b << endl;
                         }
                         else
                         {
-                            cout << "no hay mas instanciaciones posibles: " << i << " " << j << " " << b << endl;
+                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
                             return 0;
                         }
                     }
                     else
                     {
                         // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        //cout << "quedan valores del dominio" << endl;
                         ++b;
                     }
                 }
                 else
                 {
                     // si no es consistente
+                    //cout << "ultima variables no consistente" << endl;
                     if (solucion(i,j)==n-1)
                     {
                         // si es el ultimo valor del dominio de la variable, hacemos BT si es posible
                         if (!auxiliar.empty())
                         {
                             solucion(i,j) = -1; //unset variable
+                            if(b >= 0) mismo_bote(i,b,j) = 0;
                             node jump = auxiliar.top();
                             auxiliar.pop();
                             i = jump.i;
@@ -248,15 +275,19 @@ int main(int argc, char **argv)
                                 j = jump.j;
                                 b = jump.b + 1;
                             }
+
+                            //cout << "backtrack a " << i << " " << j << " " << b << endl;
                         }
                         else
                         {
-                            cout << "no deberia ocurrir esto :P " << i << " " << j << " " << b << endl;
+                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
+                            return 0;
                         }
                     }
                     else
                     {
                         // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        //cout << "aumentamos el valor del dominio" << endl;
                         ++b;
                     }
                 }
@@ -264,27 +295,32 @@ int main(int argc, char **argv)
             else
             {
                 // estamos en un nodo intermedio
-                if (consistente(solucion,i,j,T,n))
+                //cout << "nodo intermedio" << endl;
+                if (consistente(solucion,mismo_bote,i,j,T,n))
                 {
                     //si es consistente, debemos avanzar a la siguiente variable y recordar este paso!
                     node step(i,j,b);
                     auxiliar.push(step);
+                    if(b >= 0) mismo_bote(i,b,j) = 1;
 
                     ++j;
                     if (j==T){j=0; ++i;}
                     b=-1;
-                    solucion = reset_from(solucion,i,j,n,T);
+                    //cout << "consistente y avanzamos a " << i << " " << j << " " << b << endl;
 
                 }
                 else
                 {
                     // si no es consistente
+                    //cout << "no consistente" << endl;
                     if (solucion(i,j)==n-1)
                     {
                         // si es el ultimo valor del dominio de la variable, hacemos BT si es posible
+                        cout << "ultimo valor del dominio" << endl;
                         if (!auxiliar.empty())
                         {
                             solucion(i,j) = -1; // unset variable
+                            if(b >= 0) mismo_bote(i,b,j) = 0;
                             node jump = auxiliar.top();
                             auxiliar.pop();
                             i = jump.i;
@@ -300,20 +336,25 @@ int main(int argc, char **argv)
                                 j = jump.j;
                                 b = jump.b + 1;
                             }
+
+                            //cout << "backtrack a " << i << " " << j << " " << b << endl;
                         }
                         else
                         {
-                            cout << "no deberia ocurrir esto! :P " << i << " " << j << " " << b << endl;
+                            cout << "Espacio de busqueda recorido completamente. No hay mas instanciaciones posibles." << endl;
+                            return 0;
                         }
                     }
                     else
                     {
                         // aun faltan valores del dominio por instanciar, continuamos iterando...
+                        //cout << "quedan valores por instanciar" << endl;
                         ++b;
                     }
                 }
             }
 
+            cout << endl;
         }
     }
 
