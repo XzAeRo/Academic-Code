@@ -136,6 +136,7 @@ int main(int argc, char **argv)
 
     Utilidades utils;
     int n_instancia = 1;
+    int T = 6; // intervalos de tiempo
 
     /****************************************************************/
     /******* Obtencion de datos y acciones previas al problema ******/
@@ -146,14 +147,17 @@ int main(int argc, char **argv)
     {
         cout << "Por favor ingrese el numero de la instancia que desea utilizar: ";
         cin >> n_instancia;
+        cout << "Por favor ingrese el numero de periodos a utilizar (recomendado entre 6 y 8): ";
+        cin >> T;
     }
-    else if (argc == 3 && argv[1] == string("-instancia"))
+    else if (argc == 5 && argv[1] == string("-instancia") && argv[3] == string("-periodos"))
     {
         n_instancia = atoi(string(argv[2]).c_str());
+        T = atoi(string(argv[4]).c_str());
     }
     else
     {
-        cout << "Uso:\t./app \t[-instancia 1..n]" << endl;
+        cout << "Uso:\t./app \t-instancia [1..n] -periodos [6..8]" << endl;
         return 1;
     }
 
@@ -173,7 +177,6 @@ int main(int argc, char **argv)
     /****************************************************************/
     /******* Busqueda de solucion mediante Backtracking (GBJ) *******/
     /****************************************************************/
-    int T = 6;               // intervalos de tiempo
     int n = botes.size();       // cantidad de botes en la fiesta
     Array2D solucion(n,T,-1);       // solucion[i][j] = {1..T} la tripulacion j visita el bote i en el instante t
     Array3D mismo_bote(n,n,T,0);    // mismo_bote[i][j][t]: 1 si la tripulacion i y j se encuentran en el mismo bote en el instante t
