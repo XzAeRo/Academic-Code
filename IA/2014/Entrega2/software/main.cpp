@@ -197,7 +197,8 @@ int main(int argc, char **argv)
     {
         while (j < T)
         {
-            cout << "\r" << iteraciones << "\t\t" << success << "\t\t" << fails << "\t\t" << backtracks << "\t\t" << soluciones;
+            cout << endl << "Iteraciones\tConsistentes\tNo Consistentes\tBacktracks\tSoluciones" << endl;
+            cout << iteraciones << "\t\t" << success << "\t\t" << fails << "\t\t" << backtracks << "\t\t" << soluciones << endl << endl;
 
             solucion(i,j) = b;
             //utils.print_to_screen(solucion,n,T);
