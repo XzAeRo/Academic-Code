@@ -1,0 +1,19 @@
+caso trivial
+
+Iteraciones	Consistentes	No Consistentes	Backtracks	Soluciones
+10183		1992		8191		1272		720
+
+Caso trivial invertido (falla: seg. fault)
+
+Iteraciones	Consistentes	No Consistentes	Backtracks	Soluciones
+217255		27876		189379		26830		720
+
+
+15 botes: 7 hosts 8 intervalos
+
+Iteraciones	Consistentes	No Consistentes	Backtracks	Soluciones
+220095		13755		206340		13755		0
+
+15 botes: 7 hosts 7 intervalos incompleto
+Iteraciones	Consistentes	No Consistentes	Backtracks	Soluciones
+1438569		112254		1326315		89890		22261
