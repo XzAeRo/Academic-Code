@@ -112,14 +112,13 @@ Luego, podemos reescribir la EDP de manera discreta:
 \begin{equation}\dfrac{u_j^k - u_j^{k-1}}{h_t} = c^2\dfrac{(u_{j+1}^k - 2u_j^k + u_{j-1}^k)}{h_x^2} + f_j^k\end{equation}
 \begin{equation}u_j^k - u_j^{k-1} = \dfrac{c^2h_t}{h^2_x} (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
 
-En \textbf{(5)} denotaremos la fracción de constantes como \textit{lambda}: $\lambda = \dfrac{c^2h_t}{h^2_x}$. Además, podemos notar que el problema tiene la forma de \textit{atrás en el tiempo}, el cual se resuelve mediante métodos de matrices y de descomposición LU \footnote{\url{http://web.cecs.pdx.edu/~gerry/class/ME448/notes/pdf/BTCS_slides.pdf}} \footnote{\url{http://www.mathworks.com/matlabcentral/newsreader/view_thread/308751}}.
-
-Considerando lo anterior, además que el profesor mencionó constantemente que la resolución del problema era en pocas lineas de código, vamos a suponer que la forma que buscamos, es la del esquema progresivo, el cual es mas sencillo de ejecutar.\\
+En \textbf{(5)} denotaremos la fracción de constantes como \textit{lambda}: $\lambda = \dfrac{c^2h_t}{h^2_x}$. Además, podemos notar que el problema tiene la forma de \textit{atrás en el tiempo}, el cual se resuelve mediante métodos de matrices.\\
 
 Luego, nuestro problema queda de la siguiente manera:
 
-\begin{equation}u_j^{k+1} - u_j^k = \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
-\begin{equation}u_j^{k+1} = u_j^k + \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
+\begin{equation}u_j^{k} - u_j^{k-1} = \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
+
+\begin{equation}u_j^{k-1} = u_j^k + \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
 
 Por lo tanto, en \textbf{(7)} tenemos discretizada la solución de la EDP original. Luego, las condiciones de borde se escriben como:
 
