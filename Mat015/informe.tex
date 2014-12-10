@@ -175,7 +175,7 @@ $
 	\item Iterar sobre el tiempo, resolviendo cada sistema de ecuaciones.
 	\item Entregar resultado.
 \end{itemize}
-\newpage
+
 
 \section{Implementación en Matlab.}
 
@@ -238,7 +238,7 @@ Para el siguiente ejemplo, se utilizaron los siguientes parámetros:
 	\item $x \in [0,\pi]$ en intervalos de $\frac{\pi}{15}$.
 	\item $\lambda < 1$
 \end{itemize}
-
+\newpage
 \subsection{Lineas de contorno: vista superior}
 \begin{figure}[!h]
         \centering
@@ -257,7 +257,6 @@ Para el siguiente ejemplo, se utilizaron los siguientes parámetros:
 
 Aquí podemos apreciar claramente, que la estimación mediante diferencias finitas se asemeja a la solución real. Si bien, no son exactamente iguales, el comportamiento es bastante similar.
 
-\newpage
 \subsection{Lineas de contorno: vista lateral}
 \begin{figure}[!h]
         \centering
@@ -274,6 +273,7 @@ Aquí podemos apreciar claramente, que la estimación mediante diferencias finit
         \end{subfigure}
 \end{figure}
 
+\newpage
 \subsection{Lineas de contorno: vista diagonal}
 \begin{figure}[!h]
         \centering
@@ -294,5 +294,8 @@ Por lo tanto, podemos apreciar gráficamente, que la estimación mediante difere
 
 Las diferencias (error matemático), es una de las grandes desventajas de este método, el cual se arrastra y puede ser incremental, y es por eso que el parámetro $\lambda$ debe ser menor a 1, para asegurar que el problema se comporte de manera \textit{estable} (aunque esto no asegura que el problema converja totalmente).
 
+\section{Código fuente.}
+
+Todo el contenido de este trabajo se puede encontrar en \url{https://github.com/XzAeRo/Academic-Code/tree/master/Mat015}
 
 \end{document} 
