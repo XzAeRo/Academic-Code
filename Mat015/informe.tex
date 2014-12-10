@@ -118,22 +118,61 @@ Luego, nuestro problema queda de la siguiente manera:
 
 \begin{equation}u_j^{k} - u_j^{k-1} = \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
 
-\begin{equation}u_j^{k-1} = u_j^k + \lambda (u_{j+1}^k - 2u_j^k + u_{j-1}^k) + h_tf_j^k\end{equation}
+\begin{equation}u_j^{k-1} + h_tf_j^k = (-\lambda)u_{j-1}^k + (1+2\lambda)u_j^k + (-\lambda)u_{j+1}^k\end{equation}
 
-Por lo tanto, en \textbf{(7)} tenemos discretizada la solución de la EDP original. Luego, las condiciones de borde se escriben como:
+Podemos mover el tiempo en una unidad: $(k-1) \rightarrow k$ y $k \rightarrow (k+1)$. Entonces:
+
+\begin{equation}u_j^k + h_tf_j^{k+1} = (-\lambda)u_{j-1}^{k+1} + (1+2\lambda)u_j^{k+1} + (-\lambda)u_{j+1}^{k+1}\end{equation}
+
+Por lo tanto, en \textbf{(8)} tenemos discretizada la solución de la EDP original. Luego, las condiciones de borde se escriben como:
 
 \begin{equation*}u(0,t)=0\ \Rightarrow\ u(x_o,t_j)=0\ \Rightarrow\ u_0^j=0 \end{equation*}
 \begin{equation*}u(l,t)=0\ \Rightarrow\ u(x_{n+1},t_j)=0\ \Rightarrow\ u_{n+1}^j=0 \end{equation*}
 
-Y la condición inicial queda dada por: $u(x,0)=g(x) \Rightarrow u(x_k,t_0)=g(x_k) \Rightarrow u_0^k=g(x_k)$.\\
+Y la condición inicial queda dada por: $u(x,0)=g(x) \Rightarrow u(x_k,t_0)=g(x_k) \Rightarrow u_0^k=g(x_k)$.
 
-Adicionalmente, se dice que $\lambda<1$, para que el problema se considere estable, y pueda converger.
+Adicionalmente, se dice que $\lambda<1$, para que el problema se considere estable, y pueda converger.\\
+
+En la ecuación \textbf{(8)}, se puede observar que las soluciones se pueden encontrar mediante un sistema de ecuaciones $Au=f_0$.\\
+\begin{center}
+$
+\begin{bmatrix}
+(1+2\lambda) & (-\lambda) & 0 & 0 & 0 & 0 \\
+(-\lambda) & (1+2\lambda) & (-\lambda) & 0 & 0 & 0 \\
+0 & (-\lambda) & (1+2\lambda) & (-\lambda) & 0 & 0 \\
+0 & 0 & \ddots & \ddots & \ddots & 0 \\
+0 & 0 & 0 & (-\lambda) & (1+2\lambda) & (-\lambda)\\
+0 & 0 &0&0&(-\lambda) & (1+2\lambda)
+\end{bmatrix}
+$
+$
+\begin{bmatrix}
+u_1^{k+1} \\
+u_2^{k+1} \\
+u_3^{k+1} \\
+\vdots \\
+u_{n_x-1}^{k+1} \\
+u_{n_x}^{k+1} \\
+\end{bmatrix}
+$
+$=
+\begin{bmatrix}
+u_1^k + h_tf_1^{k+1} \\
+u_2^k + h_tf_2^{k+1} \\
+u_3^k + h_tf_3^{k+1} \\
+\vdots \\
+u_{n_x-1}^k + h_tf_{n_x-1}^{k+1} \\
+u_{n_x}^k + h_tf_{n_x}^{k+1} \\
+\end{bmatrix}
+$
+\end{center}
 
 \subsection{Planteo del algoritmo.}
 \begin{itemize}
 	\item Generar un mallado que contenga las regiones para las cuales esta definido el problema.
-	\item Aplicar la condición inicial $u_0^k=g(x_k)$.
-	\item Iterar sobre el mallado, aplicando condiciones de borde y calculando los $u_j^{k+1}$.
+	\item Aplicar valor inicial $u_0^k=g(x_k)$ y las condiciones de borde.
+	\item Generar matriz A tridiagonal.
+	\item Iterar sobre el tiempo, resolviendo cada sistema de ecuaciones.
 	\item Entregar resultado.
 \end{itemize}
 \newpage
@@ -141,43 +180,51 @@ Adicionalmente, se dice que $\lambda<1$, para que el problema se considere estab
 \section{Implementación en Matlab.}
 
 \begin{verbatimtab}
-function calor(T,l,dt,dx,c)
+function calor(L,T,n,m,c)
     % u(x,t) = e^(-3t)sin(x) + xt
     % f(x,t) = x
     % g(x) = sin(x)
-
+    
     % mallado
-    n      = (T-0)/dt;
-    m      = (l-0)/dx;
-    lambda = c^2*dt/dx^2        % lambda debe ser menor a 1
-    u      = zeros(m+1,n+1);
+    dx=L/n;         dt=1/m;
+    x = 0:dx:L;     t = 0:dt:T;
+    
+    lambda = c^2*dt/(dx^2);     % solo definido asi por comodidad
+    
+    f0 = zeros(n+1,1);          % array con valores iniciales
+    U = zeros(n+1,m+1);         % matriz de resultado
+    A = zeros(n+1,n+1);         % matriz tridiagonal de rigidez
 
-    x = 0:dx:l;
-    t = 0:dt:T;
+    % condicion de borde y valor inicial
+    for i=1:n
+        f0(i,1) = sin(x(1,i));  % u(x,0) = g(x)
+    end 
+    f0(1,1) = 0;                % u(0,t) = 0
+    f0(n+1,1) = 0;              % u(l,t) = 0
 
-    % valores inciales
-    for j=1:m+1,
-        u(j,1) = sin(x(j));     % u(x,0) = g(x)
+    % llenar la matriz tridiagonal con los coeficientes
+    for i= 1:1:n
+        A(i,i) = 1 + 2*lambda;	
+        A(i,i+1) = -lambda	;	
+        A(i+1, i) = -lambda	;
     end
+    A(n+1,n+1) = 1+2*lambda;    % condicionar el ultimo valor
+    
+    U(:,1) = f0 + x'*dt;        % inicializacion de algoritmo
+    for j = 1:1:m
+        U(:,j+1) = A\(f0+ x'*dt); % Resolvemos Au=f0 para u
+        f0 = U(:,j+1);
+    end 
 
-    % obtencion de discretizacion
-    for k=1:n
-        u(1,k+1)=0.;            % u(0,t) = 0
-        for j=2:m
-            u(j,k+1)=u(j,k)+lambda*(u(j+1,k)-2*u(j,k)+u(j-1,k))+dt*x(j);
-        end
-        u(m+1,k+1)=0.;          % u(l,t) = 0
-    end
+    % graficamos para comparar
+    figure
+    contour3(U)
 
-    % comparar graficamente con solucion real
     [xx,tt]=meshgrid(x,t);
     exact=exp(-3.*tt).*sin(xx) + xx.*tt;
-    
-    figure
-    contour3(u)
-    
     figure
     contour3(exact)
+
 \end{verbatimtab}
 
 
